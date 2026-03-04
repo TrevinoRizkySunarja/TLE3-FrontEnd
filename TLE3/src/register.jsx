@@ -2,8 +2,12 @@ import { Link } from "react-router";
 
 function Register() {
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <div className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat relative" style={{ backgroundImage: 'url(https://www.rotterdam.nl/_next/image?url=https%3A%2F%2Fbackend-dvg.rotterdam.nl%2Fsites%2Fdefault%2Ffiles%2Fstyles%2Fhero_large%2Fpublic%2F2026-03%2F25464-ht-stadhuis-1920x375.jpg%3Fh%3D8a1a2c21%26itok%3DmyqNdVCC&w=1920&q=75)' }}>
+            {/* Dark overlay for better text readability */}
+            <div className="absolute inset-0 bg-black opacity-40"></div>
+            {/* Dark overlay for better text readability */}
+            <div className="absolute inset-0 bg-black opacity-40"></div>
+            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md relative z-10">
                 <h1 className="text-3xl font-bold text-center text-gray-800 mb-2">Registeren</h1>
                 <p className="text-center text-gray-600 mb-6">Maak een nieuw account aan</p>
 
