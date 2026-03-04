@@ -42,8 +42,9 @@ function Register() {
                         <select
                             id="gender"
                             name="gender"
-                            className="border border-gray-300 rounded-md p-2 bg-white text-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                        >
+                            className="border border-gray-300 rounded-md p-2 bg-white text-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+
+                            <option value="male">---</option>
                             <option value="male">Man</option>
                             <option value="female">Vrouw</option>
                             <option value="other">Anders</option>
