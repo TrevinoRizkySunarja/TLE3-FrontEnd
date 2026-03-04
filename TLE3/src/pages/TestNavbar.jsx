@@ -1,5 +1,6 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 export default function TestNavbar() {
     return (
@@ -12,7 +13,7 @@ export default function TestNavbar() {
                     Interne testlink naar Home: <a href="/">Home</a>
                 </p>
             </div>
+            <Footer />
         </div>
     );
 }
-

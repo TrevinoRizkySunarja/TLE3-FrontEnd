@@ -1,7 +1,9 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 // import je components
 import Layout from "./index.jsx";
+import LayoutWithNavbar from "./LayoutWithNavbar.jsx";
 import TestNavbar from "./pages/TestNavbar";
+
 
 // Placeholder components (will be replaced by your real pages)
 const Home = () => <div style={{ padding: 24 }}><h2>Home (placeholder)</h2></div>;
@@ -10,7 +12,7 @@ const ProductDetail = () => <div style={{ padding: 24 }}><h2>Product Detail (pla
 
 const router = createBrowserRouter([
     {
-        element: <Layout />,
+        element: <LayoutWithNavbar />,
         children: [
             {
                 path: "/",
@@ -25,6 +27,11 @@ const router = createBrowserRouter([
                 path: "/products/:id",
                 element: <ProductDetail />,
             },
+        ],
+    },
+    {
+        element: <Layout />,
+        children: [
             {
                 path: "/test-navbar",
                 element: <TestNavbar />,
