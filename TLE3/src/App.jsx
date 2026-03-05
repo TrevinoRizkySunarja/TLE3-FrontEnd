@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 // Layout
 import Layout from "./index.jsx";
+import AITransparantie from "./AITransparantie"
 
 // Aanvraagformulieren
 import AanvraagForm from "./Form/AanvraagForm";
@@ -17,6 +18,11 @@ const router = createBrowserRouter([
                 path: "/",
                 element: <div>Homepagina komt hier</div>,
             },
+            {
+                path: "/ai-transparantie",
+                element: <AITransparantie />,
+            },
+
             {
                 path: "/aanvraag/stap-1",
                 element: <AanvraagForm />,
