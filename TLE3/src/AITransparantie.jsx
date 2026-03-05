@@ -1,4 +1,4 @@
-export default function AiTransparantie() {
+export default function AITransparantie() {
     return (
         <main className="bg-white text-[#1B1B1B] font-sans px-6 py-12">
 

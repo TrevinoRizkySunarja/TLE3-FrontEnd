@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 // import je components
 import Layout from "./index.jsx";
+import AITransparantie from "./AITransparantie.jsx";
 
 const router = createBrowserRouter([
     {
@@ -9,6 +10,10 @@ const router = createBrowserRouter([
             {
                 path: "/",
                 element: <Layout />,
+            },
+            {
+                path: "/ai-transparantie",
+                element: <AITransparantie />,
             },
 
         ],
