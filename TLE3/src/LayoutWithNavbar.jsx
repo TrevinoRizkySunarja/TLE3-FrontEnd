@@ -8,10 +8,10 @@ export default function LayoutWithNavbar() {
             <header>
                 <Navbar />
             </header>
-            <main>
+            {/* Add top padding so the fixed navbar doesn't overlap page content */}
+            <main className="pt-20 md:pt-24">
                 <Outlet />
             </main>
         </div>
     );
 }
-

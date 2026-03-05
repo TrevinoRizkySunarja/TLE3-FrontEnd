@@ -92,7 +92,7 @@ export default function Footer() {
                             Gemeente Rotterdam
                         </span>
                         <img
-                            src="/images/footerimage.png"
+                            src="/images/logo.jpg"
                             alt=""
                             className="h-12 w-auto rounded-[5px] object-contain" // h-12 is subtieler (48px)
                             aria-hidden="true"
