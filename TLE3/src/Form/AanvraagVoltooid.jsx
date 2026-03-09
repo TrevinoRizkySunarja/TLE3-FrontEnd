@@ -6,12 +6,10 @@ export default function AanvraagVoltooid() {
     const location = useLocation();
     const data = location.state;
 
-    // if (!user) return <Navigate to="/login" replace />;
     if (!data) return <Navigate to="/aanvraag/stap-1" replace />;
 
     const type = data.type;
 
-    // Dynamische documenten-informatie
     const documentInfo = {
         rijbewijs: "Neem uw oude rijbewijs mee naar uw afspraak.",
         paspoort: "Neem uw oude paspoort mee naar uw afspraak.",
@@ -44,12 +42,18 @@ export default function AanvraagVoltooid() {
                     {documentInfo[type]}
                 </p>
 
-                {/* Als er een afspraak is */}
+                {/* OPMERKING */}
+                {data.opmerking && (
+                    <div className="p-4 bg-white border border-[#E0E0E0]">
+                        <p className="font-bold text-black mb-1">Uw opmerking:</p>
+                        <p className="leading-relaxed">{data.opmerking}</p>
+                    </div>
+                )}
+
+                {/* AFSPRAAKGEGEVENS */}
                 {heeftAfspraak && (
                     <div className="space-y-2">
-                        <p className="text-lg">
-                            Uw afspraak vindt plaats op:
-                        </p>
+                        <p className="text-lg">Uw afspraak vindt plaats op:</p>
 
                         <p className="font-bold text-black text-xl">
                             {data.locatie}
@@ -65,7 +69,7 @@ export default function AanvraagVoltooid() {
                     </div>
                 )}
 
-                {/* Als melding zonder afspraak */}
+                {/* MELDING ZONDER AFSPRAAK */}
                 {type === "melding" && data.afspraakMaken === "nee" && (
                     <p className="text-lg leading-relaxed">
                         U heeft ervoor gekozen geen afspraak te maken. Wij nemen contact met u op indien nodig.

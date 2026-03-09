@@ -5,10 +5,11 @@ export default function AanvraagForm() {
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
-        naam: "",
+        voornaam: "",
+        achternaam: "",
         email: "",
         type: "",
-        omschrijving: "",
+        opmerking: "",
     });
 
     const [errors, setErrors] = useState({});
@@ -19,11 +20,36 @@ export default function AanvraagForm() {
 
     function validate() {
         const newErrors = {};
+        const nameRegex = /^[A-Za-zÀ-ÿ' -]+$/;
 
-        if (!formData.naam.trim()) newErrors.naam = "Vul uw naam in.";
-        if (!formData.email.trim()) newErrors.email = "Vul uw e-mailadres in.";
-        if (!formData.type.trim()) newErrors.type = "Selecteer een aanvraagtype.";
-        if (!formData.omschrijving.trim()) newErrors.omschrijving = "Beschrijf uw aanvraag.";
+        // VOORNAAM
+        if (!formData.voornaam.trim()) {
+            newErrors.voornaam = "Vul uw voornaam in.";
+        } else if (!nameRegex.test(formData.voornaam)) {
+            newErrors.voornaam = "Voornaam mag geen cijfers bevatten.";
+        }
+
+        // ACHTERNAAM
+        if (!formData.achternaam.trim()) {
+            newErrors.achternaam = "Vul uw achternaam in.";
+        } else if (!nameRegex.test(formData.achternaam)) {
+            newErrors.achternaam = "Achternaam mag geen cijfers bevatten.";
+        }
+
+        // EMAIL
+        if (!formData.email.trim()) {
+            newErrors.email = "Vul uw e-mailadres in.";
+        }
+
+        // TYPE
+        if (!formData.type.trim()) {
+            newErrors.type = "Selecteer een aanvraagtype.";
+        }
+
+        // OPMERKING
+        if (!formData.opmerking.trim()) {
+            newErrors.opmerking = "Vul een opmerking in.";
+        }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -38,7 +64,6 @@ export default function AanvraagForm() {
         });
     }
 
-    // Dynamische informatie per aanvraagtype
     const typeInfo = {
         rijbewijs: (
             <p className="text-[#1B1B1B] leading-relaxed">
@@ -90,40 +115,80 @@ export default function AanvraagForm() {
 
                 <form onSubmit={handleSubmit} className="space-y-6">
 
-                    {/* NAAM */}
+                    {/* VOORNAAM */}
                     <div>
-                        <label className="block font-bold text-black mb-1">Naam</label>
+                        <label htmlFor="voornaam" className="block font-bold text-black mb-1">
+                            Voornaam
+                        </label>
                         <input
-                            name="naam"
+                            id="voornaam"
+                            name="voornaam"
                             type="text"
-                            value={formData.naam}
+                            placeholder="Bijv. Jan"
+                            value={formData.voornaam}
                             onChange={handleChange}
-                            className="w-full p-3 border border-[#E0E0E0] bg-white focus:ring-2 focus:ring-[#008100]"
+                            pattern="^[A-Za-zÀ-ÿ' -]+$"
+                            className="w-full p-3 border border-[#E0E0E0] bg-white text-[#1B1B1B]
+                            focus:outline-none focus:ring-2 focus:ring-[#008100]"
                         />
-                        {errors.naam && <p className="text-[#B00020] text-sm">{errors.naam}</p>}
+                        {errors.voornaam && (
+                            <p className="text-[#B00020] text-sm mt-1">{errors.voornaam}</p>
+                        )}
+                    </div>
+
+                    {/* ACHTERNAAM */}
+                    <div>
+                        <label htmlFor="achternaam" className="block font-bold text-black mb-1">
+                            Achternaam
+                        </label>
+                        <input
+                            id="achternaam"
+                            name="achternaam"
+                            type="text"
+                            placeholder="Bijv. Jansen"
+                            value={formData.achternaam}
+                            onChange={handleChange}
+                            pattern="^[A-Za-zÀ-ÿ' -]+$"
+                            className="w-full p-3 border border-[#E0E0E0] bg-white text-[#1B1B1B]
+                            focus:outline-none focus:ring-2 focus:ring-[#008100]"
+                        />
+                        {errors.achternaam && (
+                            <p className="text-[#B00020] text-sm mt-1">{errors.achternaam}</p>
+                        )}
                     </div>
 
                     {/* EMAIL */}
                     <div>
-                        <label className="block font-bold text-black mb-1">E-mailadres</label>
+                        <label htmlFor="email" className="block font-bold text-black mb-1">
+                            E-mailadres
+                        </label>
                         <input
+                            id="email"
                             name="email"
                             type="email"
+                            placeholder="Bijv. voorbeeld@mail.nl"
                             value={formData.email}
                             onChange={handleChange}
-                            className="w-full p-3 border border-[#E0E0E0] bg-white focus:ring-2 focus:ring-[#008100]"
+                            className="w-full p-3 border border-[#E0E0E0] bg-white text-[#1B1B1B]
+                            focus:outline-none focus:ring-2 focus:ring-[#008100]"
                         />
-                        {errors.email && <p className="text-[#B00020] text-sm">{errors.email}</p>}
+                        {errors.email && (
+                            <p className="text-[#B00020] text-sm mt-1">{errors.email}</p>
+                        )}
                     </div>
 
                     {/* TYPE */}
                     <div>
-                        <label className="block font-bold text-black mb-1">Type aanvraag</label>
+                        <label htmlFor="type" className="block font-bold text-black mb-1">
+                            Type aanvraag
+                        </label>
                         <select
+                            id="type"
                             name="type"
                             value={formData.type}
                             onChange={handleChange}
-                            className="w-full p-3 border border-[#E0E0E0] bg-white focus:ring-2 focus:ring-[#008100]"
+                            className="w-full p-3 border border-[#E0E0E0] bg-white text-[#1B1B1B]
+                            focus:outline-none focus:ring-2 focus:ring-[#008100]"
                         >
                             <option value="">Selecteer een optie…</option>
                             <option value="rijbewijs">Rijbewijs aanvragen</option>
@@ -132,7 +197,9 @@ export default function AanvraagForm() {
                             <option value="verblijfsvergunning">Verblijfsvergunning aanvragen</option>
                             <option value="melding">Melding doen</option>
                         </select>
-                        {errors.type && <p className="text-[#B00020] text-sm">{errors.type}</p>}
+                        {errors.type && (
+                            <p className="text-[#B00020] text-sm mt-1">{errors.type}</p>
+                        )}
                     </div>
 
                     {/* DYNAMISCHE INFO */}
@@ -142,23 +209,32 @@ export default function AanvraagForm() {
                         </div>
                     )}
 
-                    {/* OMSCHRIJVING */}
+                    {/* OPMERKING */}
                     <div>
-                        <label className="block font-bold text-black mb-1">Omschrijving</label>
+                        <label htmlFor="opmerking" className="block font-bold text-black mb-1">
+                            Opmerking
+                        </label>
                         <textarea
-                            name="omschrijving"
-                            rows="5"
-                            value={formData.omschrijving}
+                            id="opmerking"
+                            name="opmerking"
+                            placeholder="Voeg een opmerking toe…"
+                            value={formData.opmerking}
                             onChange={handleChange}
-                            className="w-full p-3 border border-[#E0E0E0] bg-white focus:ring-2 focus:ring-[#008100]"
+                            rows="5"
+                            className="w-full p-3 border border-[#E0E0E0] bg-white text-[#1B1B1B]
+                            focus:outline-none focus:ring-2 focus:ring-[#008100]"
                         />
-                        {errors.omschrijving && <p className="text-[#B00020] text-sm">{errors.omschrijving}</p>}
+                        {errors.opmerking && (
+                            <p className="text-[#B00020] text-sm mt-1">{errors.opmerking}</p>
+                        )}
                     </div>
 
                     {/* KNOP */}
                     <button
                         type="submit"
-                        className="px-6 py-3 bg-[#008100] text-white font-bold rounded-md hover:bg-black focus:ring-2 focus:ring-black"
+                        className="px-6 py-3 bg-[#008100] text-white font-bold rounded-md
+                        hover:bg-black hover:text-white transition-colors
+                        focus:outline-none focus:ring-2 focus:ring-black"
                     >
                         Verder naar stap 2
                     </button>
