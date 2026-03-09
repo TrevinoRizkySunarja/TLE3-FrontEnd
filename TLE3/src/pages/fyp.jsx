@@ -1,178 +1,96 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+// Zorg dat deze import matcht met je Button file in de components folder
 import { Button } from '../components/Button';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 
 const FYP = () => {
-    const [user, setUser] = useState({ name: 'Laden...' });
-    const [feedItems, setFeedItems] = useState([
+    // Data gebaseerd op je database termen uit de afbeeldingen
+    const [feedItems] = useState([
         {
             id: 1,
             title: 'Paspoort',
             body: 'Uw paspoort verloopt binnenkort, verleng hem nu!',
             actionText: 'Paspoort verlengen',
-            type: 'ai-suggestion',
-            reason: 'Gebaseerd op de verloopdatum in de Basisregistratie Personen (BRP).'
+            type: 'document' // Matcht 'documents' tabel
         },
         {
             id: 2,
             title: 'Subsidie',
             body: 'Gefeliciteerd met uw nieuwe woning. Check of u recht heeft op een subsidie.',
             actionText: 'Subsidie bekijken',
-            type: 'ai-suggestion',
-            reason: 'Gegenereerd op basis van uw recente adreswijziging in onze database.'
+            reason: 'Op basis van uw recente adreswijziging.' // Matcht 'recommendation_items'
         },
         {
             id: 3,
             title: 'Parkeervergunning',
             body: 'Gefeliciteerd met uw nieuwe auto, check hier de parkeervergunning mogelijkheden.',
             actionText: 'Parkeervergunning aanvragen',
-            type: 'ai-suggestion',
-            reason: 'Gekoppeld aan de RDW-registratie van uw nieuwe voertuig.'
+            reason: 'Gekoppeld aan uw nieuwe voertuigregistratie.'
         }
     ]);
 
     const [showTransparency, setShowTransparency] = useState(false);
 
-    // WCAG AA: Controleert systeeminstellingen voor verminderde beweging
-    const shouldReduceMotion = useReducedMotion();
-
-    useEffect(() => {
-        const mockUser = { name: 'Jan Jansen' };
-        setUser(mockUser);
-    }, []);
-
-    const removeItem = (id) => {
-        setFeedItems(prevItems => prevItems.filter(item => item.id !== id));
-    };
-
-    /**
-     * WCAG AA Proof Animatie:
-     * We gebruiken alleen opacity (vervagen) als de gebruiker reduced motion wil.
-     * Anders gebruiken we een zeer subtiele krimp (scale) zonder zijwaartse beweging.
-     */
-    const cardAnimation = {
-        initial: { opacity: 0 },
-        animate: { opacity: 1 },
-        exit: {
-            opacity: 0,
-            scale: shouldReduceMotion ? 1 : 0.98,
-            transition: { duration: 0.2, ease: "easeInOut" }
-        }
-    };
-
     return (
         <div className="bg-[#FFFFFF] min-h-screen font-sans text-[#1B1B1B]">
-            <main className="max-w-4xl mx-auto p-4 md:p-8" id="main-content">
+            <main className="max-w-4xl mx-auto p-4 md:p-8">
                 <header className="mb-8">
                     <h1 className="text-[32px] md:text-[40px] font-bold text-[#000000] leading-tight mb-2">
-                        Welkom {user.name}
+                        Welkom Gebruiker
                     </h1>
-                    <div className="h-px bg-[#E0E0E0] w-full" aria-hidden="true" />
+                    <div className="h-px bg-[#E0E0E0] w-full" />
                 </header>
 
-                <section className="space-y-6" aria-label="Persoonlijke feed">
-                    {/* popLayout zorgt dat items soepel naar hun nieuwe plek 'springen' zonder gaten */}
-                    <AnimatePresence mode="popLayout">
-                        {feedItems.length > 0 ? (
-                            feedItems.map((item) => (
-                                <motion.article
-                                    key={item.id}
-                                    layout // Essentieel: animeert de positie van andere kaarten
-                                    variants={cardAnimation}
-                                    initial="initial"
-                                    animate="animate"
-                                    exit="exit"
-                                    className={`p-6 border relative rounded-[5px] focus-within:ring-4 focus-within:ring-[#008100]/30 ${
-                                        item.type === 'ai-suggestion'
-                                            ? 'bg-[#F9F9FF] border-[#008100]/30 shadow-sm'
-                                            : 'bg-[#F5F5F5] border-[#E0E0E0]'
-                                    }`}
-                                >
-                                    {item.type === 'ai-suggestion' && (
-                                        <div className="flex items-center gap-1 mb-2">
-                                            <span className="text-[12px] font-bold text-[#008100] uppercase tracking-widest">
-                                                <span aria-hidden="true">✨</span> AI Suggestie
-                                            </span>
-                                        </div>
-                                    )}
-
-                                    <button
-                                        onClick={() => removeItem(item.id)}
-                                        className="absolute top-4 right-4 text-[#1B1B1B] hover:text-[#008100] focus:ring-2 focus:ring-[#008100] text-xl p-2 transition-colors rounded-full outline-none"
-                                        aria-label={`Verwijder melding: ${item.title}`}
-                                    >
-                                        ✕
-                                    </button>
-
-                                    <h2 className="text-[24px] font-bold text-[#000000] mb-2 pr-8">{item.title}</h2>
-                                    <p className="text-[16px] leading-[1.6] mb-6">{item.body}</p>
-
-                                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                                        <Button variant="secondary" onClick={() => {}}>➔ {item.actionText}</Button>
-                                        <button
-                                            onClick={() => removeItem(item.id)}
-                                            className="text-[14px] font-bold text-[#1B1B1B] underline hover:text-[#008100] focus:ring-2 focus:ring-[#008100] py-2 transition-colors rounded-[5px] outline-none"
-                                        >
-                                            Markeer als afgehandeld
-                                        </button>
-                                    </div>
-                                </motion.article>
-                            ))
-                        ) : (
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                className="py-20 text-center border-2 border-dashed border-[#E0E0E0] rounded-[5px]"
-                                role="status"
+                {/* De Feed Sectie */}
+                <section className="space-y-6">
+                    {feedItems.map((item) => (
+                        <article
+                            key={item.id}
+                            className="bg-[#F5F5F5] p-6 border border-[#E0E0E0]"
+                        >
+                            <h2 className="text-[24px] md:text-[28px] font-bold text-[#000000] mb-2">
+                                {item.title}
+                            </h2>
+                            <p className="text-[16px] leading-[1.6] mb-4">
+                                {item.body}
+                            </p>
+                            {/* Gebruik de Button component die we eerder maakten */}
+                            <Button
+                                variant="secondary"
+                                onClick={() => console.log('Navigeer naar:', item.actionText)}
                             >
-                                <p className="text-lg">U bent volledig bij met uw gemeentelijke zaken.</p>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                                ➔ {item.actionText}
+                            </Button>
+                        </article>
+                    ))}
                 </section>
 
+                {/* AI Transparantie Sectie - WCAG AA compliant */}
                 <section className="mt-12 pt-8 border-t border-[#E0E0E0]">
                     <button
                         onClick={() => setShowTransparency(!showTransparency)}
-                        className="w-full bg-[#F5F5F5] p-4 flex justify-between items-center text-left hover:bg-[#E0E0E0] focus:ring-2 focus:ring-[#008100] transition-colors border border-[#E0E0E0] rounded-[5px] outline-none"
+                        className="w-full bg-[#F5F5F5] p-4 flex justify-between items-center text-left hover:bg-[#E0E0E0] transition-colors"
                         aria-expanded={showTransparency}
                     >
-                        <div className="flex items-center gap-2">
-                            <span aria-hidden="true">✨</span>
-                            <h3 className="text-[18px] font-bold">Hoe komt de AI bij deze keuzes?</h3>
-                        </div>
-                        <motion.span
-                            animate={{ rotate: showTransparency ? 180 : 0 }}
-                            className="inline-block"
-                        >
+                        <h3 className="text-[18px] font-bold">Waarom krijg ik dit aanbevolen?</h3>
+                        <span className={`transition-transform ${showTransparency ? 'rotate-180' : ''}`}>
                             ▼
-                        </motion.span>
+                        </span>
                     </button>
 
-                    <AnimatePresence>
-                        {showTransparency && (
-                            <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: "auto", opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                className="overflow-hidden bg-[#F9F9FF] border-x border-b border-[#008100]/20 rounded-b-[5px]"
-                            >
-                                <div className="p-6 text-[14px]">
-                                    <p className="mb-4 font-bold text-[#008100]">Bronnen van uw suggesties:</p>
-                                    <ul className="space-y-3">
-                                        {feedItems.map(i => (
-                                            <li key={i.id} className="flex gap-3 border-l-2 border-[#008100] pl-3">
-                                                <div>
-                                                    <span className="font-bold">{i.title}:</span>
-                                                    <p className="text-[#4B4B4B]">{i.reason}</p>
-                                                </div>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                    {showTransparency && (
+                        <div className="bg-[#F5F5F5] p-6 border-x border-b border-[#E0E0E0]">
+                            <p className="text-[14px] mb-4">
+                                Deze suggesties zijn gebaseerd op uw profiel en officiële data uit de gemeentelijke database.
+                            </p>
+                            <ul className="space-y-2">
+                                {feedItems.filter(i => i.reason).map(i => (
+                                    <li key={i.id} className="text-[14px]">
+                                        <strong>{i.title}:</strong> {i.reason}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                 </section>
             </main>
         </div>
