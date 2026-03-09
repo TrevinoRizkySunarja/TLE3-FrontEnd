@@ -10,6 +10,18 @@ import AanvraagForm2 from "./Form/AanvraagForm2";
 import AanvraagForm3 from "./Form/AanvraagForm3";
 import AanvraagVoltooid from "./Form/AanvraagVoltooid";
 
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { AuthProvider } from "./context/AuthContext";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+    <React.StrictMode>
+        <AuthProvider>
+            <App />
+        </AuthProvider>
+    </React.StrictMode>
+);
+
 const router = createBrowserRouter([
     {
         element: <Layout />,

@@ -1,7 +1,11 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 export default function AanvraagForm() {
+    const { user } = useAuth();
+    if (!user) return <Navigate to="/login" replace />;
+
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -22,31 +26,26 @@ export default function AanvraagForm() {
         const newErrors = {};
         const nameRegex = /^[A-Za-zÀ-ÿ' -]+$/;
 
-        // VOORNAAM
         if (!formData.voornaam.trim()) {
             newErrors.voornaam = "Vul uw voornaam in.";
         } else if (!nameRegex.test(formData.voornaam)) {
             newErrors.voornaam = "Voornaam mag geen cijfers bevatten.";
         }
 
-        // ACHTERNAAM
         if (!formData.achternaam.trim()) {
             newErrors.achternaam = "Vul uw achternaam in.";
         } else if (!nameRegex.test(formData.achternaam)) {
             newErrors.achternaam = "Achternaam mag geen cijfers bevatten.";
         }
 
-        // EMAIL
         if (!formData.email.trim()) {
             newErrors.email = "Vul uw e-mailadres in.";
         }
 
-        // TYPE
         if (!formData.type.trim()) {
             newErrors.type = "Selecteer een aanvraagtype.";
         }
 
-        // OPMERKING
         if (!formData.opmerking.trim()) {
             newErrors.opmerking = "Vul een opmerking in.";
         }
@@ -96,8 +95,6 @@ export default function AanvraagForm() {
 
     return (
         <main className="bg-white text-[#1B1B1B] font-sans px-6 py-12">
-
-            {/* TITEL */}
             <section className="max-w-3xl mx-auto mb-12 bg-[#F5F5F5] p-8 border border-[#E0E0E0]">
                 <h1 className="text-4xl font-bold text-black mb-4 leading-tight">
                     Aanvraagformulier
@@ -107,7 +104,6 @@ export default function AanvraagForm() {
                 </p>
             </section>
 
-            {/* FORM */}
             <section className="max-w-3xl mx-auto bg-[#F5F5F5] p-8 border border-[#E0E0E0]">
                 <h2 className="text-2xl font-bold text-black mb-6 leading-snug">
                     Stap 1 — Gegevens invullen
@@ -115,7 +111,6 @@ export default function AanvraagForm() {
 
                 <form onSubmit={handleSubmit} className="space-y-6">
 
-                    {/* VOORNAAM */}
                     <div>
                         <label htmlFor="voornaam" className="block font-bold text-black mb-1">
                             Voornaam
@@ -136,7 +131,6 @@ export default function AanvraagForm() {
                         )}
                     </div>
 
-                    {/* ACHTERNAAM */}
                     <div>
                         <label htmlFor="achternaam" className="block font-bold text-black mb-1">
                             Achternaam
@@ -157,7 +151,6 @@ export default function AanvraagForm() {
                         )}
                     </div>
 
-                    {/* EMAIL */}
                     <div>
                         <label htmlFor="email" className="block font-bold text-black mb-1">
                             E-mailadres
@@ -177,7 +170,6 @@ export default function AanvraagForm() {
                         )}
                     </div>
 
-                    {/* TYPE */}
                     <div>
                         <label htmlFor="type" className="block font-bold text-black mb-1">
                             Type aanvraag
@@ -202,14 +194,12 @@ export default function AanvraagForm() {
                         )}
                     </div>
 
-                    {/* DYNAMISCHE INFO */}
                     {formData.type && (
                         <div className="p-4 bg-white border border-[#E0E0E0]">
                             {typeInfo[formData.type]}
                         </div>
                     )}
 
-                    {/* OPMERKING */}
                     <div>
                         <label htmlFor="opmerking" className="block font-bold text-black mb-1">
                             Opmerking
@@ -229,7 +219,6 @@ export default function AanvraagForm() {
                         )}
                     </div>
 
-                    {/* KNOP */}
                     <button
                         type="submit"
                         className="px-6 py-3 bg-[#008100] text-white font-bold rounded-md
