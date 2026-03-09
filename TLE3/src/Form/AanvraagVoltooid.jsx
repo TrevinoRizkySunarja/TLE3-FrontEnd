@@ -1,9 +1,11 @@
 import { useEffect } from "react";
-import { useLocation, Navigate } from "react-router-dom";
+import { useLocation, Navigate, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
 export default function AanvraagVoltooid() {
     const { user } = useAuth();
+    const navigate = useNavigate();
+
     if (!user) return <Navigate to="/login" replace />;
 
     const location = useLocation();
@@ -75,6 +77,7 @@ export default function AanvraagVoltooid() {
     return (
         <main className="bg-white text-[#1B1B1B] font-sans px-6 py-12">
 
+            {/* TITEL */}
             <section className="max-w-3xl mx-auto mb-12 bg-[#F5F5F5] p-8 border border-[#E0E0E0]">
                 <h1 className="text-4xl font-bold text-black mb-4">
                     Aanvraag voltooid
@@ -84,6 +87,7 @@ export default function AanvraagVoltooid() {
                 </p>
             </section>
 
+            {/* INHOUD */}
             <section className="max-w-3xl mx-auto bg-[#F5F5F5] p-8 border border-[#E0E0E0] space-y-6">
 
                 <p className="text-lg leading-relaxed">
@@ -99,9 +103,7 @@ export default function AanvraagVoltooid() {
 
                 {heeftAfspraak && (
                     <div className="space-y-2">
-                        <p className="text-lg">
-                            Uw afspraak vindt plaats op:
-                        </p>
+                        <p className="text-lg">Uw afspraak vindt plaats op:</p>
 
                         <p className="font-bold text-black text-xl">
                             {data.locatie}
@@ -126,6 +128,16 @@ export default function AanvraagVoltooid() {
                 <p className="leading-relaxed">
                     U ontvangt ook een bevestiging per e‑mail.
                 </p>
+
+                {/* TERUG NAAR HOMEPAGE KNOP */}
+                <button
+                    onClick={() => navigate("/")}
+                    className="mt-6 px-6 py-3 bg-[#008100] text-white font-bold rounded-md
+                    hover:bg-black transition-colors focus:outline-none focus:ring-2 focus:ring-black"
+                >
+                    Terug naar homepage
+                </button>
+
             </section>
         </main>
     );
