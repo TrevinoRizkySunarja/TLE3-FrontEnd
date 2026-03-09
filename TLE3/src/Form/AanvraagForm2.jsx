@@ -1,24 +1,19 @@
 import { useState, useMemo } from "react";
 import { useLocation, useNavigate, Navigate } from "react-router-dom";
-// import useAuth from "../hooks/useAuth";
 
 export default function AanvraagForm2() {
-    // const { user } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const dataFromStep1 = location.state;
 
-    // if (!user) return <Navigate to="/login" replace />;
     if (!dataFromStep1) return <Navigate to="/aanvraag/stap-1" replace />;
 
     const type = dataFromStep1.type;
 
     const [formData, setFormData] = useState({
-        // algemeen voor afspraken
         locatie: "",
         datum: "",
         tijd: "",
-        // rijbewijs / paspoort / id / verblijfsvergunning
         gezondheidsverklaring: "",
         theorieGehaald: "",
         praktijkGehaald: "",
@@ -26,46 +21,9 @@ export default function AanvraagForm2() {
         pasfotoAanwezig: "",
         nationaliteit: "",
         redenVerblijf: "",
-        // melding
         meldingTekst: "",
         afspraakMaken: "",
     });
-
-    const countries = [
-        "Afghanistan", "Albanië", "Algerije", "Andorra", "Angola", "Antigua en Barbuda",
-        "Argentinië", "Armenië", "Australië", "Azerbeidzjan", "Bahama’s", "Bahrein",
-        "Bangladesh", "Barbados", "België", "Belize", "Benin", "Bhutan", "Bolivia",
-        "Bosnië en Herzegovina", "Botswana", "Brazilië", "Brunei", "Bulgarije",
-        "Burkina Faso", "Burundi", "Cambodja", "Canada", "Centraal‑Afrikaanse Republiek",
-        "Chili", "China", "Colombia", "Comoren", "Congo (Brazzaville)",
-        "Congo (Kinshasa)", "Costa Rica", "Cuba", "Cyprus", "Denemarken", "Djibouti",
-        "Dominica", "Dominicaanse Republiek", "Duitsland", "Ecuador", "Egypte",
-        "El Salvador", "Equatoriaal‑Guinea", "Eritrea", "Estland", "Eswatini",
-        "Ethiopië", "Fiji", "Filipijnen", "Finland", "Frankrijk", "Gabon", "Gambia",
-        "Georgië", "Ghana", "Grenada", "Griekenland", "Guatemala", "Guinee",
-        "Guinee‑Bissau", "Guyana", "Haïti", "Honduras", "Hongarije", "IJsland",
-        "India", "Indonesië", "Irak", "Iran", "Ierland", "Israël", "Italië",
-        "Ivoorkust", "Jamaica", "Japan", "Jemen", "Jordanië", "Kaapverdië",
-        "Kameroen", "Kazachstan", "Kenia", "Kirgizië", "Kiribati", "Koeweit",
-        "Kroatië", "Laos", "Lesotho", "Letland", "Libanon", "Liberia", "Libië",
-        "Liechtenstein", "Litouwen", "Luxemburg", "Madagaskar", "Malawi", "Maleisië",
-        "Maldiven", "Mali", "Malta", "Marokko", "Mauritanië", "Mauritius", "Mexico",
-        "Micronesië", "Moldavië", "Monaco", "Mongolië", "Montenegro", "Mozambique",
-        "Myanmar", "Namibië", "Nauru", "Nederland", "Nepal", "Nicaragua", "Niger",
-        "Nigeria", "Noord‑Macedonië", "Noorwegen", "Nieuw‑Zeeland", "Oekraïne",
-        "Oezbekistan", "Oman", "Oostenrijk", "Pakistan", "Palau", "Panama",
-        "Papoea‑Nieuw‑Guinea", "Paraguay", "Peru", "Polen", "Portugal", "Qatar",
-        "Roemenië", "Rusland", "Rwanda", "Saint Kitts en Nevis", "Saint Lucia",
-        "Saint Vincent en de Grenadines", "Samoa", "San Marino", "Sao Tomé en Principe",
-        "Saoedi‑Arabië", "Senegal", "Servië", "Seychellen", "Sierra Leone",
-        "Singapore", "Slovenië", "Slowakije", "Soedan", "Somalië", "Spanje",
-        "Sri Lanka", "Suriname", "Syrië", "Tadzjikistan", "Tanzania", "Thailand",
-        "Togo", "Tonga", "Trinidad en Tobago", "Tsjaad", "Tsjechië", "Tunesië",
-        "Turkije", "Turkmenistan", "Tuvalu", "Uganda", "Uruguay", "Vanuatu",
-        "Vaticaanstad", "Venezuela", "Verenigd Koninkrijk", "Verenigde Arabische Emiraten",
-        "Verenigde Staten", "Vietnam", "Wit‑Rusland", "Zambia", "Zimbabwe", "Zuid‑Afrika",
-        "Zuid‑Korea", "Zuid‑Soedan", "Zweden", "Zwitserland"
-    ];
 
     const [errors, setErrors] = useState({});
 
@@ -73,7 +31,6 @@ export default function AanvraagForm2() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     }
 
-    // tijdslots 12:00–17:00 per half uur
     const timeSlots = useMemo(() => {
         const slots = [];
         let hour = 12;
@@ -107,7 +64,7 @@ export default function AanvraagForm2() {
         }
 
         if (type === "verblijfsvergunning") {
-            if (!formData.nationaliteit.trim()) newErrors.nationaliteit = "Vul uw nationaliteit in.";
+            if (!formData.nationaliteit.trim()) newErrors.nationaliteit = "Selecteer uw nationaliteit.";
             if (!formData.redenVerblijf.trim()) newErrors.redenVerblijf = "Beschrijf de reden van uw aanvraag.";
         }
 
@@ -120,7 +77,6 @@ export default function AanvraagForm2() {
                 if (!formData.tijd) newErrors.tijd = "Kies een tijd.";
             }
         } else {
-            // andere typen: altijd afspraak nodig → locatie/datum/tijd verplicht
             if (!formData.locatie) newErrors.locatie = "Kies een locatie.";
             if (!formData.datum) newErrors.datum = "Kies een datum.";
             if (!formData.tijd) newErrors.tijd = "Kies een tijd.";
@@ -157,7 +113,7 @@ export default function AanvraagForm2() {
             <section className="max-w-3xl mx-auto bg-[#F5F5F5] p-8 border border-[#E0E0E0]">
                 <form onSubmit={handleSubmit} className="space-y-6">
 
-                    {/* RIJBEWIJS */}
+                    {/* RYBEWIJS */}
                     {type === "rijbewijs" && (
                         <>
                             <div>
@@ -276,11 +232,7 @@ export default function AanvraagForm2() {
                                     className="w-full p-3 border border-[#E0E0E0] bg-white"
                                 >
                                     <option value="">Selecteer uw nationaliteit…</option>
-                                    {countries.map((country) => (
-                                        <option key={country} value={country}>
-                                            {country}
-                                        </option>
-                                    ))}
+                                    {/* Landenlijst hier */}
                                 </select>
                                 {errors.nationaliteit && (
                                     <p className="text-[#B00020] text-sm">{errors.nationaliteit}</p>
@@ -345,7 +297,7 @@ export default function AanvraagForm2() {
                         </>
                     )}
 
-                    {/* AFSPRAAKGEGEVENS (voor alle typen behalve melding zonder afspraak) */}
+                    {/* AFSPRAAKGEGEVENS */}
                     {(type !== "melding" || formData.afspraakMaken === "ja") && (
                         <>
                             <div>
