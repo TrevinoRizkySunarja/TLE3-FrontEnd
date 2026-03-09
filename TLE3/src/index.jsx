@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import Register from "./register.jsx";
 import Login from "./login.jsx";
 import Logout from "./logout.jsx";
+import ForgotPassword from "./forgot_password.jsx";
 
 // Home component
 function Home() {
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
             {
                 path: "/logout",
                 element: <Logout />,
+            },
+            {
+                path: "/forgot_password",
+                element: <ForgotPassword />,
             },
         ],
     },
