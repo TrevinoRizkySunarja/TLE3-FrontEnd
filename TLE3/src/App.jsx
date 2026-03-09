@@ -1,43 +1,51 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
-// Layout
+import { createBrowserRouter, RouterProvider } from "react-router";
+// import je components
 import Layout from "./index.jsx";
-import AITransparantie from "./AITransparantie"
+import LayoutWithNavbar from "./LayoutWithNavbar.jsx";
+import TestNavbar from "./pages/TestNavbar";
+import NavbarIng from "./pages/NavbarIng";
+// Importeer je nieuwe FYP pagina
+import FYP from "./pages/fyp.jsx";
 
-// Aanvraagformulieren
-import AanvraagForm from "./Form/AanvraagForm";
-import AanvraagForm2 from "./Form/AanvraagForm2";
-import AanvraagForm3 from "./Form/AanvraagForm3";
-import AanvraagVoltooid from "./Form/AanvraagVoltooid";
+
+// Placeholder components
+const Home = () => <div style={{ padding: 24 }}><h2>Home (placeholder)</h2></div>;
+const CreateProduct = () => <div style={{ padding: 24 }}><h2>Create Product (placeholder)</h2></div>;
+const ProductDetail = () => <div style={{ padding: 24 }}><h2>Product Detail (placeholder)</h2></div>;
 
 const router = createBrowserRouter([
+    {
+        element: <LayoutWithNavbar />,
+        children: [
+            {
+                path: "/",
+                element: <Home />,
+            },
+            {
+                path: "/fyp",
+                element: <FYP />,
+            },
+            {
+                path: "/create",
+                element: <CreateProduct />,
+            },
+
+            {
+                path: "/products/:id",
+                element: <ProductDetail />,
+            },
+            {
+                path: "/navbar-ing",
+                element: <NavbarIng />,
+            },
+        ],
+    },
     {
         element: <Layout />,
         children: [
             {
-                path: "/",
-                element: <div>Homepagina komt hier</div>,
-            },
-            {
-                path: "/ai-transparantie",
-                element: <AITransparantie />,
-            },
-
-            {
-                path: "/aanvraag/stap-1",
-                element: <AanvraagForm />,
-            },
-            {
-                path: "/aanvraag/stap-2",
-                element: <AanvraagForm2 />,
-            },
-            {
-                path: "/aanvraag/stap-3",
-                element: <AanvraagForm3 />,
-            },
-            {
-                path: "/aanvraag/voltooid",
-                element: <AanvraagVoltooid />,
+                path: "/test-navbar",
+                element: <TestNavbar />,
             },
         ],
     },
