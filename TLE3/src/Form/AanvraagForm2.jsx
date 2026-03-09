@@ -1,7 +1,47 @@
 import { useState, useMemo } from "react";
 import { useLocation, useNavigate, Navigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+
+const countries = [
+    "Afghanistan", "Albanië", "Algerije", "Andorra", "Angola", "Antigua en Barbuda",
+    "Argentinië", "Armenië", "Australië", "Azerbeidzjan", "Bahama’s", "Bahrein",
+    "Bangladesh", "Barbados", "België", "Belize", "Benin", "Bhutan", "Bolivia",
+    "Bosnië en Herzegovina", "Botswana", "Brazilië", "Brunei", "Bulgarije",
+    "Burkina Faso", "Burundi", "Cambodja", "Canada", "Centraal‑Afrikaanse Republiek",
+    "Chili", "China", "Colombia", "Comoren", "Congo (Brazzaville)",
+    "Congo (Kinshasa)", "Costa Rica", "Cuba", "Cyprus", "Denemarken", "Djibouti",
+    "Dominica", "Dominicaanse Republiek", "Duitsland", "Ecuador", "Egypte",
+    "El Salvador", "Equatoriaal‑Guinea", "Eritrea", "Estland", "Eswatini",
+    "Ethiopië", "Fiji", "Filipijnen", "Finland", "Frankrijk", "Gabon", "Gambia",
+    "Georgië", "Ghana", "Grenada", "Griekenland", "Guatemala", "Guinee",
+    "Guinee‑Bissau", "Guyana", "Haïti", "Honduras", "Hongarije", "IJsland",
+    "India", "Indonesië", "Irak", "Iran", "Ierland", "Israël", "Italië",
+    "Ivoorkust", "Jamaica", "Japan", "Jemen", "Jordanië", "Kaapverdië",
+    "Kameroen", "Kazachstan", "Kenia", "Kirgizië", "Kiribati", "Koeweit",
+    "Kroatië", "Laos", "Lesotho", "Letland", "Libanon", "Liberia", "Libië",
+    "Liechtenstein", "Litouwen", "Luxemburg", "Madagaskar", "Malawi", "Maleisië",
+    "Maldiven", "Mali", "Malta", "Marokko", "Mauritanië", "Mauritius", "Mexico",
+    "Micronesië", "Moldavië", "Monaco", "Mongolië", "Montenegro", "Mozambique",
+    "Myanmar", "Namibië", "Nauru", "Nederland", "Nepal", "Nicaragua", "Niger",
+    "Nigeria", "Noord‑Macedonië", "Noorwegen", "Nieuw‑Zeeland", "Oekraïne",
+    "Oezbekistan", "Oman", "Oostenrijk", "Pakistan", "Palau", "Panama",
+    "Papoea‑Nieuw‑Guinea", "Paraguay", "Peru", "Polen", "Portugal", "Qatar",
+    "Roemenië", "Rusland", "Rwanda", "Saint Kitts en Nevis", "Saint Lucia",
+    "Saint Vincent en de Grenadines", "Samoa", "San Marino", "Sao Tomé en Principe",
+    "Saoedi‑Arabië", "Senegal", "Servië", "Seychellen", "Sierra Leone",
+    "Singapore", "Slovenië", "Slowakije", "Soedan", "Somalië", "Spanje",
+    "Sri Lanka", "Suriname", "Syrië", "Tadzjikistan", "Tanzania", "Thailand",
+    "Togo", "Tonga", "Trinidad en Tobago", "Tsjaad", "Tsjechië", "Tunesië",
+    "Turkije", "Turkmenistan", "Tuvalu", "Uganda", "Uruguay", "Vanuatu",
+    "Vaticaanstad", "Venezuela", "Verenigd Koninkrijk", "Verenigde Arabische Emiraten",
+    "Verenigde Staten", "Vietnam", "Wit‑Rusland", "Zambia", "Zimbabwe", "Zuid‑Afrika",
+    "Zuid‑Korea", "Zuid‑Soedan", "Zweden", "Zwitserland"
+];
 
 export default function AanvraagForm2() {
+    const { user } = useAuth();
+    if (!user) return <Navigate to="/login" replace />;
+
     const navigate = useNavigate();
     const location = useLocation();
     const dataFromStep1 = location.state;
@@ -113,7 +153,6 @@ export default function AanvraagForm2() {
             <section className="max-w-3xl mx-auto bg-[#F5F5F5] p-8 border border-[#E0E0E0]">
                 <form onSubmit={handleSubmit} className="space-y-6">
 
-                    {/* RYBEWIJS */}
                     {type === "rijbewijs" && (
                         <>
                             <div>
@@ -175,7 +214,6 @@ export default function AanvraagForm2() {
                         </>
                     )}
 
-                    {/* PASPOORT / ID */}
                     {(type === "paspoort" || type === "id") && (
                         <>
                             <div>
@@ -218,7 +256,6 @@ export default function AanvraagForm2() {
                         </>
                     )}
 
-                    {/* VERBLIJFSVERGUNNING */}
                     {type === "verblijfsvergunning" && (
                         <>
                             <div>
@@ -232,7 +269,11 @@ export default function AanvraagForm2() {
                                     className="w-full p-3 border border-[#E0E0E0] bg-white"
                                 >
                                     <option value="">Selecteer uw nationaliteit…</option>
-                                    {/* Landenlijst hier */}
+                                    {countries.map((country) => (
+                                        <option key={country} value={country}>
+                                            {country}
+                                        </option>
+                                    ))}
                                 </select>
                                 {errors.nationaliteit && (
                                     <p className="text-[#B00020] text-sm">{errors.nationaliteit}</p>
@@ -257,7 +298,6 @@ export default function AanvraagForm2() {
                         </>
                     )}
 
-                    {/* MELDING */}
                     {type === "melding" && (
                         <>
                             <div>
@@ -297,7 +337,6 @@ export default function AanvraagForm2() {
                         </>
                     )}
 
-                    {/* AFSPRAAKGEGEVENS */}
                     {(type !== "melding" || formData.afspraakMaken === "ja") && (
                         <>
                             <div>

@@ -1,8 +1,11 @@
+import { useEffect } from "react";
 import { useLocation, Navigate } from "react-router-dom";
-// import useAuth from "../hooks/useAuth";
+import useAuth from "../hooks/useAuth";
 
 export default function AanvraagVoltooid() {
-    // const { user } = useAuth();
+    const { user } = useAuth();
+    if (!user) return <Navigate to="/login" replace />;
+
     const location = useLocation();
     const data = location.state;
 
@@ -21,10 +24,57 @@ export default function AanvraagVoltooid() {
     const heeftAfspraak =
         type !== "melding" || (type === "melding" && data.afspraakMaken === "ja");
 
+    useEffect(() => {
+        async function saveToBackend() {
+            try {
+                const inquiryPayload = {
+                    user_id: user.id,
+                    type: data.type,
+                    question: data.opmerking || data.meldingTekst || "",
+                    status: "ingediend",
+                    content: JSON.stringify(data),
+                };
+
+                const inquiryRes = await fetch("/api/inquiries", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(inquiryPayload),
+                });
+
+                if (!inquiryRes.ok) {
+                    console.error("Fout bij opslaan inquiry");
+                    return;
+                }
+
+                const inquiry = await inquiryRes.json();
+
+                const reportPayload = {
+                    title: `Nieuwe aanvraag: ${data.type}`,
+                    description: data.opmerking || data.meldingTekst || "",
+                    user_id: user.id,
+                    content_id: inquiry.id,
+                };
+
+                const reportRes = await fetch("/api/reports", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(reportPayload),
+                });
+
+                if (!reportRes.ok) {
+                    console.error("Fout bij opslaan report");
+                }
+            } catch (err) {
+                console.error("Fout bij opslaan aanvraag:", err);
+            }
+        }
+
+        saveToBackend();
+    }, [data, user]);
+
     return (
         <main className="bg-white text-[#1B1B1B] font-sans px-6 py-12">
 
-            {/* TITEL */}
             <section className="max-w-3xl mx-auto mb-12 bg-[#F5F5F5] p-8 border border-[#E0E0E0]">
                 <h1 className="text-4xl font-bold text-black mb-4">
                     Aanvraag voltooid
@@ -34,15 +84,12 @@ export default function AanvraagVoltooid() {
                 </p>
             </section>
 
-            {/* INHOUD */}
             <section className="max-w-3xl mx-auto bg-[#F5F5F5] p-8 border border-[#E0E0E0] space-y-6">
 
-                {/* Dynamische info per type */}
                 <p className="text-lg leading-relaxed">
                     {documentInfo[type]}
                 </p>
 
-                {/* OPMERKING */}
                 {data.opmerking && (
                     <div className="p-4 bg-white border border-[#E0E0E0]">
                         <p className="font-bold text-black mb-1">Uw opmerking:</p>
@@ -50,10 +97,11 @@ export default function AanvraagVoltooid() {
                     </div>
                 )}
 
-                {/* AFSPRAAKGEGEVENS */}
                 {heeftAfspraak && (
                     <div className="space-y-2">
-                        <p className="text-lg">Uw afspraak vindt plaats op:</p>
+                        <p className="text-lg">
+                            Uw afspraak vindt plaats op:
+                        </p>
 
                         <p className="font-bold text-black text-xl">
                             {data.locatie}
@@ -69,7 +117,6 @@ export default function AanvraagVoltooid() {
                     </div>
                 )}
 
-                {/* MELDING ZONDER AFSPRAAK */}
                 {type === "melding" && data.afspraakMaken === "nee" && (
                     <p className="text-lg leading-relaxed">
                         U heeft ervoor gekozen geen afspraak te maken. Wij nemen contact met u op indien nodig.
