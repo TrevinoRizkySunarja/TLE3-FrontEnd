@@ -21,8 +21,8 @@ import { BellIcon } from "@heroicons/react/24/outline";
 
                     <h1 className="text-4xl font-bold pb-5">welcome bij de dashboard admin !</h1>
 
-                    <div id={`agenda`} className="border border-2-gray-700 bg-green-600 p-6 mb-4 max-w mx-auto ">
-                        <h2 className="font-bold border-b ">Agenda</h2>
+                    <div id={`agenda`} className="border-3 mx-80 border-green-600 p-7 mb-6  ">
+                        <h2 className="font-bold border-b-2 border-green-600 ">Agenda</h2>
                         <h3 className="font-bold">Tijd</h3>
                         <p>09:00 - 12:00</p>
 
@@ -32,17 +32,17 @@ import { BellIcon } from "@heroicons/react/24/outline";
                             <h3 className="font-bold">Locatie:</h3>
                         </div>
 
-                        <div className="flex gap-3 text-center">
+                        <div className=" gap-2 text-center">
                             <p>Rivierweg 111, 2903 AR Capelle aan den IJssel</p>
                             <p>2e etage kamer 100</p>
                         </div>
 
                     </div>
-                    <div id={`post`} className="border border-2-gray-700 p-4 bg-green-600 mb-4 max-w mx-auto">
+                    <div id={`post`} className="border-3  border-green-600 mx-80 p-7 mb-6">
                         <div className="flex gap-3 pt-2 text-center">
                             <h2 className="text-center font-bold"> Post</h2>
                             <Link to={'/post'}
-                                className="rounded-md bg-green-800 px-3 py-1 text-sm text-white hover:bg-green-500">make
+                                className="rounded-md bg-green-600 px-3 py-1 text-sm text-white hover:bg-green-500">make
                                 post
                             </Link>
                         </div>
@@ -50,15 +50,20 @@ import { BellIcon } from "@heroicons/react/24/outline";
                             <input
                                 type="text"
                                 placeholder="Zoeken..."
-                                className=" pl-10 pr-4 py-2 rounded-lg border border-gray-300   bg-white text-gray-900 placeholder-gray-700 "
+                                className=" pl-20 pr-4 py-2 rounded-lg border border-gray-300   bg-white text-gray-900 placeholder-gray-700 "
                             />
                         </form>
                         <p>tags</p>
                         <h3 className="font-bold">resultaten:</h3>
+
+
+                    </div>
+                    <div id={`message`} className="border-3 border-green-600 p-7 pt-8 mx-80 mb-6 ">
+                        <h2 className="font-bold">Meldingen</h2>
                         <div className="relative inline-block text-left">
                             <button
                                 onClick={() => setOpen(!open)}
-                                className="p-2 rounded bg-green-700 hover:bg-green-500 focus:outline-none"
+                                className="p-2 m-3 rounded text-white bg-green-600 hover:bg-green-500 focus:outline-none"
                             >
                                 3 Mededelingen
                                 {/*<BellIcon className="h-6 w-6 text-gray-600"/>*/}
@@ -87,11 +92,7 @@ import { BellIcon } from "@heroicons/react/24/outline";
                                 </div>
                             )}
                         </div>
-
-                    </div>
-                    <div id={`message`} className="border bg-green-600 border-2-gray-700 p-4 mb-4 max-w mx-auto">
-                        <h2 className="font-bold">Meldingen</h2>
-                        <p className="border border-green-700 bg-green-700"> hier is een melding</p>
+                        <p className="border-2 border-green-600 text-white bg-green-600"> hier is een melding</p>
                     </div>
 
                 </div>
@@ -102,4 +103,4 @@ import { BellIcon } from "@heroicons/react/24/outline";
         )
     };
 
-    export default Dashboard;
+export default Dashboard;
