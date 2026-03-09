@@ -89,7 +89,7 @@ export default function Footer() {
                     {/* Rechterkant: Tekst en Logo direct naast elkaar */}
                     <div className="flex items-center gap-4">
                         <span className="text-[18px] font-bold text-[#FFFFFF] leading-none">
-                            Gemeente Rotterdam
+                            Gemeente CMGT
                         </span>
                         <img
                             src="/images/logo.jpg"

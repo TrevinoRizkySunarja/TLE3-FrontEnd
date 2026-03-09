@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import Layout from "./index.jsx";
 import LayoutWithNavbar from "./LayoutWithNavbar.jsx";
 import TestNavbar from "./pages/TestNavbar";
+import NavbarIng from "./pages/NavbarIng";
 
 
 // Placeholder components (will be replaced by your real pages)
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
             {
                 path: "/products/:id",
                 element: <ProductDetail />,
+            },
+            {
+                path: "/navbar-ing",
+                element: <NavbarIng />,
             },
         ],
     },
