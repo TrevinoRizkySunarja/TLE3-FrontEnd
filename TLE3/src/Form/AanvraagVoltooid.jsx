@@ -7,20 +7,70 @@ export default function AanvraagVoltooid() {
     const data = location.state;
 
     // if (!user) return <Navigate to="/login" replace />;
-    // if (!data) return <Navigate to="/aanvraag/stap-1" replace />;
+    if (!data) return <Navigate to="/aanvraag/stap-1" replace />;
+
+    const type = data.type;
+
+    // Dynamische documenten-informatie
+    const documentInfo = {
+        rijbewijs: "Neem uw oude rijbewijs mee naar uw afspraak.",
+        paspoort: "Neem uw oude paspoort mee naar uw afspraak.",
+        id: "Neem uw oude identiteitsbewijs mee naar uw afspraak.",
+        verblijfsvergunning: "Neem uw identiteitsdocument en relevante bewijsstukken mee.",
+        melding: "Uw melding is succesvol ontvangen.",
+    };
+
+    const heeftAfspraak =
+        type !== "melding" || (type === "melding" && data.afspraakMaken === "ja");
 
     return (
         <main className="bg-white text-[#1B1B1B] font-sans px-6 py-12">
-            <section className="max-w-3xl mx-auto bg-[#F5F5F5] p-8 border border-[#E0E0E0]">
-                <h1 className="text-4xl font-bold text-black mb-4">Aanvraag voltooid</h1>
 
-                <p className="text-lg leading-relaxed mb-6">
-                    Uw aanvraag is succesvol ingediend. Vergeet niet uw oude document mee te nemen naar:
+            {/* TITEL */}
+            <section className="max-w-3xl mx-auto mb-12 bg-[#F5F5F5] p-8 border border-[#E0E0E0]">
+                <h1 className="text-4xl font-bold text-black mb-4">
+                    Aanvraag voltooid
+                </h1>
+                <p className="text-lg leading-relaxed">
+                    Uw aanvraag is succesvol verwerkt.
+                </p>
+            </section>
+
+            {/* INHOUD */}
+            <section className="max-w-3xl mx-auto bg-[#F5F5F5] p-8 border border-[#E0E0E0] space-y-6">
+
+                {/* Dynamische info per type */}
+                <p className="text-lg leading-relaxed">
+                    {documentInfo[type]}
                 </p>
 
-                <p className="font-bold text-black text-xl mb-2">{data.locatie}</p>
-                <p className="text-lg mb-2">Datum: {data.datum}</p>
-                <p className="text-lg mb-6">Tijd: {data.tijd}</p>
+                {/* Als er een afspraak is */}
+                {heeftAfspraak && (
+                    <div className="space-y-2">
+                        <p className="text-lg">
+                            Uw afspraak vindt plaats op:
+                        </p>
+
+                        <p className="font-bold text-black text-xl">
+                            {data.locatie}
+                        </p>
+
+                        <p className="text-lg">
+                            Datum: <strong>{data.datum}</strong>
+                        </p>
+
+                        <p className="text-lg">
+                            Tijd: <strong>{data.tijd}</strong>
+                        </p>
+                    </div>
+                )}
+
+                {/* Als melding zonder afspraak */}
+                {type === "melding" && data.afspraakMaken === "nee" && (
+                    <p className="text-lg leading-relaxed">
+                        U heeft ervoor gekozen geen afspraak te maken. Wij nemen contact met u op indien nodig.
+                    </p>
+                )}
 
                 <p className="leading-relaxed">
                     U ontvangt ook een bevestiging per e‑mail.
