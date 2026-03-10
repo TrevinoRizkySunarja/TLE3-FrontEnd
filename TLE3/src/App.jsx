@@ -5,6 +5,7 @@ import TestNavbar from "./pages/TestNavbar";
 import NavbarIng from "./pages/NavbarIng";
 // Importeer je nieuwe FYP pagina
 import FYP from "./pages/fyp.jsx";
+import Profile_User from "./pages/Profile_User.jsx";
 // Importeer authentication pages
 import Register from "./register.jsx";
 import Login from "./login.jsx";
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
             {
                 path: "/fyp",
                 element: <FYP />,
+            },
+            {
+                path: "/settings",
+                element: <Profile_User />,
             },
             {
                 path: "/create",
