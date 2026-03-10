@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, Mail, Phone, Calendar, CreditCard, Users, ArrowLeft, IdCard, Car, Leaf, Ticket, Recycle } from 'lucide-react';
+import NavbarIngelogd from "../components/NavbarIngelogd.jsx";
+import FooterIngelogd from "../components/FooterIngelogd.jsx";
 
 const dummyUserData = {
     first_name: 'Jan',
@@ -40,6 +42,7 @@ const Profile_User = () => {
 
     return (
         <div className="bg-[#FFFFFF] min-h-screen font-sans text-[#1B1B1B]">
+            <NavbarIngelogd />
             <main className="max-w-4xl mx-auto p-4 md:p-8" id="main-content">
                 {/* Page header */}
                 <header className="mb-8">
@@ -223,6 +226,7 @@ const Profile_User = () => {
                     </p>
                 </section>
             </main>
+            <FooterIngelogd />
         </div>
     );
 };
