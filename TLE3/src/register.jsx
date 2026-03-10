@@ -169,6 +169,41 @@ function Register() {
                     </div>
 
                     <div>
+                        <label htmlFor="gender" className="block text-sm font-medium text-gray-700 mb-1">
+                            Geslacht:
+                        </label>
+                        <select
+                            id="gender"
+                            name="gender"
+                            value={formData.gender}
+                            onChange={handleChange}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                        >
+                            <option value="">--- Selecteer ---</option>
+                            <option value="man">Man</option>
+                            <option value="vrouw">Vrouw</option>
+                            <option value="anders">Anders</option>
+                            <option value="zeg_ik_liever_niet">Zeg ik liever niet</option>
+                        </select>
+                        {errors.gender && <p className="text-red-600 text-xs mt-1">{errors.gender}</p>}
+                    </div>
+
+                    <div>
+                        <label htmlFor="birth_date" className="block text-sm font-medium text-gray-700 mb-1">
+                            Geboortedatum:
+                        </label>
+                        <input
+                            type="date"
+                            id="birth_date"
+                            name="birth_date"
+                            value={formData.birth_date}
+                            onChange={handleChange}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                        {errors.birth_date && <p className="text-red-600 text-xs mt-1">{errors.birth_date}</p>}
+                    </div>
+
+                    <div>
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                             Email:
                         </label>
@@ -198,20 +233,6 @@ function Register() {
                         {errors.password && <p className="text-red-600 text-xs mt-1">{errors.password}</p>}
                     </div>
 
-                    <div>
-                        <label htmlFor="birth_date" className="block text-sm font-medium text-gray-700 mb-1">
-                            Geboortedatum:
-                        </label>
-                        <input
-                            type="date"
-                            id="birth_date"
-                            name="birth_date"
-                            value={formData.birth_date}
-                            onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        />
-                        {errors.birth_date && <p className="text-red-600 text-xs mt-1">{errors.birth_date}</p>}
-                    </div>
 
                     <div>
                         <label htmlFor="phone_number" className="block text-sm font-medium text-gray-700 mb-1">
@@ -245,25 +266,7 @@ function Register() {
                         {errors.bsn && <p className="text-red-600 text-xs mt-1">{errors.bsn}</p>}
                     </div>
 
-                    <div>
-                        <label htmlFor="gender" className="block text-sm font-medium text-gray-700 mb-1">
-                            Geslacht:
-                        </label>
-                        <select
-                            id="gender"
-                            name="gender"
-                            value={formData.gender}
-                            onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-                        >
-                            <option value="">--- Selecteer ---</option>
-                            <option value="man">Man</option>
-                            <option value="vrouw">Vrouw</option>
-                            <option value="anders">Anders</option>
-                            <option value="zeg_ik_liever_niet">Zeg ik liever niet</option>
-                        </select>
-                        {errors.gender && <p className="text-red-600 text-xs mt-1">{errors.gender}</p>}
-                    </div>
+
 
 
                     <button
