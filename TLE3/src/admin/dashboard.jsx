@@ -21,8 +21,8 @@ import { BellIcon } from "@heroicons/react/24/outline";
 
                     <h1 className="text-4xl font-bold pb-5">welcome bij de dashboard admin !</h1>
 
-                    <div id={`agenda`} className="border-3 mx-80 border-green-600 p-7 mb-6  ">
-                        <h2 className="font-bold border-b-2 border-green-600 ">Agenda</h2>
+                    <div id={`agenda`} className="border-3 bg-neutral-100 mx-80 border-black-600 p-7 mb-6  ">
+                        <h2 className="font-bold border-b-2 border-black-600 ">Agenda</h2>
                         <h3 className="font-bold">Tijd</h3>
                         <p>09:00 - 12:00</p>
 
@@ -38,16 +38,17 @@ import { BellIcon } from "@heroicons/react/24/outline";
                         </div>
 
                     </div>
-                    <div id={`post`} className="border-3  border-green-600 mx-80 p-7 mb-6">
-                        <div className="flex gap-3 pt-2 text-center">
+                    <div id={`post`} className="border-3  bg-neutral-100 border-black-600 mx-80 p-7 mb-6">
+                        <div className=" gap-3 pt-2 text-center">
                             <h2 className="text-center font-bold"> Post</h2>
                             <Link to={'/post'}
-                                className="rounded-md bg-green-600 px-3 py-1 text-sm text-white hover:bg-green-500">make
-                                post
+                                className="rounded-md bg-green-600 px-3 py-1 text-sm text-white hover:bg-green-500">Maak een post
                             </Link>
                         </div>
                         <form className="pt-4">
+                            <label htmlFor="search">Zoeken</label>
                             <input
+                                id={"search"}
                                 type="text"
                                 placeholder="Zoeken..."
                                 className=" pl-20 pr-4 py-2 rounded-lg border border-gray-300   bg-white text-gray-900 placeholder-gray-700 "
@@ -58,7 +59,7 @@ import { BellIcon } from "@heroicons/react/24/outline";
 
 
                     </div>
-                    <div id={`message`} className="border-3 border-green-600 p-7 pt-8 mx-80 mb-6 ">
+                    <div id={`message`} className="border-3 bg-neutral-100 border-black-600 p-7 pt-8 mx-80 mb-6 ">
                         <h2 className="font-bold">Meldingen</h2>
                         <div className="relative inline-block text-left">
                             <button

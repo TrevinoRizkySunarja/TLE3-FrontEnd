@@ -4,11 +4,14 @@ import {useNavigate} from "react-router";
 function FormComponent() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        name: "",
-        description: "",
-        funFact: "",
-        imageUrl: "",
+        title: "",
+        body: "",
+        image: "",
+        content_type: [],
     });
+    const [image, setImage] = useState(null);
+    const [preview, setPreview] = useState(null);
+    const [showMore, setShowMore] = useState(false);
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -18,19 +21,42 @@ function FormComponent() {
         });
     };
 
-    async function createProduct() {
+    const handleFilterChange = (filter) => {
+        setFormData((prev) => ({
+            ...prev,
+            content_type: prev.content_type.includes(filter)
+                ? prev.content_type.filter((item) => item !== filter)
+                : [...prev.content_type, filter],
+        }));
+    };
+
+
+    const filters = [
+        "Financieel",
+        "Educatie",
+        "Buitenland",
+        "Evenementen",
+        "Hulp vragen",
+        "Formulieren aanvragen",
+        "Boetes",
+        "Belasting"
+    ];
+    const visibleFilters = showMore ? filters : filters.slice(0, 4);
+
+    async function createPost() {
         try {
-            const response = await fetch("http://145.24.237.14:8001/characters/detail", {
+            const response = await fetch("http://145.24.237.215:8000/api/content-items/", {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    name: formData.name,
-                    description: formData.description,
-                    funFact: formData.funFact,
-                    imageUrl: formData.imageUrl,
+                    title: formData.title,
+                    body: formData.body,
+                    content_type: formData.content_type,
+                    image:formData.image
+
                 }),
             });
 
@@ -47,84 +73,129 @@ function FormComponent() {
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log("Formulier verzonden:", formData);
-        createProduct();
+        createPost();
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div className="mx-auto max-w-xl space-y-5 rounded-xl border bg-white p-6 shadow-sm">
-                {/* Name */}
-                <div className="space-y-1">
-                    <label htmlFor="name" className="text-sm font-medium text-slate-700">
-                        Name
-                    </label>
-                    <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        required
-                        placeholder="example: idk"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                </div>
+        <div className={'container'}>
+                <main className="bg-white text-[#1B1B1B] font-sans px-6 py-12">
+                    <section className="max-w-3xl mx-auto bg-[#F5F5F5] p-8 border border-[#E0E0E0]">
+                        <h2 className="text-2xl font-bold text-black mb-6 leading-snug">
+                           Post aanmaken
+                        </h2>
 
-                <div className="space-y-1">
-                    <label htmlFor="description" className="text-sm font-medium text-slate-700">
-                        Description
-                    </label>
-                    <textarea
-                        id="description"
-                        name="description"
-                        rows={4}
-                        required
-                        placeholder="Describe your character..."
-                        value={formData.description}
-                        onChange={handleInputChange}
-                        className="w-full resize-none rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                </div>
+                        <form onSubmit={handleSubmit} className="space-y-6">
 
-                <div className="space-y-1">
-                    <label htmlFor="funFact" className="text-sm font-medium text-slate-700">
-                        Fun fact
-                    </label>
-                    <input
-                        type="text"
-                        id="funFact"
-                        name="funFact"
-                        required
-                        placeholder="Tell a fun fact about your character"
-                        value={formData.funFact}
-                        onChange={handleInputChange}
-                        className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                </div>
+                            <div>
+                                <label htmlFor="title" className="block font-bold text-black mb-1">
+                                    Titel
+                                </label>
+                                <input
+                                    id="title"
+                                    name="title"
+                                    type="text"
+                                    placeholder="Geef de Titel van je Post"
+                                    value={formData.title}
+                                    required
+                                    onChange={handleInputChange}
+                                    className="w-full p-3 border border-[#E0E0E0] bg-white text-[#1B1B1B]
+                            focus:outline-none focus:ring-2 focus:ring-[#008100]"
+                                />
 
-                <div className="space-y-1">
-                    <label htmlFor="imageUrl" className="text-sm font-medium text-slate-700">
-                        Image URL <span className="text-slate-400">(optional)</span>
-                    </label>
-                    <input
-                        type="url"
-                        id="imageUrl"
-                        name="imageUrl"
-                        placeholder="https://..."
-                        value={formData.imageUrl}
-                        onChange={handleInputChange}
-                        className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                </div>
+                                <label htmlFor="body" className="block font-bold text-black mb-1">
+                                    Beschrijving
+                                </label>
+                                <input
+                                    id="body"
+                                    name="body"
+                                    type="text"
+                                    placeholder="Leg hier de details van je post uit"
+                                    value={formData.body}
+                                    required
+                                    onChange={handleInputChange}
+                                    className="w-full p-3 border border-[#E0E0E0] bg-white text-[#1B1B1B]
+                            focus:outline-none focus:ring-2 focus:ring-[#008100]"
+                                />
 
-                <button
-                    type="submit"
-                    className="w-full bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-                >
-                    Submit
-                </button>
-            </div>
-        </form>
+                            </div>
+
+                            <div>
+                                <label htmlFor="image" className="block font-bold text-black mb-1">
+                                    Afbeelding
+                                </label>
+                                <input
+
+                                    type="url"
+                                    id="image"
+                                    name="image"
+                                    placeholder="https://..."
+                                    value={formData.image}
+                                    onChange={handleInputChange}
+                                />
+                                {formData.image && (
+                                    <div style={{ marginTop: "20px" }}>
+                                        <img
+                                            src={formData.image}
+                                            alt="preview"
+                                            style={{ width: "200px", borderRadius: "8px" }}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="space-y-4">
+                                <h2 className="block font-bold text-black mb-1"> filters</h2>
+                                <div className="grid grid-cols-2 gap-3">
+
+                                    {/*{visibleFilters.map((filter) => (*/}
+                                    {/*    <label*/}
+                                    {/*        key={filter}*/}
+                                    {/*        className="flex items-center gap-2 border border-neutral-300 bg-white px-3 py-2 text-sm">*/}
+                                    {/*        <input type="checkbox" className="h-4 w-4"/>*/}
+                                    {/*        {filter}*/}
+                                    {/*    </label>*/}
+                                    {/*))}*/}
+
+                                    {visibleFilters.map((filter) => (
+                                        <label
+                                            key={filter}
+                                            className="flex items-center gap-2 border border-neutral-300 bg-white px-3 py-2 text-sm"
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                className="h-4 w-4"
+                                                checked={formData.content_type.includes(filter)}
+                                                onChange={() => handleFilterChange(filter)}
+                                            />
+                                            {filter}
+                                        </label>
+                                    ))}
+                                </div>
+
+                                {filters.length > 4 && (
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowMore(!showMore)}
+                                        className="text-sm text-neutral-700 underline"
+                                    >
+                                        {showMore ? "Zie minder" : "Zie meer"}
+                                    </button>
+                                )}
+
+                            </div>
+
+                            <button
+                                type="submit"
+                                className="px-6 py-3 bg-[#008100] text-white font-bold rounded-md
+                        hover:bg-black hover:text-white transition-colors
+                        focus:outline-none focus:ring-2 focus:ring-black"
+                            >
+                                Opslaan
+                            </button>
+                        </form>
+                    </section>
+                </main>
+        </div>
     );
 }
 
