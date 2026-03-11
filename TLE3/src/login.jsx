@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 
 // Login component
 function Login() {
@@ -72,7 +72,7 @@ function Login() {
                 birth_date:   apiUser.birth_date   || "",
                 bsn:          apiUser.bsn           || "",
                 gender:       apiUser.gender        || "",
-                role:         apiUser.role          || apiUser.is_admin ? "admin" : "user",
+                role:         apiUser.role || (apiUser.is_admin ? "admin" : "user"),
             };
             localStorage.setItem("authUser", JSON.stringify(authUser));
 

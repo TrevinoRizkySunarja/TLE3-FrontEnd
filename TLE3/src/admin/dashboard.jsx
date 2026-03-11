@@ -4,6 +4,7 @@ import {Link, Outlet} from 'react-router';
 import { BellIcon } from "@heroicons/react/24/outline";
 import Footer from "../components/Footer.jsx";
 import {Inbox} from "lucide-react";
+import NavbarIngelogd from "../components/NavbarIngelogd.jsx";
 
     function Dashboard() {
 
@@ -18,7 +19,9 @@ import {Inbox} from "lucide-react";
 
         return (
             <div className="min-h-screen bg-slate-50 ">
-<main>
+                <NavbarIngelogd />
+
+                <main>
     <div id={`container`} className="flex-column text-center mx-auto">
 
         <h1 className="text-4xl font-bold pb-5">welcome bij de dashboard admin !</h1>
