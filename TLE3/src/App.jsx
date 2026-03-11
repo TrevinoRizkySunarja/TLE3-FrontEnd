@@ -1,6 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 // import je components
-import Layout from "./index.jsx";
 import LayoutWithNavbar from "./LayoutWithNavbar.jsx";
 
 // Pages
@@ -28,7 +27,6 @@ import AanvraagForm from "./form/AanvraagForm.jsx";
 import AanvraagForm2 from "./form/AanvraagForm2.jsx";
 import AanvraagForm3 from "./form/AanvraagForm3.jsx";
 import AanvraagVoltooid from "./form/AanvraagVoltooid.jsx";
-import {Home} from "lucide-react";
 
 // Placeholder pages
 const CreateProduct = () => (
@@ -53,12 +51,8 @@ const router = createBrowserRouter([
                 path: "/create",
                 element: <CreateProduct />,
             },
-            { path: "/", element: <Home /> },
             { path: "/dashboard", element: <Dashboard /> },
             { path: "/post", element: <Post /> },
-            { path: "/fyp", element: <FYP /> },
-            { path: "/create", element: <CreateProduct /> },
-            { path: "/products/:id", element: <ProductDetail /> },
             { path: "/navbar-ing", element: <NavbarIng /> },
             { path: "/test-navbar", element: <TestNavbar /> },
             { path: "/filter", element: <Filter /> },
