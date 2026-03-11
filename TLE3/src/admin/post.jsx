@@ -64,7 +64,7 @@ function FormComponent() {
             const data = await response.json();
             console.log(data);
 
-            navigate("/");
+            navigate("/dashboard");
         } catch (error) {
             console.error("Er is een fout opgetreden:", error);
         }
