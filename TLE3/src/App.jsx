@@ -7,6 +7,7 @@ import TestNavbar from "./pages/TestNavbar";
 import NavbarIng from "./pages/NavbarIng";
 import FYP from "./pages/fyp.jsx";
 import Homepage from "./pages/homepage.jsx";
+import Profile_User from "./pages/profile_user.jsx";
 
 // Auth pages
 import Register from "./register.jsx";
@@ -40,6 +41,7 @@ const router = createBrowserRouter([
         children: [
             { path: "/",                    element: <Homepage /> },
             { path: "/fyp",                 element: <FYP /> },
+            { path: "/settings",            element: <Profile_User /> },
             { path: "/create",              element: <CreateProduct /> },
             { path: "/dashboard",           element: <Dashboard /> },
             { path: "/admin/dashboard",     element: <Dashboard /> },
@@ -58,7 +60,6 @@ const router = createBrowserRouter([
     // Auth pages (zonder layout)
     { path: "/register",        element: <Register /> },
     { path: "/login",           element: <Login /> },
-    { path: "/logout",          element: <Logout /> },
     { path: "/logout",          element: <Logout /> },
     { path: "/forgot_password", element: <ForgotPassword /> },
 ]);
