@@ -1,12 +1,14 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
-// Layout
+import { createBrowserRouter, RouterProvider } from "react-router";
+// import je components
+import Layout from "./index.jsx";
 import LayoutWithNavbar from "./LayoutWithNavbar.jsx";
 
 // Pages
 import TestNavbar from "./pages/TestNavbar";
 import NavbarIng from "./pages/NavbarIng";
+// Importeer je nieuwe FYP pagina
 import FYP from "./pages/fyp.jsx";
+import Homepage from "./pages/homepage.jsx";
 
 // Auth pages
 import Register from "./register.jsx";
@@ -35,17 +37,22 @@ const CreateProduct = () => (
     </div>
 );
 
-const ProductDetail = () => (
-    <div style={{ padding: 24 }}>
-        <h2>Product Detail (placeholder)</h2>
-    </div>
-);
-
-// Router
 const router = createBrowserRouter([
     {
         element: <LayoutWithNavbar />,
         children: [
+            {
+                path: "/",
+                element: <Homepage />,
+            },
+            {
+                path: "/fyp",
+                element: <FYP />,
+            },
+            {
+                path: "/create",
+                element: <CreateProduct />,
+            },
             { path: "/", element: <Home /> },
             { path: "/dashboard", element: <Dashboard /> },
             { path: "/post", element: <Post /> },
