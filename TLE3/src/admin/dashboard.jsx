@@ -93,7 +93,6 @@ import { BellIcon } from "@heroicons/react/24/outline";
                                 </div>
                             )}
                         </div>
-                        <p className="border-2 border-green-600 text-white bg-green-600"> hier is een melding</p>
                     </div>
 
                 </div>

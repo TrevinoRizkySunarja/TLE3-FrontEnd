@@ -147,15 +147,6 @@ function FormComponent() {
                                 <h2 className="block font-bold text-black mb-1"> filters</h2>
                                 <div className="grid grid-cols-2 gap-3">
 
-                                    {/*{visibleFilters.map((filter) => (*/}
-                                    {/*    <label*/}
-                                    {/*        key={filter}*/}
-                                    {/*        className="flex items-center gap-2 border border-neutral-300 bg-white px-3 py-2 text-sm">*/}
-                                    {/*        <input type="checkbox" className="h-4 w-4"/>*/}
-                                    {/*        {filter}*/}
-                                    {/*    </label>*/}
-                                    {/*))}*/}
-
                                     {visibleFilters.map((filter) => (
                                         <label
                                             key={filter}
