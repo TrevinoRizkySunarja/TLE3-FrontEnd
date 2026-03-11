@@ -71,7 +71,6 @@ const router = createBrowserRouter([
             { path: "/aanvraag/stap-2",     element: <AanvraagForm2 /> },
             { path: "/aanvraag/stap-3",     element: <AanvraagForm3 /> },
             { path: "/aanvraag/voltooid",   element: <AanvraagVoltooid /> },
-            { path: "/informatie",           element: <InformatiePagina />},
         ],
     },
 
@@ -80,6 +79,7 @@ const router = createBrowserRouter([
     { path: "/login",           element: <Login /> },
     { path: "/logout",          element: <Logout /> },
     { path: "/forgot_password", element: <ForgotPassword /> },
+    { path: "/informatie",      element: <InformatiePagina />},
 ]);
 
 function App() {
