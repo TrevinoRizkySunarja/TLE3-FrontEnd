@@ -33,9 +33,7 @@ const Homepage = () => {
     );
 
     /**
-     * getCategoryUrl
-     * Koppelt de API namen aan ECHTE, bestaande pagina's op rotterdam.nl
-     */
+     * getCategoryUrl*/
     const getCategoryUrl = (name) => {
         const lowerName = name.toLowerCase();
 
@@ -75,7 +73,7 @@ const Homepage = () => {
 
             <NavbarIngelogd />
 
-            <header className="bg-[#F5F5F5] border-b border-[#E0E0E0] py-12 px-6">
+            <header className="bg-[#F5F5F5] border-b border-[#E0E0E0] pt-36 pb-12 px-6">
                 <div className="max-w-4xl mx-auto text-center">
                     <h1 className="text-3xl md:text-4xl font-bold text-black mb-6">
                         Waarmee kunnen we u helpen?
@@ -83,6 +81,7 @@ const Homepage = () => {
 
                     <form
                         role="search"
+                        aria-label="Zoek op de website van de gemeente Rotterdam"
                         onSubmit={(e) => {
                             e.preventDefault();
                             if (searchTerm.trim()) {
@@ -97,9 +96,8 @@ const Homepage = () => {
                             type="search"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            // Placeholder aangepast met voorbeelden
                             placeholder="Zoek naar bijv. afval, parkeren of verhuizen..."
-                            className="w-full h-14 pl-5 pr-16 bg-white border-2 border-[#767676] focus:border-[#008100] outline-none transition-all text-lg shadow-sm"
+                            className="w-full h-14 pl-5 pr-16 bg-white border-2 border-[#767676] focus:border-[#008100] outline-none transition-all text-lg shadow-sm placeholder:text-[#555]"
                         />
                         <div className="absolute right-1.5 top-1.5 bottom-1.5 flex">
                             <Button type="submit" aria-label="Zoekopdracht uitvoeren" className="px-5 py-0 h-full">
@@ -117,8 +115,9 @@ const Homepage = () => {
                 </div>
 
                 {loading ? (
-                    <div className="flex justify-center py-20">
+                    <div role="status" className="flex justify-center items-center py-20 gap-4">
                         <Loader2 className="animate-spin text-[#008100]" size={40} aria-hidden="true" />
+                        <span className="sr-only">Inhoud laden...</span>
                     </div>
                 ) : error ? (
                     <div role="alert" className="text-red-600 font-bold text-center p-4">
@@ -147,13 +146,13 @@ const Homepage = () => {
                                             animate={{ opacity: 1 }}
                                             exit={{ opacity: 0 }}
                                             href={url}
-                                            // Externe links openen in nieuw tabblad voor gebruiksgemak
                                             target={isExternal ? "_blank" : "_self"}
                                             rel={isExternal ? "noopener noreferrer" : ""}
                                             className="flex items-center justify-between p-4 border border-[#D1D1D1] hover:border-[#008100] focus:ring-2 focus:ring-[#008100] bg-white transition-all group no-underline"
                                         >
                                             <span className="text-[#007000] font-semibold text-[15px] group-hover:text-black transition-colors">
                                                 {cat.name}
+                                                {isExternal && <span className="sr-only">(opent in een nieuw tabblad)</span>}
                                             </span>
                                             <ChevronRight size={16} className="text-[#767676] group-hover:text-[#008100] transition-transform group-hover:translate-x-1" aria-hidden="true" />
                                         </motion.a>
@@ -182,6 +181,7 @@ const Homepage = () => {
                             variant="secondary"
                             onClick={() => window.open('https://www.rotterdam.nl/kaarten/meldingen-buitenruimte/', '_blank')}
                             className="text-sm px-8"
+                            aria-label="Open kaart met meldingen en werkzaamheden in uw buurt"
                         >
                             Open kaart
                         </Button>

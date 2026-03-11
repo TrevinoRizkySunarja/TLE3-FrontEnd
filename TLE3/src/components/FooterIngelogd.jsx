@@ -61,6 +61,7 @@ export default function FooterIngelogd() {
                                 <a href="https://www.rotterdam.nl" target="_blank" rel="noreferrer" className={linkStyle}>
                                     <Globe className={iconStyle} aria-hidden="true" />
                                     <span>Naar de officiele gemeente website</span>
+                                    <span className="sr-only">(opent in een nieuw tabblad)</span>
                                     <ExternalLink size={14} aria-hidden="true" />
                                 </a>
                             </li>
@@ -100,9 +101,8 @@ export default function FooterIngelogd() {
                         </span>
                         <img
                             src="/images/logo.jpg"
-                            alt=""
+                            alt="Logo van Gemeente CMGT"
                             className="h-12 w-auto rounded-[5px] object-contain shadow-sm"
-                            aria-hidden="true"
                         />
                     </div>
                 </div>
