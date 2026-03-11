@@ -16,7 +16,6 @@ import Dashboard from "./admin/dashboard.jsx";
 import Post from "./admin/post.jsx";
 import Layout from "./index.jsx";
 import Filter from "./admin/filter.jsx";
-import Home from "./admin/home.jsx";
 
 // Placeholder components
 const Home = () => <div style={{ padding: 24 }}><h2>Home (placeholder)</h2></div>;
@@ -40,7 +39,9 @@ const router = createBrowserRouter([
             },
             {
                 path: "/post",
-                element: <Post />,
+                element: <Post/>,
+            },
+            {
                 path: "/fyp",
                 element: <FYP />,
             },
@@ -79,7 +80,9 @@ const router = createBrowserRouter([
             },
             {
                 path: "/filter",
-                element: <Filter />,
+                element: <Filter />
+            },
+            {
                 path: "/forgot_password",
                 element: <ForgotPassword />,
             },
