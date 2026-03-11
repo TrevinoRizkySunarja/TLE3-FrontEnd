@@ -74,7 +74,6 @@ function Login() {
                 gender:       apiUser.gender        || "",
                 role:         apiUser.role || (apiUser.is_admin ? "admin" : "user"),
             };
-            localStorage.setItem("authUser", JSON.stringify(authUser));
 
             console.log("[Login] ✅ LOGIN GELUKT!");
             console.log("[Login] Token opgeslagen in localStorage");

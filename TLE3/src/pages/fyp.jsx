@@ -10,6 +10,19 @@ const FYP = () => {
     const navigate = useNavigate();
     // Beheert de gebruikersnaam voor de persoonlijke begroeting.
     const [user, setUser] = useState({ name: 'Laden...' });
+    const userName = JSON.parse(localStorage.getItem("authUser"));
+
+    const [username ,getUsername ] = useState(
+        {
+            first_name: userName?.first_name || "",
+            last_name: userName?.last_name || "",
+            email: userName?.email || "",
+        }
+    );
+
+    console.log(username.first_name)
+
+
 
     // De lijst met actieve meldingen die getoond worden in de feed.
     const [feedItems, setFeedItems] = useState([
@@ -60,6 +73,7 @@ const FYP = () => {
                 const fullName = [authUser.first_name, authUser.last_name].filter(Boolean).join(" ");
                 setUser({ name: fullName || authUser.email || "Gebruiker" });
                 console.log("[FYP] Ingelogde gebruiker:", authUser);
+                console.log(authUser.first_name)
             } else {
                 console.warn("[FYP] Geen authUser gevonden in localStorage");
                 setUser({ name: "Gebruiker" });
