@@ -16,7 +16,7 @@ import { BellIcon } from "@heroicons/react/24/outline";
 
         return (
             <div className="min-h-screen bg-slate-50 ">
-
+<main>
                 <div id={`container`} className="flex-column text-center">
 
                     <h1 className="text-4xl font-bold pb-5">welcome bij de dashboard admin !</h1>
@@ -96,10 +96,9 @@ import { BellIcon } from "@heroicons/react/24/outline";
                     </div>
 
                 </div>
-
+</main>
+                
             </div>
-
-
         )
     };
 
