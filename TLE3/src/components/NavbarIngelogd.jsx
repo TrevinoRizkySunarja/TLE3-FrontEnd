@@ -100,7 +100,7 @@ export default function Navbar() {
                             <Settings size={20} aria-hidden="true" />
                             <span>Mijn Gegevens</span>
                         </Link>
-                        <Link to="/loguit" className={blackBtnStyle}>
+                        <Link to="/logout" className={blackBtnStyle}>
                             <LogOut size={20} aria-hidden="true" />
                             <span>Uitloggen</span>
                         </Link>
@@ -140,7 +140,7 @@ export default function Navbar() {
                                     <Link to="/settings" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full justify-start`}>
                                         <Settings size={20} /><span>Mijn Gegevens</span>
                                     </Link>
-                                    <Link to="/loguit" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full justify-start`}>
+                                    <Link to="/logout" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full justify-start`}>
                                         <LogOut size={20} /><span>Veilig Uitloggen</span>
                                     </Link>
                                 </div>

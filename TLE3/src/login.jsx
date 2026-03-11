@@ -15,6 +15,7 @@ function Login() {
         setIsLoading(true);
 
         try {
+            console.log("[Login] Attempting connection to backend...");
             const response = await fetch("http://145.24.237.215:8000/api/user/login", {
                 method: "POST",
                 headers: {
@@ -28,23 +29,33 @@ function Login() {
             const contentType = response.headers.get("content-type") || "";
             let data = null;
 
+            console.log("[Login] Raw response body:", rawBody);
+            console.log("[Login] Response content-type:", contentType);
+
             if (rawBody.trim() && contentType.includes("application/json")) {
                 try {
                     data = JSON.parse(rawBody);
+                    console.log("[Login] Parsed response data:", data);
                 } catch {
+                    console.error("[Login] Connected, but response JSON is invalid");
                     setError("Server gaf ongeldige JSON terug");
                     return;
                 }
+            } else {
+                console.log("[Login] Non-JSON or empty response received");
             }
 
             if (!response.ok) {
                 const serverMessage = data?.message || data?.error || (rawBody.trim() && !contentType.includes("application/json") ? rawBody : "");
+                console.error(`[Login] Backend connection failed (HTTP ${response.status})`, serverMessage || "Unknown error");
                 setError(serverMessage || `Inloggen mislukt (HTTP ${response.status})`);
                 return;
             }
 
+            console.log(`[Login] Backend connected successfully (HTTP ${response.status})`);
             const token = data?.token || data?.accessToken || data?.jwt;
             if (!token) {
+                console.warn("[Login] Connected, but no token received");
                 setError("Login gelukt, maar geen token ontvangen");
                 return;
             }
@@ -52,6 +63,7 @@ function Login() {
             localStorage.setItem("token", token);
             navigate("/fyp");
         } catch (submitError) {
+            console.error("[Login] Network/connection error", submitError);
             setError(submitError.message || "Serverfout");
         } finally {
             setIsLoading(false);
