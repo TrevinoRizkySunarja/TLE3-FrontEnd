@@ -7,6 +7,7 @@ import TestNavbar from "./pages/TestNavbar";
 import NavbarIng from "./pages/NavbarIng";
 import FYP from "./pages/fyp.jsx";
 import Homepage from "./pages/homepage.jsx";
+import InformatiePagina from "./Informatie.jsx";
 import NavbarUit from "./pages/navbaruit.jsx";
 import Profile_User from "./pages/profile_user.jsx";
 
@@ -70,6 +71,7 @@ const router = createBrowserRouter([
             { path: "/aanvraag/stap-2",     element: <AanvraagForm2 /> },
             { path: "/aanvraag/stap-3",     element: <AanvraagForm3 /> },
             { path: "/aanvraag/voltooid",   element: <AanvraagVoltooid /> },
+            { path: "/informatie",           element: <InformatiePagina />},
         ],
     },
 
