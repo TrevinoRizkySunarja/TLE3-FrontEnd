@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 // Login component
 function Login() {
@@ -7,6 +7,7 @@ function Login() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -14,24 +15,42 @@ function Login() {
         setIsLoading(true);
 
         try {
-            const response = await fetch("/api/auth/login", {
+            const response = await fetch("http://145.24.237.215:8000/api/user/login", {
                 method: "POST",
                 headers: {
+                    Accept: "application/json",
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ email, password }),
             });
 
-            const data = await response.json();
+            const rawBody = await response.text();
+            const contentType = response.headers.get("content-type") || "";
+            let data = null;
+
+            if (rawBody.trim() && contentType.includes("application/json")) {
+                try {
+                    data = JSON.parse(rawBody);
+                } catch {
+                    setError("Server gaf ongeldige JSON terug");
+                    return;
+                }
+            }
 
             if (!response.ok) {
-                throw new Error(data?.message || "Inloggen mislukt");
+                const serverMessage = data?.message || data?.error || (rawBody.trim() && !contentType.includes("application/json") ? rawBody : "");
+                setError(serverMessage || `Inloggen mislukt (HTTP ${response.status})`);
+                return;
             }
 
-            // Temporary token storage; replace with your auth strategy if needed.
-            if (data?.token) {
-                localStorage.setItem("token", data.token);
+            const token = data?.token || data?.accessToken || data?.jwt;
+            if (!token) {
+                setError("Login gelukt, maar geen token ontvangen");
+                return;
             }
+
+            localStorage.setItem("token", token);
+            navigate("/fyp");
         } catch (submitError) {
             setError(submitError.message || "Serverfout");
         } finally {
