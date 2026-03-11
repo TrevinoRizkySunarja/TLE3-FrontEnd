@@ -18,7 +18,6 @@ import ForgotPassword from "./forgot_password.jsx";
 import Dashboard from "./admin/dashboard.jsx";
 import Post from "./admin/post.jsx";
 import Filter from "./admin/filter.jsx";
-import Home from "./admin/home.jsx";
 
 import AITransparantie from "./AITransparantie.jsx";
 
