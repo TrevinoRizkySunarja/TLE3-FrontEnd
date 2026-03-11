@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 
 // back end van register pagina
@@ -7,6 +7,7 @@ function Register() {
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
     const [success, setSuccess] = useState("");
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         first_name: "",
         last_name: "",
@@ -16,6 +17,8 @@ function Register() {
         phone_number: "",
         bsn: "",
         gender: "",
+        is_admin: false,
+        personalization_enabled: true,
     });
 
     const handleChange = (e) => {
@@ -97,19 +100,51 @@ function Register() {
         setLoading(true);
 
         try {
-            const res = await fetch("/api/register", {
+            console.log("[Register] Attempting connection to backend...");
+            console.log("[Register] Sending data:", { ...formData, password: "***" });
+
+            const res = await fetch("http://145.24.237.215:8000/api/user/register", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
                 body: JSON.stringify(formData),
             });
 
-            const data = await res.json();
+            console.log("[Register] ✅ Request sent successfully to: http://145.24.237.215:8000/api/user/register");
+            console.log("[Register] HTTP Status:", res.status);
+
+            const rawBody = await res.text();
+            const contentType = res.headers.get("content-type") || "";
+            let data = null;
+
+            console.log("[Register] Raw response body:", rawBody);
+            console.log("[Register] Response content-type:", contentType);
+
+            if (rawBody.trim() && contentType.includes("application/json")) {
+                try {
+                    data = JSON.parse(rawBody);
+                    console.log("[Register] Parsed response data:", data);
+                } catch {
+                    console.error("[Register] Response JSON is invalid");
+                    setErrors({ submit: "Server gaf ongeldige JSON terug" });
+                    return;
+                }
+            } else {
+                console.log("[Register] Non-JSON or empty response received");
+            }
 
             if (!res.ok) {
-                setErrors({ submit: data?.message || "Registratie mislukt." });
+                const serverMessage = data?.message || data?.error || (rawBody.trim() && !contentType.includes("application/json") ? rawBody : "");
+                console.error(`[Register] Backend connection failed (HTTP ${res.status})`, serverMessage);
+                setErrors({ submit: serverMessage || `Registratie mislukt (HTTP ${res.status})` });
                 return;
             }
-            setSuccess("Registratie gelukt!");
+
+            console.log(`[Register] ✅ Registratie GELUKT! (HTTP ${res.status})`);
+            console.log("[Register] Gebruiker aangemaakt, je wordt doorgestuurd naar login...");
+            setSuccess("Registratie gelukt! Je wordt doorgestuurd naar de loginpagina...");
             setFormData({
                 first_name: "",
                 last_name: "",
@@ -119,8 +154,17 @@ function Register() {
                 phone_number: "",
                 bsn: "",
                 gender: "",
+                is_admin: false,
+                personalization_enabled: true,
             });
+            console.log(formData)
+
+            setTimeout(() => {
+                navigate("/login");
+            }, 2000);
+
         } catch (err) {
+            console.error("[Register] Network/connection error", err);
             setErrors({ submit: err.message || "Er ging iets mis." });
         } finally {
             setLoading(false);
@@ -259,6 +303,15 @@ function Register() {
                             id="bsn"
                             name="bsn"
                             value={formData.bsn}
+                            onChange={handleChange}
+                            placeholder="123456789"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                        <input
+                            type="hidden"
+                            id="is_admin"
+                            name="is_admin"
+                            value={formData.is_admin}
                             onChange={handleChange}
                             placeholder="123456789"
                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"

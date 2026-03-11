@@ -61,6 +61,25 @@ function Login() {
             }
 
             localStorage.setItem("token", token);
+
+            // Sla gebruikersgegevens op zodat FYP en Profile ze kunnen lezen
+            const apiUser = data?.user || data || {};
+            const authUser = {
+                first_name: apiUser.first_name || apiUser.firstname || "",
+                last_name:  apiUser.last_name  || apiUser.lastname  || "",
+                email:      apiUser.email      || email,
+                phone_number: apiUser.phone_number || "",
+                birth_date:   apiUser.birth_date   || "",
+                bsn:          apiUser.bsn           || "",
+                gender:       apiUser.gender        || "",
+            };
+            localStorage.setItem("authUser", JSON.stringify(authUser));
+
+            console.log("[Login] ✅ LOGIN GELUKT!");
+            console.log("[Login] Token opgeslagen in localStorage");
+            console.log("[Login] Gebruikergegevens opgeslagen:", authUser);
+            console.log("[Login] Je wordt doorgestuurd naar FYP...");
+
             navigate("/fyp");
         } catch (submitError) {
             console.error("[Login] Network/connection error", submitError);
