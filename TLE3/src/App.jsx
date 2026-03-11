@@ -22,10 +22,10 @@ import Filter from "./admin/filter.jsx";
 import AITransparantie from "./AITransparantie.jsx";
 
 // Aanvraagformulieren
-import AanvraagForm from "./pages/AanvraagForm.jsx";
-import AanvraagForm2 from "./pages/AanvraagForm2.jsx";
-import AanvraagForm3 from "./pages/AanvraagForm3.jsx";
-import AanvraagVoltooid from "./pages/AanvraagVoltooid.jsx";
+import AanvraagForm from "./form/AanvraagForm.jsx";
+import AanvraagForm2 from "./form/AanvraagForm2.jsx";
+import AanvraagForm3 from "./form/AanvraagForm3.jsx";
+import AanvraagVoltooid from "./form/AanvraagVoltooid.jsx";
 
 // Placeholder pages
 const CreateProduct = () => (
