@@ -7,6 +7,8 @@ import TestNavbar from "./pages/TestNavbar";
 import NavbarIng from "./pages/NavbarIng";
 import FYP from "./pages/fyp.jsx";
 import Homepage from "./pages/homepage.jsx";
+import InformatiePagina from "./Informatie.jsx";
+import NavbarUit from "./pages/navbaruit.jsx";
 import Profile_User from "./pages/profile_user.jsx";
 
 // Auth pages
@@ -39,14 +41,29 @@ const router = createBrowserRouter([
     {
         element: <LayoutWithNavbar />,
         children: [
-            { path: "/",                    element: <Homepage /> },
-            { path: "/fyp",                 element: <FYP /> },
+            {
+                path: "/",
+                element: <Homepage />,
+            },
+            {
+                path: "/fyp",
+                element: <FYP />,
+            },
+            {
+                path: "/create",
+                element: <CreateProduct />,
+            },
+            {
+                path: "/navbar-ing",
+                element: <NavbarIng />,
+            },
+            {
+                path: "/navbar-uit",
+                element: <NavbarUit />,
+            },
             { path: "/settings",            element: <Profile_User /> },
-            { path: "/create",              element: <CreateProduct /> },
-            { path: "/dashboard",           element: <Dashboard /> },
             { path: "/admin/dashboard",     element: <Dashboard /> },
             { path: "/post",                element: <Post /> },
-            { path: "/navbar-ing",          element: <NavbarIng /> },
             { path: "/test-navbar",         element: <TestNavbar /> },
             { path: "/filter",              element: <Filter /> },
             { path: "/ai-transparantie",    element: <AITransparantie /> },
@@ -54,6 +71,7 @@ const router = createBrowserRouter([
             { path: "/aanvraag/stap-2",     element: <AanvraagForm2 /> },
             { path: "/aanvraag/stap-3",     element: <AanvraagForm3 /> },
             { path: "/aanvraag/voltooid",   element: <AanvraagVoltooid /> },
+            { path: "/informatie",           element: <InformatiePagina />},
         ],
     },
 
