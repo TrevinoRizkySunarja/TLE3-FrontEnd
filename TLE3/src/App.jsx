@@ -12,6 +12,11 @@ import Logout from "./logout.jsx";
 import ForgotPassword from "./forgot_password.jsx";
 import { Outlet } from "react-router";
 
+import Dashboard from "./admin/dashboard.jsx";
+import Post from "./admin/post.jsx";
+import Layout from "./index.jsx";
+import Filter from "./admin/filter.jsx";
+import Home from "./admin/home.jsx";
 
 // Placeholder components
 const Home = () => <div style={{ padding: 24 }}><h2>Home (placeholder)</h2></div>;
@@ -26,10 +31,16 @@ const router = createBrowserRouter([
         element: <LayoutWithNavbar />,
         children: [
             {
+                path: "/dashboard",
+                element: <Dashboard />,
+            },
+            {
                 path: "/",
                 element: <Home />,
             },
             {
+                path: "/post",
+                element: <Post />,
                 path: "/fyp",
                 element: <FYP />,
             },
@@ -67,6 +78,8 @@ const router = createBrowserRouter([
                 element: <Logout />,
             },
             {
+                path: "/filter",
+                element: <Filter />,
                 path: "/forgot_password",
                 element: <ForgotPassword />,
             },
