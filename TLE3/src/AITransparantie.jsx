@@ -1,7 +1,10 @@
+import NavbarIngelogd from "./components/NavbarIngelogd.jsx";
+import React from "react";
+
 export default function AITransparantie() {
     return (
         <main className="bg-white text-[#1B1B1B] font-sans px-6 py-12">
-
+            <NavbarIngelogd />
             {/* SECTION 1 — Waarom AI */}
             <section className="max-w-4xl mx-auto mb-12 bg-[#F5F5F5] p-8 border border-[#E0E0E0]">
                 <h1 className="text-4xl font-bold text-black mb-4 leading-tight">
