@@ -41,7 +41,7 @@ import Navbar from "../components/Navbar.jsx";
                         className="mx-auto w-full max-w-7xl px-4 py-6 text-center sm:px-6 lg:px-8"
                     >
                         <h1 className="pb-6 text-2xl font-bold sm:text-3xl lg:text-4xl">
-                            welcome bij de dashboard {admin.first_name} {admin.last_name} !
+                            welkom bij de dashboard {admin.first_name} {admin.last_name} !
                         </h1>
 
                         <div
