@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import { Button } from '../components/Button';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Sparkles, Info, ChevronDown, X } from 'lucide-react';
@@ -6,6 +7,7 @@ import NavbarIngelogd from "../components/NavbarIngelogd.jsx";
 import FooterIngelogd from "../components/FooterIngelogd.jsx";
 
 const FYP = () => {
+    const navigate = useNavigate();
     // Beheert de gebruikersnaam voor de persoonlijke begroeting.
     const [user, setUser] = useState({ name: 'Laden...' });
 
@@ -43,11 +45,30 @@ const FYP = () => {
     // Houdt rekening met gebruikers die minder animaties willen (WCAG toegankelijkheid).
     const shouldReduceMotion = useReducedMotion();
 
-    // Haalt bij montage van de component de gebruikersgegevens op.
+    // Haalt bij montage van de component de gebruikersgegevens op uit localStorage (gezet door login).
     useEffect(() => {
-        const mockUser = { name: 'Jan Jansen' };
-        setUser(mockUser);
-    }, []);
+        const token = localStorage.getItem("token");
+        if (!token) {
+            navigate("/login");
+            return;
+        }
+
+        try {
+            const stored = localStorage.getItem("authUser");
+            if (stored) {
+                const authUser = JSON.parse(stored);
+                const fullName = [authUser.first_name, authUser.last_name].filter(Boolean).join(" ");
+                setUser({ name: fullName || authUser.email || "Gebruiker" });
+                console.log("[FYP] Ingelogde gebruiker:", authUser);
+            } else {
+                console.warn("[FYP] Geen authUser gevonden in localStorage");
+                setUser({ name: "Gebruiker" });
+            }
+        } catch (e) {
+            console.error("[FYP] Fout bij lezen authUser:", e);
+            setUser({ name: "Gebruiker" });
+        }
+    }, [navigate]);
 
     // Verwijdert een specifieke melding uit de lijst op basis van ID.
     const removeItem = (id) => {
