@@ -21,7 +21,7 @@ import Navbar from "../components/Navbar.jsx";
             email: savedAdmin?.email || "",
         });
 
-        console.log(adminId.first_name)
+        // console.log(adminId.first_name)
 
         const notifications = [
             {id: 1, sender: "Mw. de Wit", message: "Afspraak zometeen..", time: "2m ago"},

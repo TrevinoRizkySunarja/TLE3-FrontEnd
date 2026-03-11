@@ -20,7 +20,7 @@ const FYP = () => {
         }
     );
 
-    console.log(username.first_name)
+    console.log(username)
 
 
 
@@ -108,7 +108,7 @@ const FYP = () => {
                 {/* Pagina-titel met persoonlijke begroeting */}
                 <header className="mb-8">
                     <h1 className="text-[32px] md:text-[40px] font-bold text-[#000000] leading-tight mb-2">
-                        Welkom {user.name}
+                        Welkom {username.first_name}
                     </h1>
                     <div className="h-px bg-[#E0E0E0] w-full" aria-hidden="true" />
                 </header>
