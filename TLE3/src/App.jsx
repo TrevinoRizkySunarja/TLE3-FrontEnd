@@ -7,6 +7,7 @@ import NavbarIng from "./pages/NavbarIng";
 // Importeer je nieuwe FYP pagina
 import FYP from "./pages/fyp.jsx";
 import Homepage from "./pages/homepage.jsx";
+import NavbarUit from "./pages/navbaruit.jsx";
 
 
 // Placeholder components
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
             {
                 path: "/navbar-ing",
                 element: <NavbarIng />,
+            },
+            {
+                path: "/navbar-uit",
+                element: <NavbarUit />,
             },
         ],
     },

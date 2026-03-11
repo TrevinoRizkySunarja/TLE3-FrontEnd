@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Send, ChevronRight, MapPin, Loader2 } from 'lucide-react';
 import { Button } from "../components/Button.jsx";
 import FooterIngelogd from "../components/FooterIngelogd.jsx";
-import NavbarIngelogd from "../components/NavbarIngelogd.jsx";
+import NavbarUit from "../components/NavbarUit.jsx";
 
 const Homepage = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -71,7 +71,7 @@ const Homepage = () => {
                 Skip naar hoofdinhoud
             </a>
 
-            <NavbarIngelogd />
+            <NavbarUit />
 
             <header className="bg-[#F5F5F5] border-b border-[#E0E0E0] pt-36 pb-12 px-6">
                 <div className="max-w-4xl mx-auto text-center">
