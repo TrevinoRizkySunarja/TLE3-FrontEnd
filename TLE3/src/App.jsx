@@ -2,17 +2,40 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 // import je components
 import Layout from "./index.jsx";
 import LayoutWithNavbar from "./LayoutWithNavbar.jsx";
+
+// Pages
 import TestNavbar from "./pages/TestNavbar";
 import NavbarIng from "./pages/NavbarIng";
 // Importeer je nieuwe FYP pagina
 import FYP from "./pages/fyp.jsx";
 import Homepage from "./pages/homepage.jsx";
 
+// Auth pages
+import Register from "./register.jsx";
+import Login from "./login.jsx";
+import Logout from "./logout.jsx";
+import ForgotPassword from "./forgot_password.jsx";
 
-// Placeholder components
-const Home = () => <div style={{ padding: 24 }}><h2>Home (placeholder)</h2></div>;
-const CreateProduct = () => <div style={{ padding: 24 }}><h2>Create Product (placeholder)</h2></div>;
-const ProductDetail = () => <div style={{ padding: 24 }}><h2>Product Detail (placeholder)</h2></div>;
+// Admin pages
+import Dashboard from "./admin/dashboard.jsx";
+import Post from "./admin/post.jsx";
+import Filter from "./admin/filter.jsx";
+
+import AITransparantie from "./AITransparantie.jsx";
+
+// Aanvraagformulieren
+import AanvraagForm from "./form/AanvraagForm.jsx";
+import AanvraagForm2 from "./form/AanvraagForm2.jsx";
+import AanvraagForm3 from "./form/AanvraagForm3.jsx";
+import AanvraagVoltooid from "./form/AanvraagVoltooid.jsx";
+import {Home} from "lucide-react";
+
+// Placeholder pages
+const CreateProduct = () => (
+    <div style={{ padding: 24 }}>
+        <h2>Create Product (placeholder)</h2>
+    </div>
+);
 
 const router = createBrowserRouter([
     {
@@ -30,26 +53,30 @@ const router = createBrowserRouter([
                 path: "/create",
                 element: <CreateProduct />,
             },
+            { path: "/", element: <Home /> },
+            { path: "/dashboard", element: <Dashboard /> },
+            { path: "/post", element: <Post /> },
+            { path: "/fyp", element: <FYP /> },
+            { path: "/create", element: <CreateProduct /> },
+            { path: "/products/:id", element: <ProductDetail /> },
+            { path: "/navbar-ing", element: <NavbarIng /> },
+            { path: "/test-navbar", element: <TestNavbar /> },
+            { path: "/filter", element: <Filter /> },
+            { path: "/ai-transparantie", element: <AITransparantie /> },
 
-            {
-                path: "/products/:id",
-                element: <ProductDetail />,
-            },
-            {
-                path: "/navbar-ing",
-                element: <NavbarIng />,
-            },
+            // ⭐ AANVRAAGFORMULIEREN
+            { path: "/aanvraag/stap-1", element: <AanvraagForm /> },
+            { path: "/aanvraag/stap-2", element: <AanvraagForm2 /> },
+            { path: "/aanvraag/stap-3", element: <AanvraagForm3 /> },
+            { path: "/aanvraag/voltooid", element: <AanvraagVoltooid /> },
         ],
     },
-    {
-        element: <Layout />,
-        children: [
-            {
-                path: "/test-navbar",
-                element: <TestNavbar />,
-            },
-        ],
-    },
+
+    // Auth pages (zonder layout)
+    { path: "/register", element: <Register /> },
+    { path: "/login", element: <Login /> },
+    { path: "/logout", element: <Logout /> },
+    { path: "/forgot_password", element: <ForgotPassword /> },
 ]);
 
 function App() {
