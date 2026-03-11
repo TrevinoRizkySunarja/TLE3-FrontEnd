@@ -51,7 +51,6 @@ export default function Navbar() {
                         <Link to="/" className={blackBtnStyle}><Home size={20} /><span>Home</span></Link>
                         <Link to="/belasting" className={blackBtnStyle}><Inbox size={20} /><span>Inbox</span></Link>
                         <Link to="/artikel" className={blackBtnStyle}><PlusSquare size={20} /><span>Artikel</span></Link>
-                        <Link to="/ai-transparantie" className={blackBtnStyle}><Cpu size={20} /><span>AI</span></Link>
                         <Link to="/settings" className={blackBtnStyle}><Settings size={20} /><span>Instellingen</span></Link>
                         <Link to="/loguit" className={blackBtnStyle}><LogOut size={20} /><span>Uitloggen</span></Link>
                     </div>
@@ -84,9 +83,6 @@ export default function Navbar() {
                             </Link>
                             <Link to="/artikel" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full justify-start`}>
                                 <PlusSquare size={20} /><span>Artikel Creëren</span>
-                            </Link>
-                            <Link to="/ai-transparantie" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full justify-start`}>
-                                <Cpu size={20} /><span>AI Transparantie</span>
                             </Link>
                             <Link to="/settings" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full justify-start`}>
                                 <Settings size={20} /><span>Instellingen</span>

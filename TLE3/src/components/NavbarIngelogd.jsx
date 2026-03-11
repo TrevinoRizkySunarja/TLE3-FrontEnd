@@ -59,19 +59,16 @@ export default function Navbar() {
                         <Link to="/fyp" className={blackBtnStyle} aria-label="Mijn Overzicht">
                             <Home size={20} aria-hidden="true" /><span>Mijn Overzicht</span>
                         </Link>
-                        <Link to="/belasting" className={blackBtnStyle} aria-label="Berichtenbox">
+                        <Link to="/fyp" className={blackBtnStyle} aria-label="Berichtenbox">
                             <Inbox size={20} aria-hidden="true" /><span>Berichtenbox</span>
                         </Link>
-                        <Link to="/artikel" className={blackBtnStyle} aria-label="Melding Maken">
+                        <Link to="/fyp" className={blackBtnStyle} aria-label="Melding Maken">
                             <PlusSquare size={20} aria-hidden="true" /><span>Melding Maken</span>
-                        </Link>
-                        <Link to="/ai-transparantie" className={blackBtnStyle} aria-label="AI & Algoritmes">
-                            <Cpu size={20} aria-hidden="true" /><span>AI & Algoritmes</span>
                         </Link>
                         <Link to="/settings" className={blackBtnStyle} aria-label="Mijn Gegevens">
                             <Settings size={20} aria-hidden="true" /><span>Mijn Gegevens</span>
                         </Link>
-                        <Link to="/loguit" className={blackBtnStyle} aria-label="Uitloggen">
+                        <Link to="/logout" className={blackBtnStyle} aria-label="Uitloggen">
                             <LogOut size={20} aria-hidden="true" /><span>Uitloggen</span>
                         </Link>
                     </div>
@@ -97,11 +94,10 @@ export default function Navbar() {
                             >
                                 <div className="flex flex-col p-4 pb-12 gap-3">
                                     <Link to="/fyp" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full`}><Home size={20} aria-hidden="true" /><span>Mijn Overzicht</span></Link>
-                                    <Link to="/belasting" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full`}><Inbox size={20} aria-hidden="true" /><span>Berichtenbox</span></Link>
-                                    <Link to="/artikel" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full`}><PlusSquare size={20} aria-hidden="true" /><span>Melding Maken</span></Link>
-                                    <Link to="/ai-transparantie" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full`}><Cpu size={20} aria-hidden="true" /><span>AI & Algoritmes</span></Link>
+                                    <Link to="/fyp" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full`}><Inbox size={20} aria-hidden="true" /><span>Berichtenbox</span></Link>
+                                    <Link to="/fyp" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full`}><PlusSquare size={20} aria-hidden="true" /><span>Melding Maken</span></Link>
                                     <Link to="/settings" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full`}><Settings size={20} aria-hidden="true" /><span>Mijn Gegevens</span></Link>
-                                    <Link to="/loguit" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full`}><LogOut size={20} aria-hidden="true" /><span>Uitloggen</span></Link>
+                                    <Link to="/logout" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full`}><LogOut size={20} aria-hidden="true" /><span>Uitloggen</span></Link>
                                 </div>
                             </div>
                         )}

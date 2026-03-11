@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Cpu, LogIn, User, X, Menu } from 'lucide-react';
+import { Cpu, LogIn, User, X, Menu, Info } from 'lucide-react';
 
 export default function Navbar() {
     // WCAG AA: Contrastratio min. 4.5:1. Focus-ring voor toetsenbord-gebruikers.
@@ -41,7 +41,7 @@ export default function Navbar() {
 
                     {/* Logo */}
                     <div className="flex items-center">
-                        <Link to="/" aria-label="Naar de startpagina" onClick={() => setMobileOpen(false)}>
+                        <Link to="/" aria-label="Naar de startpagina">
                             <div className="h-16 w-48 flex items-center">
                                 <img
                                     src="/images/logo.jpg"
@@ -57,6 +57,9 @@ export default function Navbar() {
                     <div className="hidden md:flex gap-4">
                         <Link to="/ai-transparantie" className={blackBtnStyle} aria-label="Informatie over AI & Algoritmes">
                             <Cpu size={20} aria-hidden="true" /><span>AI & Algoritmes</span>
+                        </Link>
+                        <Link to="/informatie" className={blackBtnStyle} aria-label="Over ons">
+                            <Info size={20} aria-hidden="true" /><span>Over ons</span>
                         </Link>
 
                         {isLoggedIn ? (
@@ -87,6 +90,9 @@ export default function Navbar() {
                                 <div className="flex flex-col p-4 pb-12 gap-3">
                                     <Link to="/ai-transparantie" onClick={() => setMobileOpen(false)} className={blackBtnStyle}>
                                         <Cpu size={20} aria-hidden="true" /><span>AI & Algoritmes</span>
+                                    </Link>
+                                    <Link to="/informatie" onClick={() => setMobileOpen(false)} className={blackBtnStyle}>
+                                        <Info size={20} aria-hidden="true" /><span>Over ons</span>
                                     </Link>
                                     <Link to={isLoggedIn ? "/settings" : "/login"} onClick={() => setMobileOpen(false)} className={blackBtnStyle}>
                                         {isLoggedIn ? <User size={20} aria-hidden="true" /> : <LogIn size={20} aria-hidden="true" />}
