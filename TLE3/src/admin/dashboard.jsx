@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {Link, Outlet} from 'react-router';
+import {Link, Outlet, useParams} from 'react-router';
 // import { useState } from "react";
 import { BellIcon } from "@heroicons/react/24/outline";
 import Footer from "../components/Footer.jsx";
@@ -7,7 +7,19 @@ import {Inbox} from "lucide-react";
 
     function Dashboard() {
 
+        const adminId = localStorage.getItem("authUser");
         const [open, setOpen] = useState(false);
+
+
+        const savedAdmin = JSON.parse(localStorage.getItem("authUser"));
+
+        const [admin, setAdmin] = useState({
+            first_name: savedAdmin?.first_name || "",
+            last_name: savedAdmin?.last_name || "",
+            email: savedAdmin?.email || "",
+        });
+
+        console.log(adminId.first_name)
 
         const notifications = [
             {id: 1, sender: "Mw. de Wit", message: "Afspraak zometeen..", time: "2m ago"},
@@ -15,13 +27,14 @@ import {Inbox} from "lucide-react";
             {id: 3, sender: "mw. Slager", message: "Dat is dan afgesproken", time: "1h ago"},
         ];
 
+        console.log(adminId)
 
         return (
             <div className="min-h-screen bg-slate-50 ">
 <main>
     <div id={`container`} className="flex-column text-center mx-auto">
 
-        <h1 className="text-4xl font-bold pb-5">welcome bij de dashboard admin !</h1>
+        <h1 className="text-4xl font-bold pb-5">welcome bij de dashboard {admin.first_name} {admin.last_name} !</h1>
 
         <div id={`agenda`} className="border-3 bg-neutral-100 mx-80 border-black-600 p-7 mb-6  ">
             <h2 className="font-bold border-b-2 border-black-600 ">Agenda</h2>
@@ -85,7 +98,8 @@ import {Inbox} from "lucide-react";
         <div id={`message`} className="border-3 bg-neutral-100 border-black-600 p-7 pt-8 mx-80 mb-6 ">
             <h2 className="font-bold">Meldingen</h2>
             <div className="relative inline-block text-left">
-                <button onClick={() => setOpen(!open)} className="p-2 m-3 rounded text-white bg-green-600 hover:bg-green-500 focus:outline-none">
+                <button onClick={() => setOpen(!open)}
+                        className="p-2 m-3 rounded text-white bg-green-600 hover:bg-green-500 focus:outline-none">
                     3 Mededelingen
                     {/*<BellIcon className="h-6 w-6 text-gray-600"/>*/}
                 </button>
