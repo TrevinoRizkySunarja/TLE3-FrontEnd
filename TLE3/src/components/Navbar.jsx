@@ -93,7 +93,7 @@ export default function Navbar() {
                             <Link to="/settings" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full justify-start`}>
                                 <Settings size={20} /><span>Instellingen</span>
                             </Link>
-                            <Link to="/loguit" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full justify-start`}>
+                            <Link to="/logout" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full justify-start`}>
                                 <LogOut size={20} /><span>Uitloggen</span>
                             </Link>
                         </div>
