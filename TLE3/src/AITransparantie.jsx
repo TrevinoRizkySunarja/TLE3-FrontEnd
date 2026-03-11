@@ -54,12 +54,13 @@ export default function AITransparantie() {
                     Je behoudt toegang tot alle belangrijke functies, maar zonder persoonlijke aanbevelingen.
                 </p>
 
-                <button
-                    className="mt-4 px-6 py-3 bg-[#008100] text-white font-bold rounded-md
-                     hover:bg-black hover:text-[#F5F5F5] transition-colors"
+                <a
+                    href="/instellingen"
+                    className="inline-block mt-4 px-6 py-3 bg-[#008100] text-white font-bold rounded-md
+               hover:bg-black hover:text-[#F5F5F5] transition-colors"
                 >
                     Ga naar instellingen
-                </button>
+                </a>
             </section>
 
             {/* SECTION 5 — Waarom zie ik dit */}
