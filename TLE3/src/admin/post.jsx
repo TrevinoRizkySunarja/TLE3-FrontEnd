@@ -1,5 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {useNavigate} from "react-router";
+import Footer from "../components/Footer.jsx";
 
 function FormComponent() {
     const navigate = useNavigate();
@@ -186,6 +187,7 @@ function FormComponent() {
                         </form>
                     </section>
                 </main>
+            <Footer />
         </div>
     );
 }

@@ -26,6 +26,7 @@ import AanvraagForm from "./form/AanvraagForm.jsx";
 import AanvraagForm2 from "./form/AanvraagForm2.jsx";
 import AanvraagForm3 from "./form/AanvraagForm3.jsx";
 import AanvraagVoltooid from "./form/AanvraagVoltooid.jsx";
+import {Home} from "lucide-react";
 
 // Placeholder pages
 const CreateProduct = () => (
