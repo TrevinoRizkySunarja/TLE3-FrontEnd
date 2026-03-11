@@ -1,6 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 // import je components
-import Layout from "./index.jsx";
 import LayoutWithNavbar from "./LayoutWithNavbar.jsx";
 
 // Pages
@@ -53,11 +52,6 @@ const router = createBrowserRouter([
                 path: "/create",
                 element: <CreateProduct />,
             },
-
-            {
-                path: "/products/:id",
-                element: <ProductDetail />,
-            },
             {
                 path: "/navbar-ing",
                 element: <NavbarIng />,
@@ -66,14 +60,9 @@ const router = createBrowserRouter([
                 path: "/navbar-uit",
                 element: <NavbarUit />,
             },
-            { path: "/",                    element: <Homepage /> },
-            { path: "/fyp",                 element: <FYP /> },
             { path: "/settings",            element: <Profile_User /> },
-            { path: "/create",              element: <CreateProduct /> },
-            { path: "/dashboard",           element: <Dashboard /> },
             { path: "/admin/dashboard",     element: <Dashboard /> },
             { path: "/post",                element: <Post /> },
-            { path: "/navbar-ing",          element: <NavbarIng /> },
             { path: "/test-navbar",         element: <TestNavbar /> },
             { path: "/filter",              element: <Filter /> },
             { path: "/ai-transparantie",    element: <AITransparantie /> },

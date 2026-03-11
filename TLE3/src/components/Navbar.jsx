@@ -22,14 +22,14 @@ export default function Navbar() {
             {/* Overlay: Maakt de rest van de pagina donkerder bij mobiel menu. */}
             {mobileOpen && (
                 <div
-                    className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-[40]"
+                    className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-40"
                     onClick={() => setMobileOpen(false)}
                     style={{ top: '80px' }}
                 />
             )}
 
             {/* Navbar: Altijd bovenop (z-50) met duidelijke rol-definitie. */}
-            <nav role="navigation" className="fixed top-0 left-0 right-0 z-[50] bg-[#FFFFFF] border-b border-[#E0E0E0] pt-4 pb-6 px-4 font-['Arial',sans-serif]">
+            <nav role="navigation" className="fixed top-0 left-0 right-0 z-50 bg-[#FFFFFF] border-b border-[#E0E0E0] pt-4 pb-6 px-4 font-['Arial',sans-serif]">
                 <div className="max-w-7xl mx-auto flex items-center justify-between">
 
                     {/* Logo: Altijd terug naar home. */}
@@ -94,13 +94,6 @@ export default function Navbar() {
                             <Link to="/logout" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full justify-start`}>
                                 <LogOut size={20} /><span>Uitloggen</span>
                             </Link>
-                        <div className="flex flex-col p-4 gap-3">
-                            <Link to="/" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full`}><Home size={20} /><span>Home</span></Link>
-                            <Link to="/belasting" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full`}><Inbox size={20} /><span>Inbox</span></Link>
-                            <Link to="/artikel" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full`}><PlusSquare size={20} /><span>Artikel Creëren</span></Link>
-                            <Link to="/ai-transparantie" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full`}><Cpu size={20} /><span>AI Transparantie</span></Link>
-                            <Link to="/settings" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full`}><Settings size={20} /><span>Instellingen</span></Link>
-                            <Link to="/loguit" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full`}><LogOut size={20} /><span>Uitloggen</span></Link>
                         </div>
                     </div>
                 )}
