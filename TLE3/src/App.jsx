@@ -1,7 +1,7 @@
-import { createBrowserRouter, RouterProvider } from "react-router";
-// import je components
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+// Layout
 import LayoutWithNavbar from "./LayoutWithNavbar.jsx";
-import AuthLayout from "./AuthLayout.jsx"; // maak dit bestand of laat het inline
 
 // Pages
 import TestNavbar from "./pages/TestNavbar";
@@ -17,7 +17,6 @@ import ForgotPassword from "./forgot_password.jsx";
 // Admin pages
 import Dashboard from "./admin/dashboard.jsx";
 import Post from "./admin/post.jsx";
-import Layout from "./index.jsx";
 import Filter from "./admin/filter.jsx";
 import Home from "./admin/home.jsx";
 
@@ -48,20 +47,17 @@ const router = createBrowserRouter([
             { path: "/create", element: <CreateProduct /> },
             { path: "/products/:id", element: <ProductDetail /> },
             { path: "/navbar-ing", element: <NavbarIng /> },
-        ],
-    },
-    {
-        element: <AuthLayout />,
-        children: [
             { path: "/test-navbar", element: <TestNavbar /> },
-            { path: "/register", element: <Register /> },
-            { path: "/login", element: <Login /> },
-            { path: "/logout", element: <Logout /> },
             { path: "/filter", element: <Filter /> },
-            { path: "/forgot_password", element: <ForgotPassword /> },
             { path: "/ai-transparantie", element: <AITransparantie /> },
         ],
     },
+
+    // Auth pages (zonder layout)
+    { path: "/register", element: <Register /> },
+    { path: "/login", element: <Login /> },
+    { path: "/logout", element: <Logout /> },
+    { path: "/forgot_password", element: <ForgotPassword /> },
 ]);
 
 function App() {
