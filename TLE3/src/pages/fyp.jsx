@@ -22,8 +22,6 @@ const FYP = () => {
 
     console.log(username)
 
-
-
     // De lijst met actieve meldingen die getoond worden in de feed.
     const [feedItems, setFeedItems] = useState([
         {
