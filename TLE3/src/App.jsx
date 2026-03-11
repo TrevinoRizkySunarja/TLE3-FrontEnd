@@ -22,6 +22,12 @@ import Home from "./admin/home.jsx";
 
 import AITransparantie from "./AITransparantie.jsx";
 
+// Aanvraagformulieren
+import AanvraagForm from "./pages/AanvraagForm.jsx";
+import AanvraagForm2 from "./pages/AanvraagForm2.jsx";
+import AanvraagForm3 from "./pages/AanvraagForm3.jsx";
+import AanvraagVoltooid from "./pages/AanvraagVoltooid.jsx";
+
 // Placeholder pages
 const CreateProduct = () => (
     <div style={{ padding: 24 }}>
@@ -50,6 +56,12 @@ const router = createBrowserRouter([
             { path: "/test-navbar", element: <TestNavbar /> },
             { path: "/filter", element: <Filter /> },
             { path: "/ai-transparantie", element: <AITransparantie /> },
+
+            // ⭐ AANVRAAGFORMULIEREN
+            { path: "/aanvraag/stap-1", element: <AanvraagForm /> },
+            { path: "/aanvraag/stap-2", element: <AanvraagForm2 /> },
+            { path: "/aanvraag/stap-3", element: <AanvraagForm3 /> },
+            { path: "/aanvraag/voltooid", element: <AanvraagVoltooid /> },
         ],
     },
 
