@@ -5,7 +5,6 @@ import LayoutWithNavbar from "./LayoutWithNavbar.jsx";
 // Pages
 import TestNavbar from "./pages/TestNavbar";
 import NavbarIng from "./pages/NavbarIng";
-// Importeer je nieuwe FYP pagina
 import FYP from "./pages/fyp.jsx";
 import Homepage from "./pages/homepage.jsx";
 
@@ -39,37 +38,28 @@ const router = createBrowserRouter([
     {
         element: <LayoutWithNavbar />,
         children: [
-            {
-                path: "/",
-                element: <Homepage />,
-            },
-            {
-                path: "/fyp",
-                element: <FYP />,
-            },
-            {
-                path: "/create",
-                element: <CreateProduct />,
-            },
-            { path: "/dashboard", element: <Dashboard /> },
-            { path: "/post", element: <Post /> },
-            { path: "/navbar-ing", element: <NavbarIng /> },
-            { path: "/test-navbar", element: <TestNavbar /> },
-            { path: "/filter", element: <Filter /> },
-            { path: "/ai-transparantie", element: <AITransparantie /> },
-
-            // ⭐ AANVRAAGFORMULIEREN
-            { path: "/aanvraag/stap-1", element: <AanvraagForm /> },
-            { path: "/aanvraag/stap-2", element: <AanvraagForm2 /> },
-            { path: "/aanvraag/stap-3", element: <AanvraagForm3 /> },
-            { path: "/aanvraag/voltooid", element: <AanvraagVoltooid /> },
+            { path: "/",                    element: <Homepage /> },
+            { path: "/fyp",                 element: <FYP /> },
+            { path: "/create",              element: <CreateProduct /> },
+            { path: "/dashboard",           element: <Dashboard /> },
+            { path: "/admin/dashboard",     element: <Dashboard /> },
+            { path: "/post",                element: <Post /> },
+            { path: "/navbar-ing",          element: <NavbarIng /> },
+            { path: "/test-navbar",         element: <TestNavbar /> },
+            { path: "/filter",              element: <Filter /> },
+            { path: "/ai-transparantie",    element: <AITransparantie /> },
+            { path: "/aanvraag/stap-1",     element: <AanvraagForm /> },
+            { path: "/aanvraag/stap-2",     element: <AanvraagForm2 /> },
+            { path: "/aanvraag/stap-3",     element: <AanvraagForm3 /> },
+            { path: "/aanvraag/voltooid",   element: <AanvraagVoltooid /> },
         ],
     },
 
     // Auth pages (zonder layout)
-    { path: "/register", element: <Register /> },
-    { path: "/login", element: <Login /> },
-    { path: "/logout", element: <Logout /> },
+    { path: "/register",        element: <Register /> },
+    { path: "/login",           element: <Login /> },
+    { path: "/logout",          element: <Logout /> },
+    { path: "/logout",          element: <Logout /> },
     { path: "/forgot_password", element: <ForgotPassword /> },
 ]);
 

@@ -65,22 +65,30 @@ function Login() {
             // Sla gebruikersgegevens op zodat FYP en Profile ze kunnen lezen
             const apiUser = data?.user || data || {};
             const authUser = {
-                first_name: apiUser.first_name || apiUser.firstname || "",
-                last_name:  apiUser.last_name  || apiUser.lastname  || "",
-                email:      apiUser.email      || email,
+                first_name:   apiUser.first_name  || apiUser.firstname || "",
+                last_name:    apiUser.last_name   || apiUser.lastname  || "",
+                email:        apiUser.email       || email,
                 phone_number: apiUser.phone_number || "",
                 birth_date:   apiUser.birth_date   || "",
                 bsn:          apiUser.bsn           || "",
                 gender:       apiUser.gender        || "",
+                role:         apiUser.role          || apiUser.is_admin ? "admin" : "user",
             };
             localStorage.setItem("authUser", JSON.stringify(authUser));
 
             console.log("[Login] ✅ LOGIN GELUKT!");
             console.log("[Login] Token opgeslagen in localStorage");
-            console.log("[Login] Gebruikergegevens opgeslagen:", authUser);
-            console.log("[Login] Je wordt doorgestuurd naar FYP...");
+            console.log("[Login] Gebruikersgegevens opgeslagen:", authUser);
 
-            navigate("/fyp");
+            // Admin check: redirect naar dashboard als admin, anders naar FYP
+            const isAdmin = apiUser.role === "admin" || apiUser.is_admin === true || apiUser.is_admin === 1;
+            if (isAdmin) {
+                console.log("[Login] 👑 Gebruiker is ADMIN → doorsturen naar /admin/dashboard");
+                navigate("/admin/dashboard");
+            } else {
+                console.log("[Login] 👤 Gebruiker is geen admin → doorsturen naar /fyp");
+                navigate("/fyp");
+            }
         } catch (submitError) {
             console.error("[Login] Network/connection error", submitError);
             setError(submitError.message || "Serverfout");
