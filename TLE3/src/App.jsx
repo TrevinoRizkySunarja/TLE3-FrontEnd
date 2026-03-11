@@ -7,7 +7,7 @@ import TestNavbar from "./pages/TestNavbar";
 import NavbarIng from "./pages/NavbarIng";
 import FYP from "./pages/fyp.jsx";
 import Homepage from "./pages/homepage.jsx";
-import InformatiePagina from "./Informatie.jsx";
+import InformatiePagina from "./informatie.jsx";
 import NavbarUit from "./pages/navbaruit.jsx";
 import Profile_User from "./pages/profile_user.jsx";
 
@@ -25,10 +25,10 @@ import Filter from "./admin/filter.jsx";
 import AITransparantie from "./AITransparantie.jsx";
 
 // Aanvraagformulieren
-import AanvraagForm from "./form/AanvraagForm.jsx";
-import AanvraagForm2 from "./form/AanvraagForm2.jsx";
-import AanvraagForm3 from "./form/AanvraagForm3.jsx";
-import AanvraagVoltooid from "./form/AanvraagVoltooid.jsx";
+import AanvraagForm from "./Form/AanvraagForm.jsx";
+import AanvraagForm2 from "./Form/AanvraagForm2.jsx";
+import AanvraagForm3 from "./Form/AanvraagForm3.jsx";
+import AanvraagVoltooid from "./Form/AanvraagVoltooid.jsx";
 
 // Placeholder pages
 const CreateProduct = () => (
