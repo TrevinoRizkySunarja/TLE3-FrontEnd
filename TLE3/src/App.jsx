@@ -1,6 +1,5 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
-// Layouts
+import { createBrowserRouter, RouterProvider } from "react-router";
+// import je components
 import LayoutWithNavbar from "./LayoutWithNavbar.jsx";
 import AuthLayout from "./AuthLayout.jsx"; // maak dit bestand of laat het inline
 
