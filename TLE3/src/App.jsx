@@ -6,6 +6,7 @@ import TestNavbar from "./pages/TestNavbar";
 import NavbarIng from "./pages/NavbarIng";
 // Importeer je nieuwe FYP pagina
 import FYP from "./pages/fyp.jsx";
+import Homepage from "./pages/homepage.jsx";
 
 
 // Placeholder components
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <Home />,
+                element: <Homepage />,
             },
             {
                 path: "/fyp",
