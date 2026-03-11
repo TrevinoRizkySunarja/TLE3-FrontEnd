@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 // import je components
+import Layout from "./index.jsx";
 import LayoutWithNavbar from "./LayoutWithNavbar.jsx";
 
 // Pages
@@ -7,6 +8,7 @@ import TestNavbar from "./pages/TestNavbar";
 import NavbarIng from "./pages/NavbarIng";
 import FYP from "./pages/fyp.jsx";
 import Homepage from "./pages/homepage.jsx";
+import NavbarUit from "./pages/navbaruit.jsx";
 import Profile_User from "./pages/profile_user.jsx";
 
 // Auth pages
@@ -39,6 +41,31 @@ const router = createBrowserRouter([
     {
         element: <LayoutWithNavbar />,
         children: [
+            {
+                path: "/",
+                element: <Homepage />,
+            },
+            {
+                path: "/fyp",
+                element: <FYP />,
+            },
+            {
+                path: "/create",
+                element: <CreateProduct />,
+            },
+
+            {
+                path: "/products/:id",
+                element: <ProductDetail />,
+            },
+            {
+                path: "/navbar-ing",
+                element: <NavbarIng />,
+            },
+            {
+                path: "/navbar-uit",
+                element: <NavbarUit />,
+            },
             { path: "/",                    element: <Homepage /> },
             { path: "/fyp",                 element: <FYP /> },
             { path: "/settings",            element: <Profile_User /> },
