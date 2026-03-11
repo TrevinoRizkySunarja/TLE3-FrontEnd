@@ -21,6 +21,7 @@ import Layout from "./index.jsx";
 import Filter from "./admin/filter.jsx";
 
 import AITransparantie from "./AITransparantie.jsx";
+import {Home} from "lucide-react";
 
 // Placeholder pages
 const CreateProduct = () => (
