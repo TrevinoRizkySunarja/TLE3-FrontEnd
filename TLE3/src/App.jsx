@@ -7,7 +7,7 @@ import TestNavbar from "./pages/TestNavbar";
 import NavbarIng from "./pages/NavbarIng";
 import FYP from "./pages/fyp.jsx";
 import Homepage from "./pages/homepage.jsx";
-import InformatiePagina from "./Informatie.jsx";
+import InformatiePagina from "./informatie.jsx";
 import NavbarUit from "./pages/navbaruit.jsx";
 import Profile_User from "./pages/profile_user.jsx";
 
