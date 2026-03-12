@@ -52,7 +52,7 @@ export default function Navbar() {
                         <Link to="/belasting" className={blackBtnStyle}><Inbox size={20} /><span>Inbox</span></Link>
                         <Link to="/artikel" className={blackBtnStyle}><PlusSquare size={20} /><span>Artikel</span></Link>
                         <Link to="/settings" className={blackBtnStyle}><Settings size={20} /><span>Instellingen</span></Link>
-                        <Link to="/loguit" className={blackBtnStyle}><LogOut size={20} /><span>Uitloggen</span></Link>
+                        <Link to="/logout" className={blackBtnStyle}><LogOut size={20} /><span>Uitloggen</span></Link>
                     </div>
 
                     {/* Mobiel Knop: Wisselt tussen Menu en Sluiten icoon. */}

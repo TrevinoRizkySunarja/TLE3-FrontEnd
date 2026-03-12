@@ -65,7 +65,7 @@ function FormComponent() {
             console.log(data);
 
 
-            navigate("/dashboard");
+            navigate("/admin/dashboard");
         } catch (error) {
             console.error("Er is een fout opgetreden:", error);
         }

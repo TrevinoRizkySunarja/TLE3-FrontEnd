@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import { Button } from '../components/Button';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Sparkles, Info, ChevronDown, X } from 'lucide-react';
@@ -10,6 +11,17 @@ const FYP = () => {
     const navigate = useNavigate();
     // Beheert de gebruikersnaam voor de persoonlijke begroeting.
     const [user, setUser] = useState({ name: 'Laden...' });
+    const userName = JSON.parse(localStorage.getItem("authUser"));
+
+    const [username ,getUsername ] = useState(
+        {
+            first_name: userName?.first_name || "",
+            last_name: userName?.last_name || "",
+            email: userName?.email || "",
+        }
+    );
+
+    console.log(username)
 
     // De lijst met actieve meldingen die getoond worden in de feed.
     const [feedItems, setFeedItems] = useState([
@@ -46,11 +58,31 @@ const FYP = () => {
     // Houdt rekening met gebruikers die minder animaties willen (WCAG toegankelijkheid).
     const shouldReduceMotion = useReducedMotion();
 
-    // Haalt bij montage van de component de gebruikersgegevens op.
+    // Haalt bij montage van de component de gebruikersgegevens op uit localStorage (gezet door login).
     useEffect(() => {
-        const mockUser = { name: 'Jan Jansen' };
-        setUser(mockUser);
-    }, []);
+        const token = localStorage.getItem("token");
+        if (!token) {
+            navigate("/login");
+            return;
+        }
+
+        try {
+            const stored = localStorage.getItem("authUser");
+            if (stored) {
+                const authUser = JSON.parse(stored);
+                const fullName = [authUser.first_name, authUser.last_name].filter(Boolean).join(" ");
+                setUser({ name: fullName || authUser.email || "Gebruiker" });
+                console.log("[FYP] Ingelogde gebruiker:", authUser);
+                console.log(authUser.first_name)
+            } else {
+                console.warn("[FYP] Geen authUser gevonden in localStorage");
+                setUser({ name: "Gebruiker" });
+            }
+        } catch (e) {
+            console.error("[FYP] Fout bij lezen authUser:", e);
+            setUser({ name: "Gebruiker" });
+        }
+    }, [navigate]);
 
     // Verwijdert een specifieke melding uit de lijst op basis van ID.
     const removeItem = (id) => {
@@ -76,7 +108,7 @@ const FYP = () => {
                 {/* Pagina-titel met persoonlijke begroeting */}
                 <header className="mb-8">
                     <h1 className="text-[32px] md:text-[40px] font-bold text-[#000000] leading-tight mb-2">
-                        Welkom {user.name}
+                        Welkom {username.first_name}
                     </h1>
                     <div className="h-px bg-[#E0E0E0] w-full" aria-hidden="true" />
                 </header>
