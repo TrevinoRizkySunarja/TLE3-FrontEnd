@@ -4,8 +4,10 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Sparkles, Info, ChevronDown, X } from 'lucide-react';
 import NavbarIngelogd from "../components/NavbarIngelogd.jsx";
 import FooterIngelogd from "../components/FooterIngelogd.jsx";
+import { useNavigate } from 'react-router-dom';
 
 const FYP = () => {
+    const navigate = useNavigate();
     // Beheert de gebruikersnaam voor de persoonlijke begroeting.
     const [user, setUser] = useState({ name: 'Laden...' });
 
@@ -17,7 +19,8 @@ const FYP = () => {
             body: 'Uw paspoort verloopt binnenkort, verleng hem nu!',
             actionText: 'Paspoort verlengen',
             type: 'ai-suggestion',
-            reason: 'Gebaseerd op de verloopdatum in de Basisregistratie Personen (BRP).'
+            reason: 'Gebaseerd op de verloopdatum in de Basisregistratie Personen (BRP).',
+            link: '/aanvraag/stap-1'
         },
         {
             id: 2,
@@ -120,7 +123,11 @@ const FYP = () => {
 
                                     {/* Actieknoppen voor de gebruiker per melding */}
                                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                                        <Button variant="secondary" onClick={() => {}}>➔ {item.actionText}</Button>
+                                        <Button variant="secondary" onClick={() => {
+                                            if (item.link) {
+                                                navigate(item.link);
+                                            }
+                                        }}>➔ {item.actionText}</Button>
                                         <button
                                             onClick={() => removeItem(item.id)}
                                             className="text-[14px] font-bold text-[#1B1B1B] underline hover:text-[#008100] focus:ring-2 focus:ring-[#008100] py-2 transition-colors rounded-[5px] outline-none"
