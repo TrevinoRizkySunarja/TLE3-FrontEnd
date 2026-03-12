@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router';
 import { Button } from '../components/Button';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Sparkles, Info, ChevronDown, X } from 'lucide-react';
@@ -9,19 +8,11 @@ import { useNavigate } from 'react-router-dom';
 
 const FYP = () => {
     const navigate = useNavigate();
-    // Beheert de gebruikersnaam voor de persoonlijke begroeting.
-    const [user, setUser] = useState({ name: 'Laden...' });
-    const userName = JSON.parse(localStorage.getItem("authUser"));
-
-    const [username ,getUsername ] = useState(
-        {
-            first_name: userName?.first_name || "",
-            last_name: userName?.last_name || "",
-            email: userName?.email || "",
-        }
-    );
-
-    console.log(username)
+    const [username, setUsername] = useState({
+        first_name: "Laden...",
+        last_name: "",
+        email: "",
+    });
 
     // De lijst met actieve meldingen die getoond worden in de feed.
     const [feedItems, setFeedItems] = useState([
@@ -70,17 +61,20 @@ const FYP = () => {
             const stored = localStorage.getItem("authUser");
             if (stored) {
                 const authUser = JSON.parse(stored);
-                const fullName = [authUser.first_name, authUser.last_name].filter(Boolean).join(" ");
-                setUser({ name: fullName || authUser.email || "Gebruiker" });
+                setUsername({
+                    first_name: authUser.first_name || authUser.email || "Gebruiker",
+                    last_name: authUser.last_name || "",
+                    email: authUser.email || ""
+                });
                 console.log("[FYP] Ingelogde gebruiker:", authUser);
                 console.log(authUser.first_name)
             } else {
                 console.warn("[FYP] Geen authUser gevonden in localStorage");
-                setUser({ name: "Gebruiker" });
+                setUsername({ first_name: "Gebruiker", last_name: "", email: "" });
             }
         } catch (e) {
             console.error("[FYP] Fout bij lezen authUser:", e);
-            setUser({ name: "Gebruiker" });
+            setUsername({ first_name: "Gebruiker", last_name: "", email: "" });
         }
     }, [navigate]);
 
