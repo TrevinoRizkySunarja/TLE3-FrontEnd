@@ -10,6 +10,7 @@ import Homepage from "./pages/homepage.jsx";
 import InformatiePagina from "./informatie.jsx";
 import NavbarUit from "./pages/navbaruit.jsx";
 import Profile_User from "./pages/profile_user.jsx";
+import Berichtenbox from "./pages/berichtenbox.jsx";
 
 // Auth pages
 import Register from "./register.jsx";
@@ -41,45 +42,35 @@ const router = createBrowserRouter([
     {
         element: <LayoutWithNavbar />,
         children: [
-            {
-                path: "/",
-                element: <Homepage />,
-            },
-            {
-                path: "/fyp",
-                element: <FYP />,
-            },
-            {
-                path: "/create",
-                element: <CreateProduct />,
-            },
-            {
-                path: "/navbar-ing",
-                element: <NavbarIng />,
-            },
-            {
-                path: "/navbar-uit",
-                element: <NavbarUit />,
-            },
-            { path: "/settings",            element: <Profile_User /> },
-            { path: "/admin/dashboard",     element: <Dashboard /> },
-            { path: "/post",                element: <Post /> },
-            { path: "/test-navbar",         element: <TestNavbar /> },
-            { path: "/filter",              element: <Filter /> },
-            { path: "/ai-transparantie",    element: <AITransparantie /> },
-            { path: "/aanvraag/stap-1",     element: <AanvraagForm /> },
-            { path: "/aanvraag/stap-2",     element: <AanvraagForm2 /> },
-            { path: "/aanvraag/stap-3",     element: <AanvraagForm3 /> },
-            { path: "/aanvraag/voltooid",   element: <AanvraagVoltooid /> },
+            { path: "/", element: <Homepage /> },
+            { path: "/fyp", element: <FYP /> },
+            { path: "/create", element: <CreateProduct /> },
+            { path: "/navbar-ing", element: <NavbarIng /> },
+            { path: "/navbar-uit", element: <NavbarUit /> },
+            { path: "/settings", element: <Profile_User /> },
+            { path: "/admin/dashboard", element: <Dashboard /> },
+            { path: "/post", element: <Post /> },
+            { path: "/test-navbar", element: <TestNavbar /> },
+            { path: "/filter", element: <Filter /> },
+            { path: "/ai-transparantie", element: <AITransparantie /> },
+
+            // Aanvraagformulieren
+            { path: "/aanvraag/stap-1", element: <AanvraagForm /> },
+            { path: "/aanvraag/stap-2", element: <AanvraagForm2 /> },
+            { path: "/aanvraag/stap-3", element: <AanvraagForm3 /> },
+            { path: "/aanvraag/voltooid", element: <AanvraagVoltooid /> },
+
+            // ⭐ Nieuwe route
+            { path: "/berichten", element: <Berichtenbox /> },
         ],
     },
 
     // Auth pages (zonder layout)
-    { path: "/register",        element: <Register /> },
-    { path: "/login",           element: <Login /> },
-    { path: "/logout",          element: <Logout /> },
+    { path: "/register", element: <Register /> },
+    { path: "/login", element: <Login /> },
+    { path: "/logout", element: <Logout /> },
     { path: "/forgot_password", element: <ForgotPassword /> },
-    { path: "/informatie",      element: <InformatiePagina />},
+    { path: "/informatie", element: <InformatiePagina /> },
 ]);
 
 function App() {
