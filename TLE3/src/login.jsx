@@ -72,8 +72,9 @@ function Login() {
                 birth_date:   apiUser.birth_date   || "",
                 bsn:          apiUser.bsn           || "",
                 gender:       apiUser.gender        || "",
-                role:         apiUser.role || (apiUser.is_admin ? "admin" : "user"),
+                role:         apiUser.role          || apiUser.is_admin ? "admin" : "user",
             };
+
             localStorage.setItem("authUser", JSON.stringify(authUser));
 
             console.log("[Login] ✅ LOGIN GELUKT!");
