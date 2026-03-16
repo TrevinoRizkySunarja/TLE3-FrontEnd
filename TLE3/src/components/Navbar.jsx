@@ -37,7 +37,7 @@ export default function Navbar() {
                         <Link to="/" onClick={() => setMobileOpen(false)}>
                             <div className="h-16 w-48 flex items-center">
                                 <img
-                                    src="/images/logo.jpg"
+                                    src="/images/logo.png"
                                     alt="Terug naar Home"
                                     className="rounded-[5px]"
                                     style={{ height: '64px', width: 'auto', transform: 'scale(1.6)', transformOrigin: 'left center' }}

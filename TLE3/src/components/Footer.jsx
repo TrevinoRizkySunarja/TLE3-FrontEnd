@@ -89,11 +89,11 @@ export default function Footer() {
 
                     <div className="flex items-center gap-4">
                         <span className="text-[18px] font-bold text-[#FFFFFF] leading-none">
-                            Gemeente CMGT
+                            Gemeente FlowHaven
                         </span>
                         <img
-                            src="/images/logo.jpg"
-                            alt="Logo Gemeente CMGT"
+                            src="/images/logo.png"
+                            alt="Logo Gemeente FlowHaven"
                             className="h-12 w-auto rounded-[5px] object-contain"
                         />
                     </div>

@@ -42,26 +42,8 @@ const Homepage = () => {
             return "/aanvraagform1";
         }
 
-        // Mapping naar werkende URL's van de gemeente
-        const links = {
-            "wonen": "https://www.rotterdam.nl/wonen-wijken",
-            "bouwen": "https://www.rotterdam.nl/bouwen-verbouwen",
-            "afval": "https://www.rotterdam.nl/afval-aanbieden",
-            "parkeren": "https://www.rotterdam.nl/parkeren",
-            "belastingen": "https://www.rotterdam.nl/gemeentelijke-belastingen",
-            "onderwijs": "https://www.rotterdam.nl/onderwijs-kinderopvang",
-            "werk": "https://www.rotterdam.nl/werk-inkomen",
-            "melding": "https://www.rotterdam.nl/melding-doen",
-            "zorg": "https://www.rotterdam.nl/zorg-ondersteuning",
-            "verhuizing": "https://www.rotterdam.nl/verhuizing-doorgeven",
-            "rijbewijs": "https://www.rotterdam.nl/rijbewijs-aanvragen"
-        };
-
-        // Zoek naar een match in de sleutelwoorden
-        const foundKey = Object.keys(links).find(key => lowerName.includes(key));
-
-        // Als er een match is, gebruik die URL. Anders gebruik de zoekfunctie als fallback.
-        return foundKey ? links[foundKey] : `https://www.rotterdam.nl/zoeken?q=${encodeURIComponent(name)}`;
+        // Generic search fallback
+        return `https://www.google.com/search?q=${encodeURIComponent(name + " site:rotterdam.nl")}`;
     };
 
     return (
@@ -81,16 +63,16 @@ const Homepage = () => {
 
                     <form
                         role="search"
-                        aria-label="Zoek op de website van de gemeente Rotterdam"
+                        aria-label="Zoek op de website van de gemeente FlowHaven"
                         onSubmit={(e) => {
                             e.preventDefault();
                             if (searchTerm.trim()) {
-                                window.location.href = `https://www.rotterdam.nl/zoeken?q=${encodeURIComponent(searchTerm)}`;
+                                window.location.href = `https://www.google.com/search?q=${encodeURIComponent(searchTerm + " site:rotterdam.nl")}`;
                             }
                         }}
                         className="relative max-w-xl mx-auto"
                     >
-                        <label htmlFor="category-search" className="sr-only">Zoek op rotterdam.nl</label>
+                        <label htmlFor="category-search" className="sr-only">Zoek op FlowHaven.nl</label>
                         <input
                             id="category-search"
                             type="search"
@@ -174,12 +156,12 @@ const Homepage = () => {
                             <MapPin size={22} className="text-[#008100]" aria-hidden="true" />
                             <div>
                                 <h3 className="font-bold text-black text-lg">In uw buurt</h3>
-                                <p className="text-sm text-[#555]">Bekijk meldingen en werkzaamheden op de kaart van Rotterdam.</p>
+                                <p className="text-sm text-[#555]">Bekijk meldingen en werkzaamheden op de kaart van FlowHaven.</p>
                             </div>
                         </div>
                         <Button
                             variant="secondary"
-                            onClick={() => window.open('https://www.rotterdam.nl/kaarten/meldingen-buitenruimte/', '_blank')}
+                            onClick={() => window.open('https://www.google.com/maps/place/Rotterdam', '_blank')}
                             className="text-sm px-8"
                             aria-label="Open kaart met meldingen en werkzaamheden in uw buurt"
                         >

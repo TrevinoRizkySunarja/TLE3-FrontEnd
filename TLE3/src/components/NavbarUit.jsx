@@ -44,8 +44,8 @@ export default function Navbar() {
                         <Link to="/" aria-label="Naar de startpagina">
                             <div className="h-16 w-48 flex items-center">
                                 <img
-                                    src="/images/logo.jpg"
-                                    alt="Logo Gemeente Rotterdam"
+                                    src="/images/logo.png"
+                                    alt="Logo Gemeente FlowHaven"
                                     className="rounded-[5px]"
                                     style={{ height: '64px', width: 'auto', transform: 'scale(1.6)', transformOrigin: 'left center' }}
                                 />
@@ -67,7 +67,7 @@ export default function Navbar() {
                                 <User size={20} aria-hidden="true" /><span>Mijn Account</span>
                             </Link>
                         ) : (
-                            <Link to="/login" className={blackBtnStyle} aria-label="Inloggen bij Mijn Rotterdam">
+                            <Link to="/login" className={blackBtnStyle} aria-label="Inloggen bij Mijn FlowHaven">
                                 <LogIn size={20} aria-hidden="true" /><span>Inloggen</span>
                             </Link>
                         )}

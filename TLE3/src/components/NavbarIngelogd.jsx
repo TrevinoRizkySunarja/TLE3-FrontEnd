@@ -45,8 +45,8 @@ export default function Navbar() {
                         <Link to="/fyp" aria-label="Naar Mijn Overzicht" onClick={() => setMobileOpen(false)}>
                             <div className="h-16 w-48 flex items-center">
                                 <img
-                                    src="/images/logo.jpg"
-                                    alt="Logo Gemeente Rotterdam"
+                                    src="/images/logo.png"
+                                    alt="Logo Gemeente FlowHaven"
                                     className="rounded-[5px]"
                                     style={{ height: '64px', width: 'auto', transform: 'scale(1.6)', transformOrigin: 'left center' }}
                                 />
@@ -105,7 +105,7 @@ export default function Navbar() {
                 </div>
             </nav>
             {/* Spacer: Voorkomt dat pagina-content achter de navbar verdwijnt. */}
-            <div className="h-[30px]" aria-hidden="true"></div>
+            {/*<div className="h-[30px]" aria-hidden="true"></div>*/}
         </>
     );
 }

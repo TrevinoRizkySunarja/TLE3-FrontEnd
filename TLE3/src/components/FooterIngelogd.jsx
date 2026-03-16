@@ -88,15 +88,15 @@ export default function FooterIngelogd() {
                 <div className="border-t border-[#FFFFFF] pt-8 flex flex-col md:flex-row justify-between items-center md:items-end gap-6">
                     <div className="text-center md:text-left">
                         <p className="text-[14px] text-[#FFFFFF]">
-                            &copy; {new Date().getFullYear()} — Gemeente CMGT
+                            &copy; {new Date().getFullYear()} — Gemeente FlowHaven
                         </p>
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <span className="text-[18px] font-bold text-[#FFFFFF]">Gemeente CMGT</span>
+                        <span className="text-[18px] font-bold text-[#FFFFFF]">Gemeente FlowHaven</span>
                         <img
-                            src="/images/logo.jpg"
-                            alt="Logo Gemeente CMGT"
+                            src="/images/logo.png"
+                            alt="Logo Gemeente FlowHaven"
                             className="h-12 w-auto rounded-[5px]"
                         />
                     </div>
