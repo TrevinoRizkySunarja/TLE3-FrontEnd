@@ -46,7 +46,7 @@ function FormComponent() {
 
     async function createPost() {
         try {
-            const response = await fetch("http://145.24.237.215:8000/api/content-items/", {
+            const response = await fetch(`${process.env.API_BASE_URL}/api/content-items/`, {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
