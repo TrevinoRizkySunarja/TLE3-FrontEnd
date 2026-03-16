@@ -11,26 +11,6 @@ function Login() {
     const navigate = useNavigate();
     async function login() {
 
-        //
-        // const payload = {
-        //     email,
-        //     password
-        // };
-        //
-        //
-        // const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/user/login`, {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //         "Accept": "application/json",
-        //         // "x-api-key": apiKey
-        //     },
-        //     body: JSON.stringify(payload)
-        // });
-        //
-        // const data =  await response.json();
-        // console.log(data);
-
         try {
             setIsLoading(true);
             setError("");
@@ -56,10 +36,10 @@ function Login() {
 
             if (data.user.is_admin) {
                 console.log("admin");
-                navigate("/admin/dashboard");
+                navigate("/admin/dashboard", { state: { user: data.user } });
             } else {
                 console.log("gewone gebruiker");
-                navigate("/fyp");
+                navigate("/fyp", { state: { user: data.user } });
             }
 
         } catch (error) {
@@ -75,6 +55,8 @@ function Login() {
         e.preventDefault();
         login().then(r => 'logged in succesfully');
     };
+
+
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">

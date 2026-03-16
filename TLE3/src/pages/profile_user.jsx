@@ -1,56 +1,25 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import { User, Mail, Phone, Calendar, CreditCard, Users, ArrowLeft, IdCard, Car, Leaf, Ticket, Recycle } from 'lucide-react';
 import NavbarIngelogd from "../components/NavbarIngelogd.jsx";
 import FooterIngelogd from "../components/FooterIngelogd.jsx";
 
-const defaultUserData = {
-    first_name: '',
-    last_name: '',
-    email: '',
-    phone_number: '',
-    birth_date: '',
-    bsn: '',
-    gender: '',
-    passport_expiry: '',
-    drivers_license_expiry: '',
-    greenpass_expiry: '',
-    parking_permit_expiry: '',
-    milieupas_expiry: '',
-};
-
 const Profile_User = () => {
     const navigate = useNavigate();
 
-    let userData = defaultUserData;
-    try {
-        const storedUser = localStorage.getItem('authUser');
-        if (storedUser) {
-            userData = { ...defaultUserData, ...JSON.parse(storedUser) };
-        }
-    } catch {
-        userData = defaultUserData;
+    async function FetchUserInfo(){
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/user`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        const data = await response.json();
+        console.log(data);
     }
 
-    const formatDate = (dateString) => {
-        if (!dateString) return 'Niet beschikbaar';
-        const parsedDate = new Date(dateString);
-        if (Number.isNaN(parsedDate.getTime())) return dateString;
-        return parsedDate.toLocaleDateString('nl-NL', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-        });
-    };
-
-    const formatGender = (gender) => {
-        const genderMap = {
-            'man': 'Man',
-            'vrouw': 'Vrouw',
-            'anders': 'Anders',
-            'zeg_ik_liever_niet': 'Zeg ik liever niet'
-        };
-        return genderMap[gender] || gender;
+    const handleSubmit = (e) => {
+        FetchUserInfo();
     };
 
     return (
