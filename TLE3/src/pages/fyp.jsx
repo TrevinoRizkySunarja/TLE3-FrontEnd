@@ -1,232 +1,193 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router';
-import { Button } from '../components/Button';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { Sparkles, Info, ChevronDown, X } from 'lucide-react';
+import { AnimatePresence, useReducedMotion, motion } from 'framer-motion';
+import { Search, ChevronRight, Loader2, Send, CheckCircle, X } from 'lucide-react';
+import { Button } from "../components/Button.jsx";
+import { AICard } from "../components/AICard.jsx";
+import { XAIExplanation } from "../components/XAIExplanation.jsx";
 import NavbarIngelogd from "../components/NavbarIngelogd.jsx";
 import FooterIngelogd from "../components/FooterIngelogd.jsx";
 import { useNavigate } from 'react-router-dom';
 
 const FYP = () => {
     const navigate = useNavigate();
-    // Beheert de gebruikersnaam voor de persoonlijke begroeting.
-    const [user, setUser] = useState({ name: 'Laden...' });
-    const userName = JSON.parse(localStorage.getItem("authUser"));
-
-    const [username ,getUsername ] = useState(
-        {
-            first_name: userName?.first_name || "",
-            last_name: userName?.last_name || "",
-            email: userName?.email || "",
-        }
-    );
-
-    console.log(username)
-
-    // De lijst met actieve meldingen die getoond worden in de feed.
-    const [feedItems, setFeedItems] = useState([
-        {
-            id: 1,
-            title: 'Paspoort',
-            body: 'Uw paspoort verloopt binnenkort, verleng hem nu!',
-            actionText: 'Paspoort verlengen',
-            type: 'ai-suggestion',
-            reason: 'Gebaseerd op de verloopdatum in de Basisregistratie Personen (BRP).',
-            link: '/aanvraag/stap-1'
-        },
-        {
-            id: 2,
-            title: 'Subsidie',
-            body: 'Gefeliciteerd met uw nieuwe woning. Check of u recht heeft op een subsidie.',
-            actionText: 'Subsidie bekijken',
-            type: 'ai-suggestion',
-            reason: 'Gegenereerd op basis van uw recente adreswijziging in onze database.'
-        },
-        {
-            id: 3,
-            title: 'Parkeervergunning',
-            body: 'Gefeliciteerd met uw nieuwe auto, check hier de parkeervergunning mogelijkheden.',
-            actionText: 'Parkeervergunning aanvragen',
-            type: 'ai-suggestion',
-            reason: 'Gekoppeld aan de RDW-registratie van uw nieuwe voertuig.'
-        }
-    ]);
-
-    // Toggle voor het tonen of verbergen van de AI-transparantie sectie.
-    const [showTransparency, setShowTransparency] = useState(false);
-
-    // Houdt rekening met gebruikers die minder animaties willen (WCAG toegankelijkheid).
     const shouldReduceMotion = useReducedMotion();
 
-    // Haalt bij montage van de component de gebruikersgegevens op uit localStorage (gezet door login).
+    const API_BASE_URL = "http://145.24.237.215:8000/api";
+    const API_KEY = ""; // Vul je API key in zodra je die hebt
+
+    // States
+    const [username, setUsername] = useState({ first_name: "Gebruiker" });
+    const [feedItems, setFeedItems] = useState([]);
+    const [showTransparency, setShowTransparency] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (!token) {
-            navigate("/login");
-            return;
+        const stored = localStorage.getItem("authUser");
+        if (stored) {
+            const authUser = JSON.parse(stored);
+            setUsername({ first_name: authUser.first_name || "Gebruiker" });
         }
 
-        try {
-            const stored = localStorage.getItem("authUser");
-            if (stored) {
-                const authUser = JSON.parse(stored);
-                const fullName = [authUser.first_name, authUser.last_name].filter(Boolean).join(" ");
-                setUser({ name: fullName || authUser.email || "Gebruiker" });
-                console.log("[FYP] Ingelogde gebruiker:", authUser);
-                console.log(authUser.first_name)
-            } else {
-                console.warn("[FYP] Geen authUser gevonden in localStorage");
-                setUser({ name: "Gebruiker" });
+        const loadData = async () => {
+            setLoading(true);
+            try {
+                const [catRes, feedRes] = await Promise.all([
+                    fetch(`${API_BASE_URL}/categories`),
+                    fetch(`${API_BASE_URL}/content-items`, {
+                        headers: API_KEY ? { "x-api-key": API_KEY } : {}
+                    })
+                ]);
+
+                const catData = await catRes.json();
+                setCategories(catData);
+
+                if (feedRes.ok) {
+                    const feedData = await feedRes.json();
+                    if (feedData && feedData.length > 0) {
+                        setFeedItems(feedData.map(item => ({
+                            id: item._id || item.id,
+                            title: item.title,
+                            body: item.body,
+                            isUrgent: item.is_urgent,
+                            reason: item.is_urgent
+                                ? "Hoge prioriteit wegens een naderende deadline in uw persoonsgegevens (BRP)."
+                                : `Aanbevolen op basis van uw interesse in ${item.content_type || 'diensten'}.`,
+                        })));
+                    } else {
+                        setFeedItems(getFallbackFeed());
+                    }
+                } else {
+                    setFeedItems(getFallbackFeed());
+                }
+            } catch (err) {
+                setFeedItems(getFallbackFeed());
+            } finally {
+                setLoading(false);
             }
-        } catch (e) {
-            console.error("[FYP] Fout bij lezen authUser:", e);
-            setUser({ name: "Gebruiker" });
-        }
-    }, [navigate]);
+        };
+        loadData();
+    }, []);
 
-    // Verwijdert een specifieke melding uit de lijst op basis van ID.
+    const getFallbackFeed = () => [
+        { id: 'f1', title: 'Paspoort verlengen', body: 'Uw paspoort verloopt binnenkort. Maak nu een afspraak.', isUrgent: true, reason: 'Gebaseerd op de verloopdatum in de Basisregistratie Personen (BRP).' },
+        { id: 'f2', title: 'Subsidie Verduurzaming', body: 'U komt mogelijk in aanmerking voor een subsidie voor uw woning.', isUrgent: false, reason: 'Gegenereerd op basis van uw recente adreswijziging in onze database.' }
+    ];
+
     const removeItem = (id) => {
-        setFeedItems(prevItems => prevItems.filter(item => item.id !== id));
+        setFeedItems(prev => prev.filter(item => item.id !== id));
     };
 
-    // Definieert de animatie-instellingen voor het verschijnen en verdwijnen van kaarten.
-    const cardAnimation = {
-        initial: { opacity: 0 },
-        animate: { opacity: 1 },
-        exit: {
-            opacity: 0,
-            scale: shouldReduceMotion ? 1 : 0.98,
-            transition: { duration: 0.2, ease: "easeInOut" }
-        }
-    };
+    const filteredCategories = categories.filter(cat =>
+        cat.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
-        <div className="bg-[#FFFFFF] min-h-screen font-sans text-[#1B1B1B]">
+        <div className="bg-white min-h-screen font-sans text-[#1B1B1B]">
+            <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-[#008100] text-white p-4 z-50">
+                Skip naar hoofdinhoud
+            </a>
+
             <NavbarIngelogd />
 
-            <main className="max-w-4xl mx-auto p-4 md:p-8" id="main-content">
-                {/* Pagina-titel met persoonlijke begroeting */}
-                <header className="mb-8">
-                    <h1 className="text-[32px] md:text-[40px] font-bold text-[#000000] leading-tight mb-2">
+            {/* Header met Navbar */}
+            <header className="bg-[#F5F5F5] border-b border-[#E0E0E0] pt-20 pb-12 px-6 mt-[-60px]">
+                <div className="max-w-4xl mx-auto text-center">
+                    <h1 className="text-3xl md:text-4xl font-bold mb-6 text-black">
                         Welkom {username.first_name}
                     </h1>
-                    <div className="h-px bg-[#E0E0E0] w-full" aria-hidden="true" />
-                </header>
-
-                {/* Overzicht van alle actuele meldingen met animaties */}
-                <section className="space-y-6" aria-label="Persoonlijke feed">
-                    <AnimatePresence mode="popLayout">
-                        {feedItems.length > 0 ? (
-                            feedItems.map((item) => (
-                                <motion.article
-                                    key={item.id}
-                                    layout
-                                    variants={cardAnimation}
-                                    initial="initial"
-                                    animate="animate"
-                                    exit="exit"
-                                    className={`p-6 border relative rounded-[5px] focus-within:ring-4 focus-within:ring-[#008100]/30 ${
-                                        item.type === 'ai-suggestion'
-                                            ? 'bg-[#F9F9FF] border-[#008100]/30 shadow-sm'
-                                            : 'bg-[#F5F5F5] border-[#E0E0E0]'
-                                    }`}
+                    <form role="search" className="relative max-w-xl mx-auto" onSubmit={(e) => e.preventDefault()}>
+                        <input
+                            type="search"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            placeholder="Waarmee kunnen we u helpen?"
+                            className="w-full h-14 pl-12 pr-32 bg-white border-2 border-[#767676] focus:border-[#008100] outline-none text-lg shadow-sm appearance-none [&::-webkit-search-cancel-button]:appearance-none"
+                        />
+                        <Search className="absolute left-4 top-4 text-[#767676]" size={24} aria-hidden="true" />
+                        
+                        <div className="absolute right-1.5 top-1.5 bottom-1.5 flex items-center gap-x-1">
+                            {searchTerm && (
+                                <button
+                                    type="button"
+                                    onClick={() => setSearchTerm("")}
+                                    className="flex items-center justify-center h-11 w-11 text-[#767676] hover:text-black"
+                                    aria-label="Zoekopdracht wissen"
                                 >
-                                    {/* Label voor AI-gegenereerde content met Sparkles icoon */}
-                                    {item.type === 'ai-suggestion' && (
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <Sparkles size={14} className="text-[#008100]" aria-hidden="true" />
-                                            <span className="text-[12px] font-bold text-[#008100] uppercase tracking-widest">
-                                                AI Suggestie
-                                            </span>
-                                        </div>
-                                    )}
-
-                                    {/* Knop om een melding direct te verwijderen */}
-                                    <button
-                                        onClick={() => removeItem(item.id)}
-                                        className="absolute top-4 right-4 text-[#1B1B1B] hover:text-[#008100] focus:ring-2 focus:ring-[#008100] p-2 transition-colors rounded-full outline-none"
-                                        aria-label={`Verwijder melding: ${item.title}`}
-                                    >
-                                        <X size={20} />
-                                    </button>
-
-                                    <h2 className="text-[24px] font-bold text-[#000000] mb-2 pr-8">{item.title}</h2>
-                                    <p className="text-[16px] leading-[1.6] mb-6">{item.body}</p>
-
-                                    {/* Actieknoppen voor de gebruiker per melding */}
-                                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                                        <Button variant="secondary" onClick={() => {
-                                            if (item.link) {
-                                                navigate(item.link);
-                                            }
-                                        }}>➔ {item.actionText}</Button>
-                                        <button
-                                            onClick={() => removeItem(item.id)}
-                                            className="text-[14px] font-bold text-[#1B1B1B] underline hover:text-[#008100] focus:ring-2 focus:ring-[#008100] py-2 transition-colors rounded-[5px] outline-none"
-                                        >
-                                            Markeer als afgehandeld
-                                        </button>
-                                    </div>
-                                </motion.article>
-                            ))
-                        ) : (
-                            /* Lege staat wanneer er geen meldingen meer zijn */
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                className="py-20 text-center border-2 border-dashed border-[#E0E0E0] rounded-[5px]"
-                                role="status"
-                            >
-                                <p className="text-lg">U bent volledig bij met uw gemeentelijke zaken.</p>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </section>
-
-                {/* Sectie die uitlegt welke data de AI heeft gebruikt voor de suggesties */}
-                <section className="mt-12 pt-8 border-t border-[#E0E0E0]">
-                    <button
-                        onClick={() => setShowTransparency(!showTransparency)}
-                        className="w-full bg-[#F5F5F5] p-4 flex justify-between items-center text-left hover:bg-[#E0E0E0] focus:ring-2 focus:ring-[#008100] transition-colors border border-[#E0E0E0] rounded-[5px] outline-none"
-                        aria-expanded={showTransparency}
-                    >
-                        <div className="flex items-center gap-3">
-                            <Info size={20} className="text-[#008100]" aria-hidden="true" />
-                            <h3 className="text-[18px] font-bold">Hoe komt de AI bij deze keuzes?</h3>
+                                    <X size={20} />
+                                </button>
+                            )}
+                            <Button type="submit" className="px-5 h-full" aria-label="Zoeken">
+                                <Send size={18} />
+                            </Button>
                         </div>
-                        <motion.div
-                            animate={{ rotate: showTransparency ? 180 : 0 }}
-                            className="flex items-center justify-center"
-                        >
-                            <ChevronDown size={24} />
-                        </motion.div>
-                    </button>
+                    </form>
+                </div>
+            </header>
 
-                    {/* Uitklapbare lijst met bronvermelding per melding */}
-                    <AnimatePresence>
-                        {showTransparency && (
-                            <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: "auto", opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                className="overflow-hidden bg-[#F9F9FF] border-x border-b border-[#008100]/20 rounded-b-[5px]"
-                            >
-                                <div className="p-6 text-[14px]">
-                                    <p className="mb-4 font-bold text-[#008100]">Bronnen van uw suggesties:</p>
-                                    <ul className="space-y-3">
-                                        {feedItems.map(i => (
-                                            <li key={i.id} className="flex gap-3 border-l-2 border-[#008100] pl-3">
-                                                <div>
-                                                    <span className="font-bold">{i.title}:</span>
-                                                    <p className="text-[#4B4B4B]">{i.reason}</p>
-                                                </div>
-                                            </li>
-                                        ))}
-                                    </ul>
+            <main id="main-content" className="max-w-4xl mx-auto p-4 md:p-8 outline-none">
+                {!searchTerm && (
+                    <section aria-labelledby="ai-title" className="mb-12">
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="w-1 h-6 bg-[#008100]" aria-hidden="true" />
+                            <h2 id="ai-title" className="text-xl font-bold uppercase tracking-wide">Speciaal voor u</h2>
+                        </div>
+
+                        <AnimatePresence mode="popLayout">
+                            {feedItems.length > 0 ? (
+                                <div className="space-y-6">
+                                    {feedItems.map(item => (
+                                        <AICard
+                                            key={item.id}
+                                            item={item}
+                                            onRemove={removeItem}
+                                            onNavigate={() => navigate('/aanvraagform1')}
+                                            shouldReduceMotion={shouldReduceMotion}
+                                        />
+                                    ))}
                                 </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                            ) : (
+                                <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    className="py-16 text-center border-2 border-dashed border-[#CCCCCC] rounded-[5px] bg-[#F9F9F9]"
+                                    role="status"
+                                >
+                                    <CheckCircle size={48} className="mx-auto text-[#008100] mb-4" />
+                                    <h3 className="text-xl font-bold">U bent helemaal up-to-date!</h3>
+                                    <p className="text-[#666]">Er zijn momenteel geen nieuwe suggesties voor u.</p>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
+                        <XAIExplanation
+                            isOpen={showTransparency}
+                            onToggle={() => setShowTransparency(!showTransparency)}
+                            items={feedItems}
+                        />
+                    </section>
+                )}
+
+                <section className="mt-20">
+                    <div className="flex items-center gap-3 mb-8">
+                        <div className="w-1 h-6 bg-[#008100]" aria-hidden="true" />
+                        <h2 className="text-xl font-bold uppercase tracking-wide text-black">
+                            {searchTerm ? `Resultaten voor "${searchTerm}"` : "Alle Diensten"}
+                        </h2>
+                    </div>
+                    {loading ? (
+                        <div className="flex justify-center py-10"><Loader2 className="animate-spin text-[#008100]" size={40} /></div>
+                    ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {filteredCategories.map((cat) => (
+                                <a key={cat._id} href="#" className="flex items-center justify-between p-5 border border-[#D1D1D1] hover:border-[#008100] bg-white group no-underline transition-all focus:ring-4 focus:ring-[#008100]/30 outline-none">
+                                    <span className="text-[#007000] font-bold group-hover:text-black">{cat.name}</span>
+                                    <ChevronRight size={18} className="text-[#767676] group-hover:translate-x-1 transition-transform" />
+                                </a>
+                            ))}
+                        </div>
+                    )}
                 </section>
             </main>
             <FooterIngelogd />
