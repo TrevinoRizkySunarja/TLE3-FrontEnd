@@ -53,7 +53,7 @@ const router = createBrowserRouter([
             { path: "/navbar-ing", element: <NavbarIng /> },
             { path: "/navbar-uit", element: <NavbarUit /> },
 
-            // ⭐ Beveiligde profielpagina
+            //  Beveiligde profielpagina
             {
                 path: "/settings",
                 element: (
@@ -69,7 +69,7 @@ const router = createBrowserRouter([
             { path: "/filter", element: <Filter /> },
             { path: "/ai-transparantie", element: <AITransparantie /> },
 
-            // ⭐ Beveiligde aanvraagformulieren
+            //  Beveiligde aanvraagformulieren
             {
                 path: "/aanvraag/stap-1",
                 element: (
@@ -103,7 +103,7 @@ const router = createBrowserRouter([
                 )
             },
 
-            // ⭐ Beveiligde berichtenbox
+            //  Beveiligde berichtenbox
             {
                 path: "/berichten",
                 element: (
