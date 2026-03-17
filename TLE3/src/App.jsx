@@ -27,10 +27,10 @@ import Filter from "./admin/filter.jsx";
 import AITransparantie from "./AITransparantie.jsx";
 
 // Aanvraagformulieren
-import AanvraagForm from "./form/AanvraagForm.jsx";
-import AanvraagForm2 from "./form/AanvraagForm2.jsx";
-import AanvraagForm3 from "./form/AanvraagForm3.jsx";
-import AanvraagVoltooid from "./form/AanvraagVoltooid.jsx";
+import AanvraagForm from "./Form/AanvraagForm.jsx";
+import AanvraagForm2 from "./Form/AanvraagForm2.jsx";
+import AanvraagForm3 from "./Form/AanvraagForm3.jsx";
+import AanvraagVoltooid from "./Form/AanvraagVoltooid.jsx";
 
 // Auth system
 import { AuthProvider } from "./auth/AuthContext.jsx";

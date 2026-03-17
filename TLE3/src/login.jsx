@@ -3,99 +3,61 @@ import { Link, useNavigate } from "react-router-dom";
 
 // Login component
 function Login() {
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        setError("");
-        setIsLoading(true);
+    const [token, setToken] = useState(null);
+    async function login() {
 
         try {
-            console.log("[Login] Attempting connection to backend...");
-            const response = await fetch("http://145.24.237.215:8000/api/user/login", {
+            setIsLoading(true);
+            setError("");
+
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}user/login`, {
                 method: "POST",
                 headers: {
-                    Accept: "application/json",
                     "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "x-api-key":"sk_aef3c11fe1e6ba045ee72b46904ac5cae1ccb2aab5c7b5c88d9beff818592d5f"
                 },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({
+                    email,
+                    password
+                })
             });
 
-            const rawBody = await response.text();
-            const contentType = response.headers.get("content-type") || "";
-            let data = null;
-
-            console.log("[Login] Raw response body:", rawBody);
-            console.log("[Login] Response content-type:", contentType);
-
-            if (rawBody.trim() && contentType.includes("application/json")) {
-                try {
-                    data = JSON.parse(rawBody);
-                    console.log("[Login] Parsed response data:", data);
-                } catch {
-                    console.error("[Login] Connected, but response JSON is invalid");
-                    setError("Server gaf ongeldige JSON terug");
-                    return;
-                }
-            } else {
-                console.log("[Login] Non-JSON or empty response received");
-            }
+            const data = await response.json();
+            console.log(data);
 
             if (!response.ok) {
-                const serverMessage = data?.message || data?.error || (rawBody.trim() && !contentType.includes("application/json") ? rawBody : "");
-                console.error(`[Login] Backend connection failed (HTTP ${response.status})`, serverMessage || "Unknown error");
-                setError(serverMessage || `Inloggen mislukt (HTTP ${response.status})`);
-                return;
+                throw new Error(data.message || "Login mislukt");
             }
 
-            console.log(`[Login] Backend connected successfully (HTTP ${response.status})`);
-            const token = data?.token || data?.accessToken || data?.jwt;
-            if (!token) {
-                console.warn("[Login] Connected, but no token received");
-                setError("Login gelukt, maar geen token ontvangen");
-                return;
-            }
-
-            localStorage.setItem("token", token);
-
-            // Sla gebruikersgegevens op zodat FYP en Profile ze kunnen lezen
-            const apiUser = data?.user || data || {};
-            const authUser = {
-                first_name:   apiUser.first_name  || apiUser.firstname || "",
-                last_name:    apiUser.last_name   || apiUser.lastname  || "",
-                email:        apiUser.email       || email,
-                phone_number: apiUser.phone_number || "",
-                birth_date:   apiUser.birth_date   || "",
-                bsn:          apiUser.bsn           || "",
-                gender:       apiUser.gender        || "",
-                role:         apiUser.role          || apiUser.is_admin ? "admin" : "user",
-            };
-
-            localStorage.setItem("authUser", JSON.stringify(authUser));
-
-            console.log("[Login] ✅ LOGIN GELUKT!");
-            console.log("[Login] Token opgeslagen in localStorage");
-            console.log("[Login] Gebruikersgegevens opgeslagen:", authUser);
-
-            // Admin check: redirect naar dashboard als admin, anders naar FYP
-            const isAdmin = apiUser.role === "admin" || apiUser.is_admin === true || apiUser.is_admin === 1;
-            if (isAdmin) {
-                console.log("[Login] 👑 Gebruiker is ADMIN → doorsturen naar /admin/dashboard");
-                navigate("/admin/dashboard");
+            if (data.user.is_admin) {
+                console.log("admin");
+                setToken(data.token);
+                navigate("/admin/dashboard", { state: { user: data.user } });
             } else {
-                console.log("[Login] 👤 Gebruiker is geen admin → doorsturen naar /fyp");
-                navigate("/fyp");
+                console.log("gewone gebruiker");
+                setToken(data.token);
+                navigate("/fyp", { state: { user: data.user } });
             }
-        } catch (submitError) {
-            console.error("[Login] Network/connection error", submitError);
-            setError(submitError.message || "Serverfout");
+
+        } catch (error) {
+            console.error(error);
+            setError(error.message || "Er ging iets mis");
         } finally {
             setIsLoading(false);
         }
+
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        login().then(r => 'logged in succesfully');
     };
 
     return (
