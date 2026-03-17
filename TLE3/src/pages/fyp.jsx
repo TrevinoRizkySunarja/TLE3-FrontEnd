@@ -12,8 +12,8 @@ const FYP = () => {
     const navigate = useNavigate();
     const shouldReduceMotion = useReducedMotion();
 
-    const API_BASE_URL = "http://145.24.237.215:8000/api";
-    const API_KEY = ""; // Vul je API key in zodra je die hebt
+    const API_BASE_URL = "http://145.24.237.215:8000/api/v2";
+    const API_KEY = "sk_aef3c11fe1e6ba045ee72b46904ac5cae1ccb2aab5c7b5c88d9beff818592d5f"; // Vul je API key in zodra je die hebt
 
     // States
     const [username, setUsername] = useState({ first_name: "Gebruiker" });
