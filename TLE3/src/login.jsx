@@ -9,17 +9,19 @@ function Login() {
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+    const [token, setToken] = useState(null);
     async function login() {
 
         try {
             setIsLoading(true);
             setError("");
 
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/user/login`, {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}user/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Accept": "application/json"
+                    "Accept": "application/json",
+                    "x-api-key":"sk_aef3c11fe1e6ba045ee72b46904ac5cae1ccb2aab5c7b5c88d9beff818592d5f"
                 },
                 body: JSON.stringify({
                     email,
@@ -36,9 +38,11 @@ function Login() {
 
             if (data.user.is_admin) {
                 console.log("admin");
+                setToken(data.token);
                 navigate("/admin/dashboard", { state: { user: data.user } });
             } else {
                 console.log("gewone gebruiker");
+                setToken(data.token);
                 navigate("/fyp", { state: { user: data.user } });
             }
 
@@ -55,8 +59,6 @@ function Login() {
         e.preventDefault();
         login().then(r => 'logged in succesfully');
     };
-
-
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
