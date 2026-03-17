@@ -1,49 +1,50 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "./auth/AuthContext";   // ⭐ AuthContext import
 
-// Login component
 function Login() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const navigate = useNavigate();
-    const [token, setToken] = useState(null);
-    async function login() {
 
+    const navigate = useNavigate();
+    const { login } = useAuth();   // ⭐ AuthContext login functie
+
+    async function handleLogin() {
         try {
             setIsLoading(true);
             setError("");
 
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}user/login`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                    "x-api-key":"sk_aef3c11fe1e6ba045ee72b46904ac5cae1ccb2aab5c7b5c88d9beff818592d5f"
-                },
-                body: JSON.stringify({
-                    email,
-                    password
-                })
-            });
+            const response = await fetch(
+                `${import.meta.env.VITE_API_BASE_URL}user/login`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "x-api-key": "sk_aef3c11fe1e6ba045ee72b46904ac5cae1ccb2aab5c7b5c88d9beff818592d5f"
+                    },
+                    body: JSON.stringify({ email, password })
+                }
+            );
 
             const data = await response.json();
-            console.log(data);
+            console.log("LOGIN RESPONSE:", data);
 
             if (!response.ok) {
                 throw new Error(data.message || "Login mislukt");
             }
 
+            // ⭐ Sla token + user op in AuthContext
+            login(data.token, data.user);
+
+            // ⭐ Redirect op basis van rol
             if (data.user.is_admin) {
-                console.log("admin");
-                setToken(data.token);
-                navigate("/admin/dashboard", { state: { user: data.user } });
+                navigate("/admin/dashboard");
             } else {
-                console.log("gewone gebruiker");
-                setToken(data.token);
-                navigate("/fyp", { state: { user: data.user } });
+                navigate("/fyp");
             }
 
         } catch (error) {
@@ -52,12 +53,11 @@ function Login() {
         } finally {
             setIsLoading(false);
         }
-
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        login().then(r => 'logged in succesfully');
+        handleLogin();
     };
 
     return (
@@ -74,12 +74,10 @@ function Login() {
                         <input
                             type="email"
                             id="email"
-                            name="email"
                             value={email}
-                            onChange={(event) => setEmail(event.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
-                            title="Vul een geldig emailadres in"
                         />
                     </div>
 
@@ -90,13 +88,11 @@ function Login() {
                         <input
                             type="password"
                             id="password"
-                            name="password"
                             value={password}
-                            onChange={(event) => setPassword(event.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                             minLength="8"
-                            title="Wachtwoord moet minimaal 8 tekens lang zijn"
                         />
                     </div>
 
@@ -104,7 +100,7 @@ function Login() {
 
                     <button
                         type="submit"
-                        className="w-full bg-black text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors font-medium disabled:opacity-70"
+                        className="w-full bg-black text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors font-medium disabled:opacity-70"
                         disabled={isLoading}
                     >
                         {isLoading ? "Bezig met inloggen..." : "Inloggen"}
