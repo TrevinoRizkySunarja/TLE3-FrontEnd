@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
-// import je components
+
+// Layout
 import LayoutWithNavbar from "./LayoutWithNavbar.jsx";
 
 // Pages
@@ -31,6 +32,10 @@ import AanvraagForm2 from "./form/AanvraagForm2.jsx";
 import AanvraagForm3 from "./form/AanvraagForm3.jsx";
 import AanvraagVoltooid from "./form/AanvraagVoltooid.jsx";
 
+// Auth system
+import { AuthProvider } from "./auth/AuthContext.jsx";
+import AuthGuard from "./auth/AuthGuard.jsx";
+
 // Placeholder pages
 const CreateProduct = () => (
     <div style={{ padding: 24 }}>
@@ -47,21 +52,66 @@ const router = createBrowserRouter([
             { path: "/create", element: <CreateProduct /> },
             { path: "/navbar-ing", element: <NavbarIng /> },
             { path: "/navbar-uit", element: <NavbarUit /> },
-            { path: "/settings", element: <Profile_User /> },
+
+            // ⭐ Beveiligde profielpagina
+            {
+                path: "/settings",
+                element: (
+                    <AuthGuard>
+                        <Profile_User />
+                    </AuthGuard>
+                )
+            },
+
             { path: "/admin/dashboard", element: <Dashboard /> },
             { path: "/post", element: <Post /> },
             { path: "/test-navbar", element: <TestNavbar /> },
             { path: "/filter", element: <Filter /> },
             { path: "/ai-transparantie", element: <AITransparantie /> },
 
-            // Aanvraagformulieren
-            { path: "/aanvraag/stap-1", element: <AanvraagForm /> },
-            { path: "/aanvraag/stap-2", element: <AanvraagForm2 /> },
-            { path: "/aanvraag/stap-3", element: <AanvraagForm3 /> },
-            { path: "/aanvraag/voltooid", element: <AanvraagVoltooid /> },
+            // ⭐ Beveiligde aanvraagformulieren
+            {
+                path: "/aanvraag/stap-1",
+                element: (
+                    <AuthGuard>
+                        <AanvraagForm />
+                    </AuthGuard>
+                )
+            },
+            {
+                path: "/aanvraag/stap-2",
+                element: (
+                    <AuthGuard>
+                        <AanvraagForm2 />
+                    </AuthGuard>
+                )
+            },
+            {
+                path: "/aanvraag/stap-3",
+                element: (
+                    <AuthGuard>
+                        <AanvraagForm3 />
+                    </AuthGuard>
+                )
+            },
+            {
+                path: "/aanvraag/voltooid",
+                element: (
+                    <AuthGuard>
+                        <AanvraagVoltooid />
+                    </AuthGuard>
+                )
+            },
 
-            // ⭐ Nieuwe route
-            { path: "/berichten", element: <Berichtenbox /> },
+            // ⭐ Beveiligde berichtenbox
+            {
+                path: "/berichten",
+                element: (
+                    <AuthGuard>
+                        <Berichtenbox />
+                    </AuthGuard>
+                )
+            },
         ],
     },
 
@@ -74,7 +124,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-    return <RouterProvider router={router} />;
+    return (
+        <AuthProvider>
+            <RouterProvider router={router} />
+        </AuthProvider>
+    );
 }
 
 export default App;
