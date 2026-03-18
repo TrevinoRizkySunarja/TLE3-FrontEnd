@@ -58,6 +58,7 @@ export function RecommendationList() {
             {items.map((item) => (
                 <li key={item.content._id || item.content.id} className="border-b pb-2">
                   <strong>{item.content.title}</strong>
+                    <strong>{item.reason.preferred_categories}</strong>
                   <span className="text-sm text-gray-500 ml-2">
                 (Match: {(item.score * 100).toFixed(0)}%)
               </span>
