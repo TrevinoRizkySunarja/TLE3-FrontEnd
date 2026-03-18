@@ -1,101 +1,60 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "./auth/AuthContext";   // ⭐ AuthContext import
 
-// Login component
 function Login() {
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+    const { login } = useAuth();
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        setError("");
-        setIsLoading(true);
-
+    async function handleLogin() {
         try {
-            console.log("[Login] Attempting connection to backend...");
-            const response = await fetch("http://145.24.237.215:8000/api/user/login", {
-                method: "POST",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email, password }),
-            });
+            setIsLoading(true);
+            setError("");
 
-            const rawBody = await response.text();
-            const contentType = response.headers.get("content-type") || "";
-            let data = null;
-
-            console.log("[Login] Raw response body:", rawBody);
-            console.log("[Login] Response content-type:", contentType);
-
-            if (rawBody.trim() && contentType.includes("application/json")) {
-                try {
-                    data = JSON.parse(rawBody);
-                    console.log("[Login] Parsed response data:", data);
-                } catch {
-                    console.error("[Login] Connected, but response JSON is invalid");
-                    setError("Server gaf ongeldige JSON terug");
-                    return;
+            const response = await fetch(
+                `${import.meta.env.VITE_API_BASE_URL}user/login`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "x-api-key": "sk_aef3c11fe1e6ba045ee72b46904ac5cae1ccb2aab5c7b5c88d9beff818592d5f"
+                    },
+                    body: JSON.stringify({ email, password })
                 }
-            } else {
-                console.log("[Login] Non-JSON or empty response received");
-            }
+            );
+
+            const data = await response.json();
+            console.log("LOGIN RESPONSE:", data);
 
             if (!response.ok) {
-                const serverMessage = data?.message || data?.error || (rawBody.trim() && !contentType.includes("application/json") ? rawBody : "");
-                console.error(`[Login] Backend connection failed (HTTP ${response.status})`, serverMessage || "Unknown error");
-                setError(serverMessage || `Inloggen mislukt (HTTP ${response.status})`);
-                return;
+                throw new Error(data.message || "Login mislukt");
             }
 
-            console.log(`[Login] Backend connected successfully (HTTP ${response.status})`);
-            const token = data?.token || data?.accessToken || data?.jwt;
-            if (!token) {
-                console.warn("[Login] Connected, but no token received");
-                setError("Login gelukt, maar geen token ontvangen");
-                return;
-            }
+            login(data.token, data.user);
 
-            localStorage.setItem("token", token);
-
-            // Sla gebruikersgegevens op zodat FYP en Profile ze kunnen lezen
-            const apiUser = data?.user || data || {};
-            const authUser = {
-                first_name:   apiUser.first_name  || apiUser.firstname || "",
-                last_name:    apiUser.last_name   || apiUser.lastname  || "",
-                email:        apiUser.email       || email,
-                phone_number: apiUser.phone_number || "",
-                birth_date:   apiUser.birth_date   || "",
-                bsn:          apiUser.bsn           || "",
-                gender:       apiUser.gender        || "",
-                role:         apiUser.role          || apiUser.is_admin ? "admin" : "user",
-            };
-
-            localStorage.setItem("authUser", JSON.stringify(authUser));
-
-            console.log("[Login] ✅ LOGIN GELUKT!");
-            console.log("[Login] Token opgeslagen in localStorage");
-            console.log("[Login] Gebruikersgegevens opgeslagen:", authUser);
-
-            // Admin check: redirect naar dashboard als admin, anders naar FYP
-            const isAdmin = apiUser.role === "admin" || apiUser.is_admin === true || apiUser.is_admin === 1;
-            if (isAdmin) {
-                console.log("[Login] 👑 Gebruiker is ADMIN → doorsturen naar /admin/dashboard");
+            if (data.user.is_admin) {
                 navigate("/admin/dashboard");
             } else {
-                console.log("[Login] 👤 Gebruiker is geen admin → doorsturen naar /fyp");
                 navigate("/fyp");
             }
-        } catch (submitError) {
-            console.error("[Login] Network/connection error", submitError);
-            setError(submitError.message || "Serverfout");
+
+        } catch (error) {
+            console.error(error);
+            setError(error.message || "Er ging iets mis");
         } finally {
             setIsLoading(false);
         }
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        handleLogin().then(r => 'successfully login');
     };
 
     return (
@@ -112,12 +71,10 @@ function Login() {
                         <input
                             type="email"
                             id="email"
-                            name="email"
                             value={email}
-                            onChange={(event) => setEmail(event.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
-                            title="Vul een geldig emailadres in"
                         />
                     </div>
 
@@ -128,13 +85,11 @@ function Login() {
                         <input
                             type="password"
                             id="password"
-                            name="password"
                             value={password}
-                            onChange={(event) => setPassword(event.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                             minLength="8"
-                            title="Wachtwoord moet minimaal 8 tekens lang zijn"
                         />
                     </div>
 
@@ -142,7 +97,7 @@ function Login() {
 
                     <button
                         type="submit"
-                        className="w-full bg-black text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors font-medium disabled:opacity-70"
+                        className="w-full bg-black text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors font-medium disabled:opacity-70"
                         disabled={isLoading}
                     >
                         {isLoading ? "Bezig met inloggen..." : "Inloggen"}

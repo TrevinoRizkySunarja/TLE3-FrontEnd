@@ -1,5 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate, Navigate } from "react-router-dom";
+import NavbarIngelogd from "../components/NavbarIngelogd.jsx";
 
 export default function AanvraagForm2() {
     const navigate = useNavigate();
@@ -58,6 +59,7 @@ export default function AanvraagForm2() {
 
     return (
         <main className="bg-white text-[#1B1B1B] font-sans px-6 py-12">
+            <NavbarIngelogd />
             <section className="max-w-3xl mx-auto mb-12 bg-[#F5F5F5] p-8 border border-[#E0E0E0]">
                 <h1 className="text-4xl font-bold text-black mb-4">
                     Stap 2 — {needsAppointmentStep ? "Tijd & Locatie" : "Controle"}

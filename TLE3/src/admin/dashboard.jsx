@@ -6,30 +6,18 @@ import Footer from "../components/Footer.jsx";
 import {Inbox} from "lucide-react";
 import NavbarIngelogd from "../components/NavbarIngelogd.jsx";
 import Navbar from "../components/Navbar.jsx";
+import {useLocation} from "react-router-dom";
 
     function Dashboard() {
 
-        const adminId = localStorage.getItem("authUser");
-        const [open, setOpen] = useState(false);
-
-
-        const savedAdmin = JSON.parse(localStorage.getItem("authUser"));
-
-        const [admin, setAdmin] = useState({
-            first_name: savedAdmin?.first_name || "",
-            last_name: savedAdmin?.last_name || "",
-            email: savedAdmin?.email || "",
-        });
-
-        // console.log(adminId.first_name)
+        const location = useLocation();
+        const user = location.state?.user;
 
         const notifications = [
             {id: 1, sender: "Mw. de Wit", message: "Afspraak zometeen..", time: "2m ago"},
             {id: 2, sender: "Mr. heineken", message: "Dankjewel voor je feedback!", time: "10m ago"},
             {id: 3, sender: "mw. Slager", message: "Dat is dan afgesproken", time: "1h ago"},
         ];
-
-        console.log(adminId)
 
         return (
             <div className="min-h-screen bg-slate-50">
@@ -41,7 +29,7 @@ import Navbar from "../components/Navbar.jsx";
                         className="mx-auto w-full max-w-7xl px-4 py-6 text-center sm:px-6 lg:px-8"
                     >
                         <h1 className="pb-6 text-2xl font-bold sm:text-3xl lg:text-4xl">
-                            welkom bij de dashboard {admin.first_name} {admin.last_name} !
+                            welkom bij de dashboard {user?.first_name} {user?.last_name} !
                         </h1>
 
                         <div

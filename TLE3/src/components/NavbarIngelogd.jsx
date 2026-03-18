@@ -59,10 +59,10 @@ export default function Navbar() {
                         <Link to="/fyp" className={blackBtnStyle} aria-label="Mijn Overzicht">
                             <Home size={20} aria-hidden="true" /><span>Mijn Overzicht</span>
                         </Link>
-                        <Link to="/fyp" className={blackBtnStyle} aria-label="Berichtenbox">
+                        <Link to="/berichten" className={blackBtnStyle} aria-label="Berichtenbox">
                             <Inbox size={20} aria-hidden="true" /><span>Berichtenbox</span>
                         </Link>
-                        <Link to="/fyp" className={blackBtnStyle} aria-label="Melding Maken">
+                        <Link to="/aanvraag/stap-1" className={blackBtnStyle} aria-label="Melding Maken">
                             <PlusSquare size={20} aria-hidden="true" /><span>Melding Maken</span>
                         </Link>
                         <Link to="/settings" className={blackBtnStyle} aria-label="Mijn Gegevens">
@@ -95,7 +95,7 @@ export default function Navbar() {
                                 <div className="flex flex-col p-4 pb-12 gap-3">
                                     <Link to="/fyp" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full`}><Home size={20} aria-hidden="true" /><span>Mijn Overzicht</span></Link>
                                     <Link to="/fyp" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full`}><Inbox size={20} aria-hidden="true" /><span>Berichtenbox</span></Link>
-                                    <Link to="/fyp" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full`}><PlusSquare size={20} aria-hidden="true" /><span>Melding Maken</span></Link>
+                                    <Link to="/aanvraag/stap-1" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full`}><PlusSquare size={20} aria-hidden="true" /><span>Melding Maken</span></Link>
                                     <Link to="/settings" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full`}><Settings size={20} aria-hidden="true" /><span>Mijn Gegevens</span></Link>
                                     <Link to="/logout" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full`}><LogOut size={20} aria-hidden="true" /><span>Uitloggen</span></Link>
                                 </div>
