@@ -19,7 +19,7 @@ const Homepage = () => {
             try {
                 setLoading(true);
                 // We gebruiken de helper die de x-api-key header al bevat
-                const res = await fetchWithHeader('/categories/');
+                const res = await fetchWithHeader('categories/');
 
                 if (!res.ok) throw new Error('Kon de categorieën niet laden.');
 
