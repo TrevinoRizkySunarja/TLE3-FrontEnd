@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import NavbarIngelogd from "../components/NavbarIngelogd.jsx";
 
 export default function Berichtenbox() {
     const [notifications, setNotifications] = useState([]);
@@ -66,7 +67,7 @@ export default function Berichtenbox() {
 
     return (
         <main className="bg-white text-[#1B1B1B] font-sans px-6 py-12">
-
+            <NavbarIngelogd />
             {/* HEADER */}
             <section className="max-w-3xl mx-auto mb-12 bg-[#F5F5F5]
                                 p-8 border border-[#E0E0E0]">
