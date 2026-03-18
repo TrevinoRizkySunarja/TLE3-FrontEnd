@@ -26,7 +26,6 @@ export default function AanvraagForm() {
         datum: "",
         tijd: "",
     });
-
     const [errors, setErrors] = useState({});
 
     const aanvraagTypes = [
@@ -58,8 +57,20 @@ export default function AanvraagForm() {
         const id = params.get("id");
         const title = params.get("title");
 
+        // content_id opslaan
+        if (id) {
+            setFormData(prev => ({
+                ...prev,
+                content_id: id
+            }));
+        }
+
+        // type automatisch invullen op basis van title
         if (title) {
-            const matchedType = aanvraagTypes.find(t => t.name.toLowerCase() === title.toLowerCase());
+            const matchedType = aanvraagTypes.find(
+                t => t.name.toLowerCase() === title.toLowerCase()
+            );
+
             if (matchedType) {
                 setFormData(prevData => ({
                     ...prevData,
