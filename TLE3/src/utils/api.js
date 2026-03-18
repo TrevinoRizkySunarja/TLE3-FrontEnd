@@ -1,5 +1,5 @@
 
-const BASE_URL = "/v2/api";
+const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}`;
 const API_KEY = "sk_aef3c11fe1e6ba045ee72b46904ac5cae1ccb2aab5c7b5c88d9beff818592d5f";
 
 export const fetchWithHeader = async (endpoint, options = {}) => {
