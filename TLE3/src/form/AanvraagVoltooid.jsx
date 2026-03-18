@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import { useLocation, Navigate, useNavigate } from "react-router-dom";
 import NavbarIngelogd from "../components/NavbarIngelogd.jsx";
+import { useAuth } from "../auth/AuthContext.jsx";
 
 export default function AanvraagVoltooid() {
     const navigate = useNavigate();
     const location = useLocation();
     const data = location.state;
+    const { token } = useAuth();
 
     if (!data) return <Navigate to="/aanvraag/stap-1" replace />;
 
@@ -18,15 +20,17 @@ export default function AanvraagVoltooid() {
                         reden: data.type_name,
                         toelichting: data.omschrijving
                     },
-                    content_id: data.content_id,   // <-- deze moet je meegeven vanuit vorige stap
-                    user_id: data.user_id          // <-- verplicht volgens ERD
-                };
+                    content_id: data.content_id,   // <-- juiste ID
+                }
 
-                const reportRes = await fetch("http://145.24.237.215:8000/api/reports", {
+                console.log("Versturen payload:", payload);
+
+                const reportRes = await fetch("http://145.24.237.215:8000/v2/api/reports", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                         "Accept": "application/json",
+                        Authorization: `Bearer ${token}`,
                         "x-api-key": "sk_aef3c11fe1e6ba045ee72b46904ac5cae1ccb2aab5c7b5c88d9beff818592d5f"
                     },
                     body: JSON.stringify(payload),
