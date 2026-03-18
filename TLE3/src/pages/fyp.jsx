@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { AnimatePresence, useReducedMotion, motion } from 'framer-motion';
 import { Loader2, Search, Send } from 'lucide-react'; // Send toegevoegd voor de knop
