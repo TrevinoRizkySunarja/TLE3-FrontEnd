@@ -59,7 +59,7 @@ export default function Navbar() {
                         <Link to="/fyp" className={blackBtnStyle} aria-label="Mijn Overzicht">
                             <Home size={20} aria-hidden="true" /><span>Mijn Overzicht</span>
                         </Link>
-                        <Link to="/fyp" className={blackBtnStyle} aria-label="Berichtenbox">
+                        <Link to="/berichten" className={blackBtnStyle} aria-label="Berichtenbox">
                             <Inbox size={20} aria-hidden="true" /><span>Berichtenbox</span>
                         </Link>
                         <Link to="/aanvraag/stap-1" className={blackBtnStyle} aria-label="Melding Maken">

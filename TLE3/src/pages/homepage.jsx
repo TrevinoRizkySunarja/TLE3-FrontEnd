@@ -5,6 +5,7 @@ import { Button } from "../components/Button.jsx";
 import FooterIngelogd from "../components/FooterIngelogd.jsx";
 import NavbarIngelogd from "../components/NavbarIngelogd.jsx";
 import { fetchWithHeader } from "../utils/api";
+import NavbarUit from "../components/NavbarUit.jsx";
 
 
 const Homepage = () => {
@@ -61,7 +62,7 @@ const Homepage = () => {
 
     return (
         <div className="min-h-screen bg-white font-sans text-[#1B1B1B]">
-            <NavbarIngelogd />
+            <NavbarUit />
 
             <header className="bg-[#F5F5F5] border-b border-[#E0E0E0] py-12 px-6">
                 <div className="max-w-4xl mx-auto text-center">
