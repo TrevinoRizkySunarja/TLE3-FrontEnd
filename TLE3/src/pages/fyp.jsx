@@ -86,6 +86,7 @@ const FYP = () => {
                         title: item.content.title,
                         body: item.content.body || item.content.description,
                         isUrgent: item.content.is_urgent,
+                        url: item.content.url, // URL toevoegen
                         reason: item.reason?.rule_boost > 0
                             ? "Hoge prioriteit op basis van uw BRP-gegevens."
                             : "Aanbevolen op basis van uw interesses."
@@ -104,10 +105,10 @@ const FYP = () => {
         loadData();
     }, [user]);
 
-    const getFallbackFeed = () => [
-        { id: 'f1', title: 'Paspoort verlengen', body: 'Uw paspoort verloopt binnenkort.', isUrgent: true, reason: 'Verloopdatum match.' },
-        { id: 'f2', title: 'Afvalwijzer', body: 'Bekijk wanneer uw containers buiten moeten.', isUrgent: false, reason: 'Adres match.' }
-    ];
+    // const getFallbackFeed = () => [
+    //     { id: 'f1', title: 'Paspoort verlengen', body: 'Uw paspoort verloopt binnenkort.', isUrgent: true, reason: 'Verloopdatum match.', url: '/paspoort-verlengen' },
+    //     { id: 'f2', title: 'Afvalwijzer', body: 'Bekijk wanneer uw containers buiten moeten.', isUrgent: false, reason: 'Adres match.', url: '/afvalwijzer' }
+    // ];
 
     const removeItem = (id) => setFeedItems(prev => prev.filter(i => i.id !== id));
 
@@ -132,7 +133,12 @@ const FYP = () => {
                         <div className="space-y-6">
                             <AnimatePresence mode="popLayout">
                                 {feedItems.map(item => (
-                                    <AICard key={item.id} item={item} onRemove={removeItem} onNavigate={() => navigate('/aanvraagform1')} />
+                                    <AICard
+                                        key={item.id}
+                                        item={item}
+                                        onRemove={removeItem}
+                                        onNavigate={() => navigate(item.url || '/aanvraag/stap-1')}
+                                    />
                                 ))}
                             </AnimatePresence>
                             <XAIExplanation isOpen={showTransparency} onToggle={() => setShowTransparency(!showTransparency)} items={feedItems} />
