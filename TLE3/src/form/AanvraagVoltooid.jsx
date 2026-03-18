@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useLocation, Navigate, useNavigate } from "react-router-dom";
+import NavbarIngelogd from "../components/NavbarIngelogd.jsx";
 
 export default function AanvraagVoltooid() {
     const navigate = useNavigate();
@@ -52,6 +53,7 @@ export default function AanvraagVoltooid() {
 
     return (
         <main className="bg-white text-[#1B1B1B] font-sans px-6 py-12">
+            <NavbarIngelogd />
             <section className="max-w-3xl mx-auto bg-[#F5F5F5] p-8 border border-[#E0E0E0] mb-12">
                 <h1 className="text-4xl font-bold text-black mb-4">Aanvraag voltooid</h1>
 
@@ -102,7 +104,7 @@ export default function AanvraagVoltooid() {
                 </p>
 
                 <button
-                    onClick={() => navigate("/")}
+                    onClick={() => navigate("/fyp")}
                     className="mt-2 px-6 py-3 bg-[#008100] text-white font-bold rounded-md hover:bg-black"
                 >
                     Terug naar homepage
