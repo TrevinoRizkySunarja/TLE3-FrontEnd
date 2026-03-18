@@ -12,36 +12,80 @@ export default function AanvraagVoltooid() {
     useEffect(() => {
         async function saveToBackend() {
             try {
-                const inquiryPayload = {
-                    user_id: 1,
-                    type_id: data.type_id,
-                    question: data.omschrijving,
-                    status: "ingediend",
-                    content: JSON.stringify(data),
+                // CONTENT-ITEM AANMAKEN
+                const contentPayload = {
+                    title: `Aanvraag: ${data.type_name}`,
+                    body: JSON.stringify(data),
+                    content_type: "aanvraag",
+                    status: "submitted",
+                    created_by: data.email
                 };
 
-                const inquiryRes = await fetch("/api/inquiries", {
+                const contentRes = await fetch("http://145.24.237.215:8000/api/content-items", {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "x-api-key": "sk_aef3c11fe1e6ba045ee72b46904ac5cae1ccb2aab5c7b5c88d9beff818592d5f"
+                    },
+                    body: JSON.stringify(contentPayload),
+                });
+
+                if (!contentRes.ok) {
+                    const errorText = await contentRes.text();
+                    console.error("Content-item aanmaken mislukt:", contentRes.status, errorText);
+                    return;
+                }
+
+                const content = await contentRes.json(); // bevat content.id
+
+                const inquiryPayload = {
+                    user_id: data.user_id,
+                    type_id: data.type_id,
+                    content: data,
+                    status: "ingediend",
+                    question: data.omschrijving
+                };
+
+                const inquiryRes = await fetch("http://145.24.237.215:8000/api/inquiries", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "x-api-key": "sk_aef3c11fe1e6ba045ee72b46904ac5cae1ccb2aab5c7b5c88d9beff818592d5f"
+                    },
                     body: JSON.stringify(inquiryPayload),
                 });
 
-                if (!inquiryRes.ok) return;
+                if (!inquiryRes.ok) {
+                    const errorText = await inquiryRes.text();
+                    console.error("Inquiry aanmaken mislukt:", inquiryRes.status, errorText);
+                    return;
+                }
 
-                const inquiry = await inquiryRes.json();
-
+                // 3️⃣ REPORT AANMAKEN (volgens ERD)
                 const reportPayload = {
                     title: `Nieuwe aanvraag van ${data.naam}`,
                     description: data.omschrijving,
-                    user_id: 1,
-                    content_id: inquiry.id,
+                    user_id: data.user_id,
+                    content_id: content.id
                 };
 
-                await fetch("/api/reports", {
+                const reportRes = await fetch("http://145.24.237.215:8000/api/reports", {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "x-api-key": "sk_aef3c11fe1e6ba045ee72b46904ac5cae1ccb2aab5c7b5c88d9beff818592d5f"
+                    },
                     body: JSON.stringify(reportPayload),
                 });
+
+                if (!reportRes.ok) {
+                    const errorText = await reportRes.text();
+                    console.error("Report aanmaken mislukt:", reportRes.status, errorText);
+                    return;
+                }
 
             } catch (err) {
                 console.error("Fout bij opslaan aanvraag:", err);
@@ -54,6 +98,7 @@ export default function AanvraagVoltooid() {
     return (
         <main className="bg-white text-[#1B1B1B] font-sans px-6 py-12">
             <NavbarIngelogd />
+
             <section className="max-w-3xl mx-auto bg-[#F5F5F5] p-8 border border-[#E0E0E0] mb-12">
                 <h1 className="text-4xl font-bold text-black mb-4">Aanvraag voltooid</h1>
 
@@ -67,27 +112,13 @@ export default function AanvraagVoltooid() {
                 <p className="text-lg mb-2">Naam: {data.naam}</p>
                 <p className="text-lg mb-4">E-mailadres: {data.email}</p>
 
-                {data.rijbewijsNummer && (
-                    <p className="text-lg mb-2">Rijbewijsnummer: {data.rijbewijsNummer}</p>
-                )}
-                {data.heeftOudRijbewijs && (
-                    <p className="text-lg mb-2">Oud rijbewijs: {data.heeftOudRijbewijs}</p>
-                )}
-                {data.heeftOudPaspoort && (
-                    <p className="text-lg mb-2">Oud paspoort: {data.heeftOudPaspoort}</p>
-                )}
-                {data.oudIdNummer && (
-                    <p className="text-lg mb-2">Oud ID-kaartnummer: {data.oudIdNummer}</p>
-                )}
-                {data.redenIdAanvraag && (
-                    <p className="text-lg mb-2">Reden ID-aanvraag: {data.redenIdAanvraag}</p>
-                )}
-                {data.nationaliteit && (
-                    <p className="text-lg mb-2">Nationaliteit: {data.nationaliteit}</p>
-                )}
-                {data.redenVerblijf && (
-                    <p className="text-lg mb-2">Reden van verblijf: {data.redenVerblijf}</p>
-                )}
+                {data.rijbewijsNummer && <p className="text-lg mb-2">Rijbewijsnummer: {data.rijbewijsNummer}</p>}
+                {data.heeftOudRijbewijs && <p className="text-lg mb-2">Oud rijbewijs: {data.heeftOudRijbewijs}</p>}
+                {data.heeftOudPaspoort && <p className="text-lg mb-2">Oud paspoort: {data.heeftOudPaspoort}</p>}
+                {data.oudIdNummer && <p className="text-lg mb-2">Oud ID-kaartnummer: {data.oudIdNummer}</p>}
+                {data.redenIdAanvraag && <p className="text-lg mb-2">Reden ID-aanvraag: {data.redenIdAanvraag}</p>}
+                {data.nationaliteit && <p className="text-lg mb-2">Nationaliteit: {data.nationaliteit}</p>}
+                {data.redenVerblijf && <p className="text-lg mb-2">Reden van verblijf: {data.redenVerblijf}</p>}
 
                 {data.locatie && (
                     <>
