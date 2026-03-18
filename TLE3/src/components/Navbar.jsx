@@ -50,7 +50,7 @@ export default function Navbar() {
                     <div className="hidden md:flex flex-wrap gap-2">
                         <Link to="/" className={blackBtnStyle}><Home size={20} /><span>Home</span></Link>
                         <Link to="/belasting" className={blackBtnStyle}><Inbox size={20} /><span>Inbox</span></Link>
-                        <Link to="/artikel" className={blackBtnStyle}><PlusSquare size={20} /><span>Artikel</span></Link>
+                        <Link to="/aanvraag/stap-1" className={blackBtnStyle}><PlusSquare size={20} /><span>Melding maken</span></Link>
                         <Link to="/settings" className={blackBtnStyle}><Settings size={20} /><span>Instellingen</span></Link>
                         <Link to="/logout" className={blackBtnStyle}><LogOut size={20} /><span>Uitloggen</span></Link>
                     </div>
@@ -81,8 +81,8 @@ export default function Navbar() {
                             <Link to="/belasting" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full justify-start`}>
                                 <Inbox size={20} /><span>Inbox</span>
                             </Link>
-                            <Link to="/artikel" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full justify-start`}>
-                                <PlusSquare size={20} /><span>Artikel Creëren</span>
+                            <Link to="/aanvraag/stap-1" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full justify-start`}>
+                                <PlusSquare size={20} /><span>Melding Maken</span>
                             </Link>
                             <Link to="/settings" onClick={() => setMobileOpen(false)} className={`${blackBtnStyle} w-full justify-start`}>
                                 <Settings size={20} /><span>Instellingen</span>
