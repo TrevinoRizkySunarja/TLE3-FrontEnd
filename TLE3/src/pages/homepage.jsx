@@ -15,7 +15,7 @@ const Homepage = () => {
         const getCategories = async () => {
             try {
                 setLoading(true);
-                const res = await fetch('http://145.24.237.215:8000/api/categories');
+                const res = await fetch('http://145.24.237.215:8000/api/v2/categories');
                 if (!res.ok) throw new Error('Data failed');
                 const data = await res.json();
                 setCategories(data);
@@ -48,7 +48,7 @@ const Homepage = () => {
             "bouwen": "https://www.rotterdam.nl/bouwen-verbouwen",
             "afval": "https://www.rotterdam.nl/afval-aanbieden",
             "parkeren": "https://www.rotterdam.nl/parkeren",
-            "belastingen": "https://www.rotterdam.nl/gemeentelijke-belastingen",
+            "belastingen": "https.www.rotterdam.nl/gemeentelijke-belastingen",
             "onderwijs": "https://www.rotterdam.nl/onderwijs-kinderopvang",
             "werk": "https://www.rotterdam.nl/werk-inkomen",
             "melding": "https://www.rotterdam.nl/melding-doen",
