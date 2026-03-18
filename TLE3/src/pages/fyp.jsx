@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AnimatePresence, useReducedMotion, motion } from 'framer-motion';
-import { Search, ChevronRight, Loader2, Send, CheckCircle } from 'lucide-react';
+import { Search, ChevronRight, Loader2, Send, CheckCircle, X } from 'lucide-react';
 import { Button } from "../components/Button.jsx";
 import { AICard } from "../components/AICard.jsx";
 import { XAIExplanation } from "../components/XAIExplanation.jsx";
@@ -101,10 +101,21 @@ const FYP = () => {
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             placeholder="Waarmee kunnen we u helpen?"
-                            className="w-full h-14 pl-12 pr-16 bg-white border-2 border-[#767676] focus:border-[#008100] outline-none text-lg shadow-sm"
+                            className="w-full h-14 pl-12 pr-32 bg-white border-2 border-[#767676] focus:border-[#008100] outline-none text-lg shadow-sm appearance-none [&::-webkit-search-cancel-button]:appearance-none"
                         />
                         <Search className="absolute left-4 top-4 text-[#767676]" size={24} aria-hidden="true" />
-                        <div className="absolute right-1.5 top-1.5 bottom-1.5">
+                        
+                        <div className="absolute right-1.5 top-1.5 bottom-1.5 flex items-center gap-x-1">
+                            {searchTerm && (
+                                <button
+                                    type="button"
+                                    onClick={() => setSearchTerm("")}
+                                    className="flex items-center justify-center h-11 w-11 text-[#767676] hover:text-black"
+                                    aria-label="Zoekopdracht wissen"
+                                >
+                                    <X size={20} />
+                                </button>
+                            )}
                             <Button type="submit" className="px-5 h-full" aria-label="Zoeken">
                                 <Send size={18} />
                             </Button>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, ChevronRight, MapPin, Loader2 } from 'lucide-react';
+import { Send, ChevronRight, MapPin, Loader2, Search, X } from 'lucide-react';
 import { Button } from "../components/Button.jsx";
 import FooterIngelogd from "../components/FooterIngelogd.jsx";
 import NavbarUit from "../components/NavbarUit.jsx";
@@ -66,6 +66,16 @@ const Homepage = () => {
 
     return (
         <div className="min-h-screen bg-white font-sans text-[#1B1B1B]">
+            <style>
+                {`
+                    input[type="search"]::-webkit-search-decoration,
+                    input[type="search"]::-webkit-search-cancel-button,
+                    input[type="search"]::-webkit-search-results-button,
+                    input[type="search"]::-webkit-search-results-decoration {
+                        -webkit-appearance: none;
+                    }
+                `}
+            </style>
             {/* WCAG Skip Link */}
             <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-[#008100] text-white p-4 z-50">
                 Skip naar hoofdinhoud
@@ -91,15 +101,24 @@ const Homepage = () => {
                         className="relative max-w-xl mx-auto"
                     >
                         <label htmlFor="category-search" className="sr-only">Zoek op rotterdam.nl</label>
+                        <Search className="absolute left-4 top-4 text-[#767676]" size={24} aria-hidden="true" />
                         <input
                             id="category-search"
                             type="search"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             placeholder="Zoek naar bijv. afval, parkeren of verhuizen..."
-                            className="w-full h-14 pl-5 pr-16 bg-white border-2 border-[#767676] focus:border-[#008100] outline-none transition-all text-lg shadow-sm placeholder:text-[#555]"
+                            className="w-full h-14 pl-12 pr-32 bg-white border-2 border-[#767676] focus:border-[#008100] outline-none transition-all text-lg shadow-sm placeholder:text-[#555]"
                         />
-                        <div className="absolute right-1.5 top-1.5 bottom-1.5 flex">
+                        <div className="absolute right-1.5 top-1.5 bottom-1.5 flex items-center">
+                            <button
+                                type="button"
+                                onClick={() => setSearchTerm("")}
+                                className={`text-[#767676] hover:text-black p-2 mr-1 ${!searchTerm ? 'invisible' : ''}`}
+                                aria-label="Zoekopdracht wissen"
+                            >
+                                <X size={20} />
+                            </button>
                             <Button type="submit" aria-label="Zoekopdracht uitvoeren" className="px-5 py-0 h-full">
                                 <Send size={18} aria-hidden="true" />
                             </Button>
@@ -125,41 +144,35 @@ const Homepage = () => {
                     </div>
                 ) : (
                     <section aria-labelledby="cat-title">
-                        <div className="flex items-center gap-3 mb-8">
+                        <div className="flex items-center gap-3 mb-8 min-h-[1.75rem]">
                             <div className="w-1 h-6 bg-[#008100]" aria-hidden="true" />
                             <h2 id="cat-title" className="text-xl font-bold text-black uppercase tracking-wide">
                                 {searchTerm ? `Zoekresultaten` : `Veelgezochte onderwerpen`}
                             </h2>
                         </div>
 
-                        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                            <AnimatePresence mode='popLayout'>
-                                {filteredItems.map((cat) => {
-                                    const url = getCategoryUrl(cat.name);
-                                    const isExternal = url.startsWith('http');
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                            {filteredItems.map((cat) => {
+                                const url = getCategoryUrl(cat.name);
+                                const isExternal = url.startsWith('http');
 
-                                    return (
-                                        <motion.a
-                                            key={cat._id}
-                                            layout
-                                            initial={{ opacity: 0 }}
-                                            animate={{ opacity: 1 }}
-                                            exit={{ opacity: 0 }}
-                                            href={url}
-                                            target={isExternal ? "_blank" : "_self"}
-                                            rel={isExternal ? "noopener noreferrer" : ""}
-                                            className="flex items-center justify-between p-4 border border-[#D1D1D1] hover:border-[#008100] focus:ring-2 focus:ring-[#008100] bg-white transition-all group no-underline"
-                                        >
-                                            <span className="text-[#007000] font-semibold text-[15px] group-hover:text-black transition-colors">
-                                                {cat.name}
-                                                {isExternal && <span className="sr-only">(opent in een nieuw tabblad)</span>}
-                                            </span>
-                                            <ChevronRight size={16} className="text-[#767676] group-hover:text-[#008100] transition-transform group-hover:translate-x-1" aria-hidden="true" />
-                                        </motion.a>
-                                    );
-                                })}
-                            </AnimatePresence>
-                        </motion.div>
+                                return (
+                                    <a
+                                        key={cat._id}
+                                        href={url}
+                                        target={isExternal ? "_blank" : "_self"}
+                                        rel={isExternal ? "noopener noreferrer" : ""}
+                                        className="flex items-center justify-between p-4 border border-[#D1D1D1] hover:border-[#008100] focus:ring-2 focus:ring-[#008100] bg-white transition-all group no-underline"
+                                    >
+                                        <span className="text-[#007000] font-semibold text-[15px] group-hover:text-black transition-colors">
+                                            {cat.name}
+                                            {isExternal && <span className="sr-only">(opent in een nieuw tabblad)</span>}
+                                        </span>
+                                        <ChevronRight size={16} className="text-[#767676] group-hover:text-[#008100] transition-transform group-hover:translate-x-1" aria-hidden="true" />
+                                    </a>
+                                );
+                            })}
+                        </div>
 
                         {!loading && filteredItems.length === 0 && (
                             <p className="text-center py-10 text-gray-500">Geen categorieën gevonden die voldoen aan uw zoekopdracht.</p>
