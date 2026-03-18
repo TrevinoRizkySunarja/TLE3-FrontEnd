@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import NavbarIngelogd from "../components/NavbarIngelogd.jsx";
 
 export default function AanvraagForm() {
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [formData, setFormData] = useState({
         naam: "",
@@ -51,6 +52,24 @@ export default function AanvraagForm() {
     ];
 
     const today = new Date().toISOString().split("T")[0];
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const id = params.get("id");
+        const title = params.get("title");
+
+        if (title) {
+            const matchedType = aanvraagTypes.find(t => t.name.toLowerCase() === title.toLowerCase());
+            if (matchedType) {
+                setFormData(prevData => ({
+                    ...prevData,
+                    type_id: matchedType.id.toString(),
+                    type_name: matchedType.name,
+                    warning: matchedType.warning,
+                }));
+            }
+        }
+    }, [location.search]);
 
     function handleChange(e) {
         const { name, value, type, checked } = e.target;
