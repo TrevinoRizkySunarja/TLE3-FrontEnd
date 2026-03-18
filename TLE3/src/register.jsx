@@ -21,154 +21,47 @@ function Register() {
         personalization_enabled: true,
     });
 
-    const handleChange = (e) => {
-        setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    };
-// validatie van de form data die de gebruiker invult, zoals naam, email, wachtwoord, geboortedatum, telefoonnummer, BSN en geslacht.
-// Als er fouten zijn, worden deze opgeslagen in de errors state en weergegeven aan de gebruiker. Als alle validaties slagen, wordt true geretourneerd.
-    const validateForm = () => {
-        const newErrors = {};
-
-        // Validate first_name
-        if (!formData.first_name.trim()) {
-            newErrors.first_name = "Naam is verplicht";
-        } else if (formData.first_name.trim().length < 2) {
-            newErrors.first_name = "Naam moet minstens 2 tekens zijn";
-        }
-
-        // Validate last_name
-        if (!formData.last_name.trim()) {
-            newErrors.last_name = "Naam is verplicht";
-        } else if (formData.last_name.trim().length < 2) {
-            newErrors.last_name = "Naam moet minstens 2 tekens zijn";
-        }
-
-        // Validate email
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!formData.email.trim()) {
-            newErrors.email = "Email is verplicht";
-        } else if (!emailRegex.test(formData.email)) {
-            newErrors.email = "Vul een geldig emailadres in";
-        }
-
-        // Validate password
-        if (!formData.password) {
-            newErrors.password = "Wachtwoord is verplicht";
-        } else if (formData.password.length < 8) {
-            newErrors.password = "Wachtwoord moet minstens 8 tekens zijn";
-        }
-
-        // Validate birth_date
-        if (!formData.birth_date) {
-            newErrors.birth_date = "Geboortedatum is verplicht";
-        }
-
-        // Validate phone_number
-        const phoneRegex = /^(06|\+31)[0-9](-?[0-9]){7,8}$/;
-        if (!formData.phone_number) {
-            newErrors.phone_number = "Telefoonnummer is verplicht";
-        } else if (!phoneRegex.test(formData.phone_number)) {
-            newErrors.phone_number = "Telefoonnummer moet 06-12345678 of +31612345678 zijn";
-        }
-
-        // Validate BSN
-        const bsnRegex = /^[0-9]{9}$/;
-        if (!formData.bsn) {
-            newErrors.bsn = "BSN is verplicht";
-        } else if (!bsnRegex.test(formData.bsn)) {
-            newErrors.bsn = "BSN moet 9 cijfers zijn";
-        }
-
-        // Validate gender
-        if (!formData.gender) {
-            newErrors.gender = "Selecteer een geslacht";
-        }
-
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
     };
 
-    const handleSubmit = async (e) => {
+    async function register(){
+
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}user/register`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "x-api-key":"sk_aef3c11fe1e6ba045ee72b46904ac5cae1ccb2aab5c7b5c88d9beff818592d5f"
+            },
+            body: JSON.stringify({
+                first_name: formData.first_name,
+                last_name: formData.last_name,
+                email: formData.email,
+                password: formData.password,
+                birth_date: formData.birth_date,
+                phone_number: formData.phone_number,
+                bsn: formData.bsn,
+                gender: formData.gender,
+                is_admin: formData.is_admin,
+                personalization_enabled: formData.personalization_enabled
+            })
+        });
+
+        const data = await response.json();
+        console.log(data);
+
+        navigate('/login');
+    }
+
+    const handleSubmit = (e) => {
         e.preventDefault();
-        setErrors({});
-        setSuccess("");
-
-        if (!validateForm()) {
-            return;
-        }
-
-        setLoading(true);
-
-        try {
-            console.log("[Register] Attempting connection to backend...");
-            console.log("[Register] Sending data:", { ...formData, password: "***" });
-
-            const res = await fetch("http://145.24.237.215:8000/api/user/register", {
-                method: "POST",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-            });
-
-            console.log("[Register] ✅ Request sent successfully to: http://145.24.237.215:8000/api/user/register");
-            console.log("[Register] HTTP Status:", res.status);
-
-            const rawBody = await res.text();
-            const contentType = res.headers.get("content-type") || "";
-            let data = null;
-
-            console.log("[Register] Raw response body:", rawBody);
-            console.log("[Register] Response content-type:", contentType);
-
-            if (rawBody.trim() && contentType.includes("application/json")) {
-                try {
-                    data = JSON.parse(rawBody);
-                    console.log("[Register] Parsed response data:", data);
-                } catch {
-                    console.error("[Register] Response JSON is invalid");
-                    setErrors({ submit: "Server gaf ongeldige JSON terug" });
-                    return;
-                }
-            } else {
-                console.log("[Register] Non-JSON or empty response received");
-            }
-
-            if (!res.ok) {
-                const serverMessage = data?.message || data?.error || (rawBody.trim() && !contentType.includes("application/json") ? rawBody : "");
-                console.error(`[Register] Backend connection failed (HTTP ${res.status})`, serverMessage);
-                setErrors({ submit: serverMessage || `Registratie mislukt (HTTP ${res.status})` });
-                return;
-            }
-
-            console.log(`[Register] ✅ Registratie GELUKT! (HTTP ${res.status})`);
-            console.log("[Register] Gebruiker aangemaakt, je wordt doorgestuurd naar login...");
-            setSuccess("Registratie gelukt! Je wordt doorgestuurd naar de loginpagina...");
-            setFormData({
-                first_name: "",
-                last_name: "",
-                email: "",
-                password: "",
-                birth_date: "",
-                phone_number: "",
-                bsn: "",
-                gender: "",
-                is_admin: false,
-                personalization_enabled: true,
-            });
-            console.log(formData)
-
-            setTimeout(() => {
-                navigate("/login");
-            }, 2000);
-
-        } catch (err) {
-            console.error("[Register] Network/connection error", err);
-            setErrors({ submit: err.message || "Er ging iets mis." });
-        } finally {
-            setLoading(false);
-        }
+        console.log("dit heb je meegestuurd", formData);
+       register().then(r => 'successfully registered');
     };
 // front end van register pagina
     return (

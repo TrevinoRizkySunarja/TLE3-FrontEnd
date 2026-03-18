@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
-// import je components
+
+// Layout
 import LayoutWithNavbar from "./LayoutWithNavbar.jsx";
 
 // Pages
@@ -7,9 +8,10 @@ import TestNavbar from "./pages/TestNavbar";
 import NavbarIng from "./pages/NavbarIng";
 import FYP from "./pages/fyp.jsx";
 import Homepage from "./pages/homepage.jsx";
-import InformatiePagina from "./Informatie.jsx";
+import InformatiePagina from "./informatie.jsx";
 import NavbarUit from "./pages/navbaruit.jsx";
 import Profile_User from "./pages/profile_user.jsx";
+import Berichtenbox from "./pages/berichtenbox.jsx";
 
 // Auth pages
 import Register from "./register.jsx";
@@ -25,10 +27,14 @@ import Filter from "./admin/filter.jsx";
 import AITransparantie from "./AITransparantie.jsx";
 
 // Aanvraagformulieren
-import AanvraagForm from "./form/AanvraagForm.jsx";
-import AanvraagForm2 from "./form/AanvraagForm2.jsx";
-import AanvraagForm3 from "./form/AanvraagForm3.jsx";
-import AanvraagVoltooid from "./form/AanvraagVoltooid.jsx";
+import AanvraagForm from "./Form/AanvraagForm.jsx";
+import AanvraagForm2 from "./Form/AanvraagForm2.jsx";
+import AanvraagForm3 from "./Form/AanvraagForm3.jsx";
+import AanvraagVoltooid from "./Form/AanvraagVoltooid.jsx";
+
+// Auth system
+import { AuthProvider } from "./auth/AuthContext.jsx";
+import AuthGuard from "./auth/AuthGuard.jsx";
 
 // Placeholder pages
 const CreateProduct = () => (
@@ -41,49 +47,104 @@ const router = createBrowserRouter([
     {
         element: <LayoutWithNavbar />,
         children: [
+            { path: "/", element: <Homepage /> },
+            { path: "/fyp", element: <FYP /> },
+            { path: "/create", element: <CreateProduct /> },
+            { path: "/navbar-ing", element: <NavbarIng /> },
+            { path: "/navbar-uit", element: <NavbarUit /> },
+
+            //  Beveiligde profielpagina
             {
-                path: "/",
-                element: <Homepage />,
+                path: "/settings",
+                element: (
+                    <AuthGuard>
+                        <Profile_User />
+                    </AuthGuard>
+                )
+            },
+
+            { path: "/admin/dashboard", element: <Dashboard /> },
+            { path: "/post", element: <Post /> },
+            { path: "/test-navbar", element: <TestNavbar /> },
+            { path: "/filter", element: <Filter /> },
+            { path: "/ai-transparantie", element: <AITransparantie /> },
+
+            //  Beveiligde aanvraagformulieren
+            {
+                path: "/aanvraag/stap-1",
+                element: (
+                    <AuthGuard>
+                        <AanvraagForm />
+                    </AuthGuard>
+                )
             },
             {
-                path: "/fyp",
-                element: <FYP />,
+                path: "/aanvraag/stap-2",
+                element: (
+                    <AuthGuard>
+                        <AanvraagForm2 />
+                    </AuthGuard>
+                )
             },
             {
-                path: "/create",
-                element: <CreateProduct />,
+                path: "/aanvraag/stap-3",
+                element: (
+                    <AuthGuard>
+                        <AanvraagForm3 />
+                    </AuthGuard>
+                )
             },
             {
-                path: "/navbar-ing",
-                element: <NavbarIng />,
+                path: "/aanvraag/voltooid",
+                element: (
+                    <AuthGuard>
+                        <AanvraagVoltooid />
+                    </AuthGuard>
+                )
+            },
+
+            //  Beveiligde berichtenbox
+            {
+                path: "/berichten",
+                element: (
+                    <AuthGuard>
+                        <Berichtenbox />
+                    </AuthGuard>
+                )
             },
             {
-                path: "/navbar-uit",
-                element: <NavbarUit />,
+                path: "/settings",
+                element: (
+                    <AuthGuard>
+                        <Profile_User />
+                    </AuthGuard>
+                )
             },
-            { path: "/settings",            element: <Profile_User /> },
-            { path: "/admin/dashboard",     element: <Dashboard /> },
-            { path: "/post",                element: <Post /> },
-            { path: "/test-navbar",         element: <TestNavbar /> },
-            { path: "/filter",              element: <Filter /> },
-            { path: "/ai-transparantie",    element: <AITransparantie /> },
-            { path: "/aanvraag/stap-1",     element: <AanvraagForm /> },
-            { path: "/aanvraag/stap-2",     element: <AanvraagForm2 /> },
-            { path: "/aanvraag/stap-3",     element: <AanvraagForm3 /> },
-            { path: "/aanvraag/voltooid",   element: <AanvraagVoltooid /> },
+            {
+                path: "/admin/dashboard",
+                element: (
+                    <AuthGuard>
+                        <Dashboard />
+                    </AuthGuard>
+                )
+            },
         ],
     },
 
     // Auth pages (zonder layout)
-    { path: "/register",        element: <Register /> },
-    { path: "/login",           element: <Login /> },
-    { path: "/logout",          element: <Logout /> },
+    { path: "/register", element: <Register /> },
+    { path: "/login", element: <Login /> },
+    { path: "/logout", element: <Logout /> },
     { path: "/forgot_password", element: <ForgotPassword /> },
-    { path: "/informatie",      element: <InformatiePagina />},
+    { path: "/informatie", element: <InformatiePagina /> },
 ]);
 
 function App() {
-    return <RouterProvider router={router} />;
+    return (
+        <AuthProvider>
+            <RouterProvider router={router} />
+        </AuthProvider>
+    );
 }
 
 export default App;

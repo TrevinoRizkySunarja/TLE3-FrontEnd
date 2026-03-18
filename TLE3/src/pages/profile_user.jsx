@@ -1,57 +1,40 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {useLocation, useNavigate} from 'react-router-dom';
 import { User, Mail, Phone, Calendar, CreditCard, Users, ArrowLeft, IdCard, Car, Leaf, Ticket, Recycle } from 'lucide-react';
 import NavbarIngelogd from "../components/NavbarIngelogd.jsx";
 import FooterIngelogd from "../components/FooterIngelogd.jsx";
-
-const defaultUserData = {
-    first_name: '',
-    last_name: '',
-    email: '',
-    phone_number: '',
-    birth_date: '',
-    bsn: '',
-    gender: '',
-    passport_expiry: '',
-    drivers_license_expiry: '',
-    greenpass_expiry: '',
-    parking_permit_expiry: '',
-    milieupas_expiry: '',
-};
+import {useAuth} from "../auth/AuthContext.jsx";
 
 const Profile_User = () => {
     const navigate = useNavigate();
 
-    let userData = defaultUserData;
-    try {
-        const storedUser = localStorage.getItem('authUser');
-        if (storedUser) {
-            userData = { ...defaultUserData, ...JSON.parse(storedUser) };
-        }
-    } catch {
-        userData = defaultUserData;
-    }
+    const location = useLocation();
+    const { token, user: authUser } = useAuth();
+    const userId = authUser?.id;
 
-    const formatDate = (dateString) => {
-        if (!dateString) return 'Niet beschikbaar';
-        const parsedDate = new Date(dateString);
-        if (Number.isNaN(parsedDate.getTime())) return dateString;
-        return parsedDate.toLocaleDateString('nl-NL', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
+    const [user, setUser] = useState(null);
+    const currentUser = location.state?.user;
+    async function fetchUserInfo(){
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}user/${userId}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "x-api-key": "sk_aef3c11fe1e6ba045ee72b46904ac5cae1ccb2aab5c7b5c88d9beff818592d5f",
+                Authorization: `Bearer ${token}`
+            }
         });
-    };
 
-    const formatGender = (gender) => {
-        const genderMap = {
-            'man': 'Man',
-            'vrouw': 'Vrouw',
-            'anders': 'Anders',
-            'zeg_ik_liever_niet': 'Zeg ik liever niet'
-        };
-        return genderMap[gender] || gender;
-    };
+        const data = await response.json();
+        console.log(data);
+
+        setUser(data.user);
+    }
+    // console.log(user)
+    useEffect(() => {
+        fetchUserInfo();
+    }, []);
+
 
     return (
         <div className="bg-[#FFFFFF] min-h-screen font-sans text-[#1B1B1B]">
@@ -83,7 +66,8 @@ const Profile_User = () => {
                                 <span className="text-[14px] font-bold text-[#4B4B4B]">Volledige naam:</span>
                             </div>
                             <span className="text-[16px] text-[#1B1B1B] font-medium">
-                                {userData.first_name} {userData.last_name}
+                                {user?.first_name} {user?.last_name}
+
                             </span>
                         </div>
 
@@ -93,7 +77,7 @@ const Profile_User = () => {
                                 <Mail size={18} className="text-[#4B4B4B]" aria-hidden="true" />
                                 <span className="text-[14px] font-bold text-[#4B4B4B]">E-mailadres:</span>
                             </div>
-                            <span className="text-[16px] text-[#1B1B1B]">{userData.email}</span>
+                            <span className="text-[16px] text-[#1B1B1B]">{user?.email}</span>
                         </div>
 
                         {/* Phone */}
@@ -102,7 +86,7 @@ const Profile_User = () => {
                                 <Phone size={18} className="text-[#4B4B4B]" aria-hidden="true" />
                                 <span className="text-[14px] font-bold text-[#4B4B4B]">Telefoonnummer:</span>
                             </div>
-                            <span className="text-[16px] text-[#1B1B1B]">{userData.phone_number}</span>
+                            <span className="text-[16px] text-[#1B1B1B]">{user?.phone_number}</span>
                         </div>
 
                         {/* Birth date */}
@@ -112,7 +96,7 @@ const Profile_User = () => {
                                 <span className="text-[14px] font-bold text-[#4B4B4B]">Geboortedatum:</span>
                             </div>
                             <span className="text-[16px] text-[#1B1B1B]">
-                                {formatDate(userData.birth_date)}
+                                {user?.birth_date}
                             </span>
                         </div>
 
@@ -122,7 +106,7 @@ const Profile_User = () => {
                                 <CreditCard size={18} className="text-[#4B4B4B]" aria-hidden="true" />
                                 <span className="text-[14px] font-bold text-[#4B4B4B]">BSN:</span>
                             </div>
-                            <span className="text-[16px] text-[#1B1B1B] font-mono">{userData.bsn}</span>
+                            <span className="text-[16px] text-[#1B1B1B] font-mono">{user?.bsn}</span>
                         </div>
 
                         {/* Gender */}
@@ -132,7 +116,7 @@ const Profile_User = () => {
                                 <span className="text-[14px] font-bold text-[#4B4B4B]">Geslacht:</span>
                             </div>
                             <span className="text-[16px] text-[#1B1B1B]">
-                                {formatGender(userData.gender)}
+                                {user?.gender}
                             </span>
                         </div>
                     </div>
@@ -150,7 +134,7 @@ const Profile_User = () => {
                                 <IdCard size={18} className="text-[#4B4B4B]" aria-hidden="true" />
                                 <span className="text-[14px] font-bold text-[#4B4B4B]">Paspoort verloopdatum:</span>
                             </div>
-                            <span className="text-[16px] text-[#1B1B1B]">{formatDate(userData.passport_expiry)}</span>
+                            <span className="text-[16px] text-[#1B1B1B]">{user?.passport_expiry}</span>
                         </div>
 
                         <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 pb-4 border-b border-[#E0E0E0]">
@@ -158,7 +142,7 @@ const Profile_User = () => {
                                 <Car size={18} className="text-[#4B4B4B]" aria-hidden="true" />
                                 <span className="text-[14px] font-bold text-[#4B4B4B]">Rijbewijs verloopdatum:</span>
                             </div>
-                            <span className="text-[16px] text-[#1B1B1B]">{formatDate(userData.drivers_license_expiry)}</span>
+                            <span className="text-[16px] text-[#1B1B1B]">{user?.drivers_license_expiry}</span>
                         </div>
 
                         <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 pb-4 border-b border-[#E0E0E0]">
@@ -166,7 +150,7 @@ const Profile_User = () => {
                                 <Leaf size={18} className="text-[#4B4B4B]" aria-hidden="true" />
                                 <span className="text-[14px] font-bold text-[#4B4B4B]">Groenpas verloopdatum:</span>
                             </div>
-                            <span className="text-[16px] text-[#1B1B1B]">{formatDate(userData.greenpass_expiry)}</span>
+                            <span className="text-[16px] text-[#1B1B1B]">{user?.greenpass_expiry}</span>
                         </div>
 
                         <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 pb-4 border-b border-[#E0E0E0]">
@@ -174,7 +158,7 @@ const Profile_User = () => {
                                 <Leaf size={18} className="text-[#4B4B4B]" aria-hidden="true" />
                                 <span className="text-[14px] font-bold text-[#4B4B4B]">Milieupas verloopdatum:</span>
                             </div>
-                            <span className="text-[16px] text-[#1B1B1B]">{formatDate(userData.milieupas_expiry)}</span>
+                            <span className="text-[16px] text-[#1B1B1B]">{user?.milieupas_expiry}</span>
                         </div>
 
                         <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
@@ -182,7 +166,7 @@ const Profile_User = () => {
                                 <Ticket size={18} className="text-[#4B4B4B]" aria-hidden="true" />
                                 <span className="text-[14px] font-bold text-[#4B4B4B]">Parkeervergunning verloopdatum:</span>
                             </div>
-                            <span className="text-[16px] text-[#1B1B1B]">{formatDate(userData.parking_permit_expiry)}</span>
+                            <span className="text-[16px] text-[#1B1B1B]">{user?.parking_permit_expiry}</span>
                         </div>
                     </div>
                 </section>
@@ -199,7 +183,7 @@ const Profile_User = () => {
                                 <Leaf size={18} className="text-[#4B4B4B]" aria-hidden="true" />
                                 <span className="text-[14px] font-bold text-[#4B4B4B]">Groenpas geldig tot:</span>
                             </div>
-                            <span className="text-[16px] text-[#1B1B1B]">{formatDate(userData.greenpass_expiry)}</span>
+                            <span className="text-[16px] text-[#1B1B1B]">{user?.greenpass_expiry}</span>
                         </div>
 
                         <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 pb-4 border-b border-[#E0E0E0]">
@@ -207,7 +191,7 @@ const Profile_User = () => {
                                 <Recycle size={18} className="text-[#4B4B4B]" aria-hidden="true" />
                                 <span className="text-[14px] font-bold text-[#4B4B4B]">Milieupas geldig tot:</span>
                             </div>
-                            <span className="text-[16px] text-[#1B1B1B]">{formatDate(userData.milieupas_expiry)}</span>
+                            <span className="text-[16px] text-[#1B1B1B]">{user?.milieupas_expiry}</span>
                         </div>
 
                         <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
@@ -215,7 +199,7 @@ const Profile_User = () => {
                                 <Ticket size={18} className="text-[#4B4B4B]" aria-hidden="true" />
                                 <span className="text-[14px] font-bold text-[#4B4B4B]">Parkeervergunning geldig tot:</span>
                             </div>
-                            <span className="text-[16px] text-[#1B1B1B]">{formatDate(userData.parking_permit_expiry)}</span>
+                            <span className="text-[16px] text-[#1B1B1B]">{user?.parking_permit_expiry}</span>
                         </div>
                     </div>
                 </section>

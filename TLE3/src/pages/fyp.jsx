@@ -6,17 +6,17 @@ import { AICard } from "../components/AICard.jsx";
 import { XAIExplanation } from "../components/XAIExplanation.jsx";
 import NavbarIngelogd from "../components/NavbarIngelogd.jsx";
 import FooterIngelogd from "../components/FooterIngelogd.jsx";
-import { useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 
 const FYP = () => {
     const navigate = useNavigate();
     const shouldReduceMotion = useReducedMotion();
 
-    const API_BASE_URL = "http://145.24.237.215:8000/api/v2";
-    const API_KEY = "sk_aef3c11fe1e6ba045ee72b46904ac5cae1ccb2aab5c7b5c88d9beff818592d5f"; // Vul je API key in zodra je die hebt
+    const API_BASE_URL = "http://145.24.237.215:8000/api";
+    const API_KEY = ""; // Vul je API key in zodra je die hebt
 
     // States
-    const [username, setUsername] = useState({ first_name: "Gebruiker" });
+
     const [feedItems, setFeedItems] = useState([]);
     const [showTransparency, setShowTransparency] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
@@ -24,11 +24,6 @@ const FYP = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const stored = localStorage.getItem("authUser");
-        if (stored) {
-            const authUser = JSON.parse(stored);
-            setUsername({ first_name: authUser.first_name || "Gebruiker" });
-        }
 
         const loadData = async () => {
             setLoading(true);
@@ -95,7 +90,7 @@ const FYP = () => {
             <header className="bg-[#F5F5F5] border-b border-[#E0E0E0] pt-20 pb-12 px-6 mt-[-60px]">
                 <div className="max-w-4xl mx-auto text-center">
                     <h1 className="text-3xl md:text-4xl font-bold mb-6 text-black">
-                        Welkom {username.first_name}
+                        Welkom {user?.first_name}
                     </h1>
                     <form role="search" className="relative max-w-xl mx-auto" onSubmit={(e) => e.preventDefault()}>
                         <input
@@ -142,7 +137,7 @@ const FYP = () => {
                                             key={item.id}
                                             item={item}
                                             onRemove={removeItem}
-                                            onNavigate={() => navigate('/aanvraagform1')}
+                                            onNavigate={() => navigate('/aanvraag/stap-1')}
                                             shouldReduceMotion={shouldReduceMotion}
                                         />
                                     ))}
