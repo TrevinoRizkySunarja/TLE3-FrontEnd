@@ -3,28 +3,32 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import { User, Mail, Phone, Calendar, CreditCard, Users, ArrowLeft, IdCard, Car, Leaf, Ticket, Recycle } from 'lucide-react';
 import NavbarIngelogd from "../components/NavbarIngelogd.jsx";
 import FooterIngelogd from "../components/FooterIngelogd.jsx";
+import {useAuth} from "../auth/AuthContext.jsx";
 
 const Profile_User = () => {
     const navigate = useNavigate();
 
-
     const location = useLocation();
+    const { token, user: authUser } = useAuth();
+    const userId = authUser?.id;
 
-
-    const [user, setUser] = useState([]);
+    const [user, setUser] = useState(null);
     const currentUser = location.state?.user;
     async function fetchUserInfo(){
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}user`, {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}user/${userId}`, {
+            method: "GET",
             headers: {
-                Accept: "application/json",
-                // Authorization: `Bearer ${token}`
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "x-api-key": "sk_aef3c11fe1e6ba045ee72b46904ac5cae1ccb2aab5c7b5c88d9beff818592d5f",
+                Authorization: `Bearer ${token}`
             }
         });
 
         const data = await response.json();
         console.log(data);
 
-        setUser(data.items);
+        setUser(data.user);
     }
     // console.log(user)
     useEffect(() => {
@@ -73,7 +77,7 @@ const Profile_User = () => {
                                 <Mail size={18} className="text-[#4B4B4B]" aria-hidden="true" />
                                 <span className="text-[14px] font-bold text-[#4B4B4B]">E-mailadres:</span>
                             </div>
-                            <span className="text-[16px] text-[#1B1B1B]">{currentUser?.first_name}</span>
+                            <span className="text-[16px] text-[#1B1B1B]">{user?.email}</span>
                         </div>
 
                         {/* Phone */}

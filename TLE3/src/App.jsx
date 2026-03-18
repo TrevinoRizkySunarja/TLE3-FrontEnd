@@ -112,6 +112,22 @@ const router = createBrowserRouter([
                     </AuthGuard>
                 )
             },
+            {
+                path: "/settings",
+                element: (
+                    <AuthGuard>
+                        <Profile_User />
+                    </AuthGuard>
+                )
+            },
+            {
+                path: "/admin/dashboard",
+                element: (
+                    <AuthGuard>
+                        <Dashboard />
+                    </AuthGuard>
+                )
+            },
         ],
     },
 

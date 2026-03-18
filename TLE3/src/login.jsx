@@ -8,9 +8,8 @@ function Login() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-
     const navigate = useNavigate();
-    const { login } = useAuth();   // ⭐ AuthContext login functie
+    const { login } = useAuth();
 
     async function handleLogin() {
         try {
@@ -37,10 +36,8 @@ function Login() {
                 throw new Error(data.message || "Login mislukt");
             }
 
-            // ⭐ Sla token + user op in AuthContext
             login(data.token, data.user);
 
-            // ⭐ Redirect op basis van rol
             if (data.user.is_admin) {
                 navigate("/admin/dashboard");
             } else {
@@ -57,7 +54,7 @@ function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        handleLogin();
+        handleLogin().then(r => 'successfully login');
     };
 
     return (
